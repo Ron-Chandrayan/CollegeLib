@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import BookSearching from '../BookSearching/BookSearching';
+
+import Book from '../Book/Book';
 
 function Books() {
     const{books, setBooks}=useOutletContext()
@@ -12,6 +13,16 @@ function Books() {
     const[booksearch2,setbooksearch2]=useState("");
     const[filter3,setFilter3]= useState("");
     const[booksearch3,setbooksearch3]=useState("");
+    const[disable,setdisable]=useState(true);
+      const [formData, setformData] = useState({
+        title: '',
+        author: '',
+        publisher: ''
+      });
+      const[filterbooks,setfilterbooks]=useState([])
+    const[searchActive, setsearchActive]=useState(false);
+ 
+
 
     useEffect(()=>{
               const fetchData =async()=>{
@@ -43,187 +54,223 @@ function Books() {
               
             },[i])
 
+            const handleChange = (e) => {
+           // setsearchActive(e.target.value.trim() !== '');
+        setformData(prev => ({
+          ...prev,
+          [e.target.name]: e.target.value
+        }));
+      };
+
+      const handleSubmit = (e)=>{
+        e.preventDefault();
+        setsearchActive(true);
+        console.log(formData);
+        const apikey = 'ahambrahmasmi';
+        const title=formData.title;
+        const author=formData.author.trim().split(" ")[0];
+        const publisher = formData.publisher;
+         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=600`, {
+                  headers: {
+                      'x-api-key': apikey // Use XAPIKEY header
+                  }
+                  })
+                  .then(response => response.json())
+                  .then(data => {console.log(data.data.books);
+                    // const kitab = data.data.books;
+                    setfilterbooks(data.data.books)
+                    // setBooks(kitab);
+                      //seterr(false)
+                      // const info = data.students
+                      // setName(info);
+                      // // console.log(info[0].name)
+                      
+                  })
+                  }
+                  catch(error){
+                      seterr(true);
+                      console.error(error);
+                  }
+      
+        
+      }
+
 return(<>
     {/* Header Section */}
-    <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold mb-2">Library Management</h1>
-            <p className="text-blue-100 text-lg">Browse and search through our book collection - Page {i}</p>
+    <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white py-12 px-6 shadow-2xl relative overflow-hidden">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                        Library Management
+                    </h1>
+                    <p className="text-blue-100 text-lg md:text-xl font-light">
+                        Browse and search through our extensive book collection
+                    </p>
+                    <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-blue-500 bg-opacity-20 border border-blue-400 border-opacity-30">
+                        <span className="text-blue-200 text-sm font-medium">{(!searchActive)?`Page ${i}` :null}</span>
+                    </div>
+                </div>
+                <div className="hidden md:block">
+                    <svg className="w-24 h-24 text-blue-300 opacity-30" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                </div>
+            </div>
         </div>
     </div>
 
     {/* Main Content Container */}
-    <div className="max-w-7xl mx-auto px-6 py-8 bg-gray-50 min-h-screen">
-        
-        {/* Search Section */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8 border border-gray-100">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                Search Books
-            </h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-6 py-10">
             
-            <form onSubmit={(e)=>{
-              e.preventDefault();
-            }} className="flex flex-col sm:flex-row items-center gap-4 w-full">
-              <div className="flex-1 w-full sm:w-auto">
-                <input 
-                  type="text" 
-                  placeholder="Enter book title or author..." 
-                  id="" 
-                  onChange={(e)=>{
-                    setbooksearch(e.target.value)
-                  }} 
-                  value={booksearch}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 bg-white transition-all duration-200 shadow-sm hover:shadow-md"
-                />
-              </div>
-              <div className="w-full sm:w-auto">
-                <select 
-                  value={filter} 
-                  onChange={(e)=>{
-                    setFilter(e.target.value);
-                  }} 
-                  className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
-                >
-                  <option value="" >Select search filter</option>
-                   <option value="title">Search by Title</option>
-                   <option value="author">Search by Author</option>
-                   <option value="publisher">Search by Publisher</option>
-                </select>
-              </div>
-            </form>
-
-            <form onSubmit={(e)=>{
-              e.preventDefault();
-            }} className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full">
-              <div className="flex-1 w-full sm:w-auto">
-                <input 
-                  type="text" 
-                  placeholder="Enter book title or author..." 
-                  id="" 
-                  onChange={(e)=>{
-                    setbooksearch2(e.target.value)
-                  }} 
-                  value={booksearch2}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 bg-white transition-all duration-200 shadow-sm hover:shadow-md"
-                />
-              </div>
-              <div className="w-full sm:w-auto">
-                <select 
-                  value={filter2} 
-                  onChange={(e)=>{
-                    setFilter2(e.target.value);
-                  }} 
-                  className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
-                >
-                  <option value="" >Select search filter</option>
-                   <option value="title">Search by Title</option>
-                   <option value="author">Search by Author</option>
-                   <option value="publisher">Search by Publisher</option>
-                </select>
-              </div>
-            </form>
-
-             <form onSubmit={(e)=>{
-              e.preventDefault();
-            }} className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full">
-              <div className="flex-1 w-full sm:w-auto">
-                <input 
-                  type="text" 
-                  placeholder="Enter book title or author..." 
-                  id="" 
-                  onChange={(e)=>{
-                    setbooksearch3(e.target.value)
-                  }} 
-                  value={booksearch3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 bg-white transition-all duration-200 shadow-sm hover:shadow-md"
-                />
-              </div>
-              <div className="w-full sm:w-auto">
-                <select 
-                  value={filter3} 
-                  onChange={(e)=>{
-                    setFilter3(e.target.value);
-                  }} 
-                  className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
-                >
-                  <option value="" >Select search filter</option>
-                   <option value="title">Search by Title</option>
-                   <option value="author">Search by Author</option>
-                   <option value="publisher">Search by Publisher</option>
-                </select>
-              </div>
-            </form>
-
-        </div>
-
-        {/* Books Display Section */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-            <BookSearching paginatedbooks={paginatedbooks}  filter={filter} books={books} bookname={booksearch} filter2={filter2} bookname2={booksearch2} filter3={filter3} bookname3={booksearch3} />
-        </div>
-
-        {/* Pagination Section */}
-        {(filter==="" &&filter2===""&&filter3==="") ?(<div className="mt-8 flex justify-center">
-            <div className="bg-white rounded-lg shadow-md border border-gray-200 p-2 flex items-center space-x-1">
+            {/* Search Section */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-10 hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center mb-6">
+                    <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl mr-4">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-800 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                        Search Books
+                    </h2>
+                </div>
                 
-                {/* Previous Button */}
-                <button 
-                  onClick={()=>{
-                      if(i>1){
-                          seti(i-1);
-                      }
-                  }}
-                  disabled={i <= 1}
-                  className="flex items-center justify-center w-10 h-10 rounded-md bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-                  </svg>
-                </button>
+                <form className="max-w-2xl mx-auto space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="md:col-span-2">
+                            <input 
+                              type="text"
+                              name='title'
+                              placeholder='Enter Title/Subject'
+                              onChange={handleChange}
+                              value={formData.title}
+                              className="w-full px-5 py-4 bg-white/70 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 placeholder-gray-400 text-gray-700 shadow-sm hover:shadow-md"
+                            />
+                        </div>
+                        
+                        <input 
+                          type="text"
+                          name='author'
+                          placeholder='Enter Author'
+                          onChange={handleChange}
+                          value={formData.author}
+                          className="w-full px-5 py-4 bg-white/70 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 placeholder-gray-400 text-gray-700 shadow-sm hover:shadow-md"
+                        />
 
-                {/* Page Numbers */}
-              
-                <div className="flex items-center space-x-1 px-2">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-md bg-blue-600 text-white font-semibold shadow-sm">
-                        {i}
+                        <input 
+                          type="text"
+                          name='publisher' 
+                          placeholder='Enter Publisher'
+                          onChange={handleChange}
+                          value={formData.publisher}
+                          className="w-full px-5 py-4 bg-white/70 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all duration-300 placeholder-gray-400 text-gray-700 shadow-sm hover:shadow-md"
+                        />
                     </div>
-                    <div className="flex items-center justify-center w-10 h-10 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-all duration-200 cursor-pointer">
-                        {i+1}
+
+                    <button 
+                      onClick={handleSubmit}
+                      className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:ring-4 focus:ring-blue-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span>Search Books</span>
+                    </button>
+                </form>
+
+                {searchActive && (
+                    <div className="mt-6 flex items-center justify-center">
+                        <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 border border-green-200">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                            <span className="text-green-700 text-sm font-medium">Search Results Active</span>
+                        </div>
                     </div>
-                    <div className="flex items-center justify-center w-10 h-10 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition-all duration-200 cursor-pointer">
-                        {i+2}
+                )}
+            </div>
+
+            {/* Books Display Section */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
+                <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 border-b border-gray-200">
+                    <h3 className="text-lg font-semibold text-gray-800 flex items-center">
+                        <svg className="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        {searchActive ? 'Search Results' : 'All Books'}
+                    </h3>
+                </div>
+                <div className="p-6">
+                    {searchActive?(<Book books={filterbooks}/>):(<Book books={paginatedbooks}/>)}
+                </div>
+            </div>
+
+            {/* Pagination Section */}
+            {(!searchActive) ?(<div className="mt-10 flex justify-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-4 hover:shadow-xl transition-all duration-300">
+                    <div className="flex items-center space-x-2">
+                        
+                        {/* Previous Button */}
+                        <button 
+                          onClick={()=>{
+                              if(i>1){
+                                  seti(i-1);
+                              }
+                          }}
+                          disabled={i <= 1}
+                          className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none transition-all duration-300"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+                          </svg>
+                        </button>
+
+                        {/* Page Numbers */}
+                        <div className="flex items-center space-x-2 px-4">
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold shadow-lg text-lg">
+                                {i}
+                            </div>
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300 text-gray-600 hover:text-gray-800 font-semibold transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 shadow-sm hover:shadow-md">
+                                {i+1}
+                            </div>
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300 text-gray-600 hover:text-gray-800 font-semibold transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 shadow-sm hover:shadow-md">
+                                {i+2}
+                            </div>
+                        </div>
+
+                        {/* Next Button */}
+                        <button 
+                          onClick={()=>{
+                              if(i<(Math.floor((books.length)/20))){
+                                  seti(i+1)
+                              }
+                          }}
+                          disabled={i >= Math.floor((books.length)/20)}
+                          className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none transition-all duration-300"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                          </svg>
+                        </button>
+
                     </div>
                 </div>
+            </div>):null}
 
-                {/* Next Button */}
-                <button 
-                  onClick={()=>{
-                      if(i<(Math.floor((books.length)/20))){
-                          seti(i+1)
-                      }
-                  }}
-                  disabled={i >= Math.floor((books.length)/20)}
-                  className="flex items-center justify-center w-10 h-10 rounded-md bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </button>
+            {/* Page Info */}
+            {(!searchActive)?(<div className="mt-6 text-center">
+                <div className="inline-flex items-center px-6 py-3 rounded-xl bg-white/60 backdrop-blur-sm border border-white/30 shadow-lg">
+                    <svg className="w-4 h-4 mr-2 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p className="text-gray-600 text-sm font-medium">
+                        Page {i} of {Math.ceil(books.length / 20)} | Showing up to 20 books per page
+                    </p>
+                </div>
+            </div>):null}
 
-            </div>
-        </div>):null}
-        
-
-        {/* Page Info */}
-        {(filter==="" && filter2==="" && filter3==="")?(<div className="mt-4 text-center">
-            <p className="text-gray-600 text-sm">
-                Page {i} of {Math.ceil(books.length / 20)} | Showing up to 20 books per page
-            </p>
-        </div>):null}
-        
-
+        </div>
     </div>
 
 </>)
