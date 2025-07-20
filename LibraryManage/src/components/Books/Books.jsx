@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import BookSearching from '../BookSearching.jsx/BookSearching';
+import BookSearching from '../BookSearching/BookSearching';
 
 function Books() {
     const{books, setBooks}=useOutletContext()
