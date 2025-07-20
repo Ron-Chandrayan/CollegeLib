@@ -320,49 +320,49 @@ app.get('/api/qps', (req, res) => {
 });
 
 
-//for uploading pdfs
-const storage = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      // Use a short delay to wait for body parsing
-      setTimeout(() => {
-        const { sem, subject, year } = req.body;
+// //for uploading pdfs
+// const storage = multer({
+//   storage: multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       // Use a short delay to wait for body parsing
+//       setTimeout(() => {
+//         const { sem, subject, year } = req.body;
 
-        if (!sem || !subject || !year) {
-          console.error('❌ Missing sem/subject/year in req.body');
-          return cb(new Error('Missing form fields'));
-        }
+//         if (!sem || !subject || !year) {
+//           console.error('❌ Missing sem/subject/year in req.body');
+//           return cb(new Error('Missing form fields'));
+//         }
 
-        const uploadPath = path.join(__dirname, 'uploads', 'qps', sem, subject, year);
-        fs.mkdirSync(uploadPath, { recursive: true });
-        cb(null, uploadPath);
-      }, 0); // Let body parsing complete
-    },
-    filename: (req, file, cb) => {
-      const { subject, year } = req.body;
-      const timestamp = Date.now();
-      const filename = `${subject}${year}_${timestamp}.pdf`;
-      cb(null, filename);
-    }
-  })
-});
+//         const uploadPath = path.join(__dirname, 'uploads', 'qps', sem, subject, year);
+//         fs.mkdirSync(uploadPath, { recursive: true });
+//         cb(null, uploadPath);
+//       }, 0); // Let body parsing complete
+//     },
+//     filename: (req, file, cb) => {
+//       const { subject, year } = req.body;
+//       const timestamp = Date.now();
+//       const filename = `${subject}${year}_${timestamp}.pdf`;
+//       cb(null, filename);
+//     }
+//   })
+// });
 
 
 
- const upload = multer({ storage });
+//  const upload = multer({ storage });
 
-// Upload route
-app.post('/api/qps/upload', upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+// // Upload route
+// app.post('/api/qps/upload', upload.single('file'), (req, res) => {
+//   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
-  const { sem, subject, year } = req.body;
-  const fileUrl = `/qps/${sem}/${subject}/${year}/${req.file.filename}`;
+//   const { sem, subject, year } = req.body;
+//   const fileUrl = `/qps/${sem}/${subject}/${year}/${req.file.filename}`;
 
-  return res.status(200).json({
-    message: 'File uploaded successfully',
-    fileUrl
-  });
-});
+//   return res.status(200).json({
+//     message: 'File uploaded successfully',
+//     fileUrl
+//   });
+// });
 
 
 

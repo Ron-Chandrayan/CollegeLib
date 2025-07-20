@@ -8,6 +8,10 @@ function Books() {
     const[paginatedbooks,setpaginatedbooks]=useState([])
     const[booksearch,setbooksearch]=useState("");
     const[filter,setFilter]=useState("");
+    const[filter2,setFilter2]= useState("");
+    const[booksearch2,setbooksearch2]=useState("");
+    const[filter3,setFilter3]= useState("");
+    const[booksearch3,setbooksearch3]=useState("");
 
     useEffect(()=>{
               const fetchData =async()=>{
@@ -83,21 +87,85 @@ return(<>
                   }} 
                   className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
                 >
-                  <option value="" hidden>Select search filter</option>
+                  <option value="" >Select search filter</option>
                    <option value="title">Search by Title</option>
                    <option value="author">Search by Author</option>
+                   <option value="publisher">Search by Publisher</option>
                 </select>
               </div>
             </form>
+
+            <form onSubmit={(e)=>{
+              e.preventDefault();
+            }} className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full">
+              <div className="flex-1 w-full sm:w-auto">
+                <input 
+                  type="text" 
+                  placeholder="Enter book title or author..." 
+                  id="" 
+                  onChange={(e)=>{
+                    setbooksearch2(e.target.value)
+                  }} 
+                  value={booksearch2}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 bg-white transition-all duration-200 shadow-sm hover:shadow-md"
+                />
+              </div>
+              <div className="w-full sm:w-auto">
+                <select 
+                  value={filter2} 
+                  onChange={(e)=>{
+                    setFilter2(e.target.value);
+                  }} 
+                  className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
+                >
+                  <option value="" >Select search filter</option>
+                   <option value="title">Search by Title</option>
+                   <option value="author">Search by Author</option>
+                   <option value="publisher">Search by Publisher</option>
+                </select>
+              </div>
+            </form>
+
+             <form onSubmit={(e)=>{
+              e.preventDefault();
+            }} className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full">
+              <div className="flex-1 w-full sm:w-auto">
+                <input 
+                  type="text" 
+                  placeholder="Enter book title or author..." 
+                  id="" 
+                  onChange={(e)=>{
+                    setbooksearch3(e.target.value)
+                  }} 
+                  value={booksearch3}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 text-gray-900 bg-white transition-all duration-200 shadow-sm hover:shadow-md"
+                />
+              </div>
+              <div className="w-full sm:w-auto">
+                <select 
+                  value={filter3} 
+                  onChange={(e)=>{
+                    setFilter3(e.target.value);
+                  }} 
+                  className="w-full sm:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 bg-white cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md appearance-none"
+                >
+                  <option value="" >Select search filter</option>
+                   <option value="title">Search by Title</option>
+                   <option value="author">Search by Author</option>
+                   <option value="publisher">Search by Publisher</option>
+                </select>
+              </div>
+            </form>
+
         </div>
 
         {/* Books Display Section */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-            <BookSearching paginatedbooks={paginatedbooks}  filter={filter} books={books} bookname={booksearch} />
+            <BookSearching paginatedbooks={paginatedbooks}  filter={filter} books={books} bookname={booksearch} filter2={filter2} bookname2={booksearch2} filter3={filter3} bookname3={booksearch3} />
         </div>
 
         {/* Pagination Section */}
-        <div className="mt-8 flex justify-center">
+        {(filter==="" &&filter2===""&&filter3==="") ?(<div className="mt-8 flex justify-center">
             <div className="bg-white rounded-lg shadow-md border border-gray-200 p-2 flex items-center space-x-1">
                 
                 {/* Previous Button */}
@@ -116,6 +184,7 @@ return(<>
                 </button>
 
                 {/* Page Numbers */}
+              
                 <div className="flex items-center space-x-1 px-2">
                     <div className="flex items-center justify-center w-10 h-10 rounded-md bg-blue-600 text-white font-semibold shadow-sm">
                         {i}
@@ -144,14 +213,16 @@ return(<>
                 </button>
 
             </div>
-        </div>
+        </div>):null}
+        
 
         {/* Page Info */}
-        <div className="mt-4 text-center">
+        {(filter==="" && filter2==="" && filter3==="")?(<div className="mt-4 text-center">
             <p className="text-gray-600 text-sm">
                 Page {i} of {Math.ceil(books.length / 20)} | Showing up to 20 books per page
             </p>
-        </div>
+        </div>):null}
+        
 
     </div>
 
