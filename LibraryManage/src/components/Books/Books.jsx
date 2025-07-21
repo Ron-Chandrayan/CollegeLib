@@ -70,7 +70,7 @@ function Books() {
         const title=formData.title;
         const author=formData.author.trim().split(" ")[0];
         const publisher = formData.publisher;
-         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=600`, {
+         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
                   headers: {
                       'x-api-key': apikey // Use XAPIKEY header
                   }
@@ -84,6 +84,7 @@ function Books() {
                       // const info = data.students
                       // setName(info);
                       // // console.log(info[0].name)
+                      seti(1);
                       
                   })
                   }
@@ -109,7 +110,7 @@ return(<>
                         Browse and search through our extensive book collection
                     </p>
                     <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-blue-500 bg-opacity-20 border border-blue-400 border-opacity-30">
-                        <span className="text-blue-200 text-sm font-medium">{(!searchActive)?`Page ${i}` :null}</span>
+                        <span className="text-blue-200 text-sm font-medium">Page {i}</span>
                     </div>
                 </div>
                 <div className="hidden md:block">
@@ -202,7 +203,7 @@ return(<>
                     </h3>
                 </div>
                 <div className="p-6">
-                    {searchActive?(<Book books={filterbooks}/>):(<Book books={paginatedbooks}/>)}
+                    {searchActive?(<Book books={filterbooks.slice((i - 1) * 20, i * 20)}/>):(<Book books={paginatedbooks}/>)}
                 </div>
             </div>
 
@@ -256,7 +257,56 @@ return(<>
 
                     </div>
                 </div>
-            </div>):null}
+            </div>):(<div className="mt-10 flex justify-center">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-4 hover:shadow-xl transition-all duration-300">
+                    <div className="flex items-center space-x-2">
+                        
+                        {/* Previous Button */}
+                        <button 
+                          onClick={()=>{
+                              if(i>1){
+                                  seti(i-1);
+                              }
+                          }}
+                          disabled={i <= 1}
+                          className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none transition-all duration-300"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+                          </svg>
+                        </button>
+
+                        {/* Page Numbers */}
+                        <div className="flex items-center space-x-2 px-4">
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold shadow-lg text-lg">
+                                {i}
+                            </div>
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300 text-gray-600 hover:text-gray-800 font-semibold transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 shadow-sm hover:shadow-md">
+                                {i+1}
+                            </div>
+                            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-300 text-gray-600 hover:text-gray-800 font-semibold transition-all duration-300 cursor-pointer transform hover:-translate-y-0.5 shadow-sm hover:shadow-md">
+                                {i+2}
+                            </div>
+                        </div>
+
+                        {/* Next Button */}
+                        <button 
+                          onClick={()=>{
+                              if(i<(Math.ceil((filterbooks.length)/20))){
+                                  seti(i+1)
+                              }
+                          }}
+                          disabled={i >= Math.ceil((filterbooks.length)/20)}
+                          className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none transition-all duration-300"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                          </svg>
+                        </button>
+
+                    </div>
+                </div>
+            </div>)}
 
             {/* Page Info */}
             {(!searchActive)?(<div className="mt-6 text-center">
@@ -268,7 +318,16 @@ return(<>
                         Page {i} of {Math.ceil(books.length / 20)} | Showing up to 20 books per page
                     </p>
                 </div>
-            </div>):null}
+            </div>):(<div className="mt-6 text-center">
+                <div className="inline-flex items-center px-6 py-3 rounded-xl bg-white/60 backdrop-blur-sm border border-white/30 shadow-lg">
+                    <svg className="w-4 h-4 mr-2 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p className="text-gray-600 text-sm font-medium">
+                        Page {i} of {Math.ceil(filterbooks.length / 20)} | Showing up to 20 books per page
+                    </p>
+                </div>
+            </div>)}
 
         </div>
     </div>
