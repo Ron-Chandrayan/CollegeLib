@@ -6,6 +6,7 @@ const cron = require('node-cron');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
 const router = express.Router();
 require('dotenv').config();
@@ -20,8 +21,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // app.options('*', cors());
-
-app.use('/qps', express.static(path.join(__dirname, 'uploads/qps')));
+// S3 will handle file serving, no need for local static file serving
 
 
 
@@ -277,93 +277,125 @@ app.post('/api/save', async (req, res) => {
 
 
 //for pyqs
-app.get('/download/:sem/:subject/:year/:filename', (req, res) => {
+app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
   const { sem, subject, year, filename } = req.params;
-  const filePath = path.join(__dirname, 'uploads/qps', sem, subject, year, filename);
+  const key = `qps/${sem}/${subject}/${year}/${filename}`;
 
-  res.download(filePath, (err) => {
-    if (err) {
-      console.error('File not found:', err);
-      return res.status(404).send('File not found');
-    }
-  });
-});
-
-//for fetching pdf from backend
-app.get('/api/qps', (req, res) => {
-  const baseDir = path.join(__dirname, 'uploads/qps');
-  let result = [];
-
-  try{fs.readdirSync(baseDir).forEach(sem => {
-    const semPath = path.join(baseDir, sem);
-    fs.readdirSync(semPath).forEach(subject => {
-      const subjectPath = path.join(semPath, subject);
-      fs.readdirSync(subjectPath).forEach(year => {
-        const yearPath = path.join(subjectPath, year);
-        fs.readdirSync(yearPath).forEach(file => {
-          result.push({
-            sem,
-            subject,
-            year,
-            filename: file
-          });
-        });
+  try {
+    const result = await getSignedUrl(key);
+    if (result.success) {
+      res.json({ 
+        success: true, 
+        downloadUrl: result.url,
+        message: 'Download URL generated successfully'
       });
+    } else {
+      res.status(404).json({ 
+        success: false, 
+        message: 'File not found in S3',
+        error: result.error 
+      });
+    }
+  } catch (error) {
+    console.error('Error generating download URL:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error generating download URL',
+      error: error.message 
     });
-  });
-
-  res.json(result);}
-  catch(error){
-    console.error('Error reading files:', error);
-    res.status(500).json({ message: 'Error reading files', error });
   }
 });
-
-
-// //for uploading pdfs
-// const storage = multer({
-//   storage: multer.diskStorage({
-//     destination: (req, file, cb) => {
-//       // Use a short delay to wait for body parsing
-//       setTimeout(() => {
-//         const { sem, subject, year } = req.body;
-
-//         if (!sem || !subject || !year) {
-//           console.error('❌ Missing sem/subject/year in req.body');
-//           return cb(new Error('Missing form fields'));
-//         }
-
-//         const uploadPath = path.join(__dirname, 'uploads', 'qps', sem, subject, year);
-//         fs.mkdirSync(uploadPath, { recursive: true });
-//         cb(null, uploadPath);
-//       }, 0); // Let body parsing complete
-//     },
-//     filename: (req, file, cb) => {
-//       const { subject, year } = req.body;
-//       const timestamp = Date.now();
-//       const filename = `${subject}${year}_${timestamp}.pdf`;
-//       cb(null, filename);
-//     }
-//   })
-// });
-
-
-
-//  const upload = multer({ storage });
-
-// // Upload route
-// app.post('/api/qps/upload', upload.single('file'), (req, res) => {
-//   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-
-//   const { sem, subject, year } = req.body;
-//   const fileUrl = `/qps/${sem}/${subject}/${year}/${req.file.filename}`;
-
-//   return res.status(200).json({
-//     message: 'File uploaded successfully',
-//     fileUrl
-//   });
-// });
-
+// Fetch question papers from S3
+app.get('/api/qps', async (req, res) => {
+  try {
+    const result = await listS3Files();
+    if (result.success) {
+      // Format the response to match the expected structure
+      const formattedFiles = result.files.map(file => ({
+        sem: file.sem,
+        subject: file.subject,
+        year: file.year,
+        filename: file.filename,
+        size: file.size,
+        lastModified: file.lastModified
+      }));
+      
+      res.json(formattedFiles);
+    } else {
+      console.error('Error listing S3 files:', result.error);
+      res.status(500).json({ 
+        message: 'Error fetching files from S3', 
+        error: result.error 
+      });
+    }
+  } catch (error) {
+    console.error('Error in /api/qps:', error);
+    res.status(500).json({ 
+      message: 'Error fetching files', 
+      error: error.message 
+    });
+  }
+});
+// Configure multer for memory storage (for S3 upload)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed'), false);
+    }
+  }
+});
+// Upload route for S3
+app.post('/api/qps/upload', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'No file uploaded' 
+      });
+    }
+    const { sem, subject, year } = req.body;
+    if (!sem || !subject || !year) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Missing required fields: sem, subject, year' 
+      });
+    }
+    // Generate filename
+    const timestamp = Date.now();
+    const filename = `${subject}${year}_${timestamp}.pdf`;
+    const key = `qps/${sem}/${subject}/${year}/${filename}`;
+    // Upload to S3
+    const uploadResult = await uploadToS3(req.file, key);
+    if (uploadResult.success) {
+      return res.status(200).json({
+        success: true,
+        message: 'File uploaded successfully to S3',
+        fileUrl: uploadResult.url,
+        key: uploadResult.key,
+        filename: filename
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to upload file to S3',
+        error: uploadResult.error
+      });
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error uploading file',
+      error: error.message
+    });
+  }
+});
 
 
 const PORT = process.env.PORT || 5000;
