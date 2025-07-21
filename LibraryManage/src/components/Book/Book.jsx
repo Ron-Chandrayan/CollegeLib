@@ -12,6 +12,8 @@ function Book({books}) {
       {/* Books Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {books.map((element,index)=>{
+          const availability=element.Availability.trim().split(":")[1];
+          console.log(element.Availability.trim().split(":"));
           return(
             <div key={index} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden group">
               
@@ -57,11 +59,11 @@ function Book({books}) {
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Availability</p>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      element.Availability === 'Available' || element.Availability === 'available' || element.Availability === 'Yes' || element.Availability === 'yes' || element.Availability === '1' || element.Availability === 1
+                      availability === 'Items available for loan'
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {element.Availability}
+                      {availability === 'Items available for loan'?"Available in Library":"Not Available in Library"}
                     </span>
                   </div>
                 </div>
