@@ -1,7 +1,13 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { Users, BarChart3, Clock, BookOpen, UserCheck, Search, CreditCard, Zap, TrendingUp, Calendar, Activity } from 'lucide-react'
+import { useOutletContext } from 'react-router-dom'
 
 function About() {
+
+  const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome} = useOutletContext()
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-6xl mx-auto">

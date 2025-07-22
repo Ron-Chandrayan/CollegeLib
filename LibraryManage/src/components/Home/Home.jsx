@@ -19,6 +19,8 @@ function Home() {
     const[search,setsearch]=useState("");
     const[filter,setFilter]= useState("");
     const [isClosed, setIsClosed] = useState(false);
+    const [isAuthLoading, setIsAuthLoading] = useState(true);
+
     
 
      const [formData, setFormData] = useState({
@@ -26,6 +28,46 @@ function Home() {
     PRN: '',
     password: ''
   });
+
+            useEffect(() => {
+  const token = localStorage.getItem('token');
+
+              if (!token) {
+                setIsAuthLoading(false); // no token, done loading
+                return;
+              }
+
+              fetch('http://localhost:5000/validate', {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
+              })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.valid) {
+                    setSignup(true);
+                    setLogin(true);
+                    setwelcome(data.name);
+                    seterr(false);
+                  } else {
+                    localStorage.removeItem('token');
+                    setSignup(false);
+                    setLogin(false);
+                  }
+                })
+                .catch(err => {
+                  console.error('Token validation error:', err);
+                  localStorage.removeItem('token');
+                  setSignup(false);
+                  setLogin(false);
+                })
+                .finally(() => {
+                  setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
+                });
+            }, []);
+
+
 
 
    useEffect(()=>{
@@ -87,28 +129,31 @@ function Home() {
 
           const data = await res.json();
 
-          if(res.status===200){
+                    if (res.status === 200 && data.success) {
             console.log('✅ Form successfully submitted!');
-            console.log('📤 Submitted Data:', formData);       // This is your submitted input
-            console.log('📥 Server Response:', data);  
+            console.log('📤 Submitted Data:', formData);
+            console.log('📥 Server Response:', data);
+            setFormData({
+               name: '',
+                PRN: '',
+              password: ''
+            })
+
+            // Save JWT token to localStorage
+            localStorage.setItem('token', data.token);
+
+            // Save user name from response to welcome state
+            setwelcome(data.name);
+
+            // Set signup/login state true
             setSignup(true);
-
-           // seterr(true);
-          }else{
-
-            if(data.message==="User exists"){
-            console.log("User already exists")
-           // alert("wrong password");
-            setSignup(false);
-            seterr(true)
-            }else if(data.message==="wrong password")
-            
-          {
-             console.log("Wrong password")
-           // alert("wrong password");
-            setSignup(false);
-            seterr(true);
-          }
+            setLogin(true);
+            seterr(false);
+          } else {
+            if (data.message === "User exists" || data.message === "wrong password") {
+              setSignup(false);
+              seterr(true);
+            }
           }
 
       
@@ -191,6 +236,36 @@ function Home() {
     //         return () => clearInterval(interval);
 
     // },[]);
+          if (isAuthLoading) {
+        return (
+          <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="flex flex-col items-center space-y-4">
+        {/* Main spinner */}
+        <div className="relative">
+          {/* Outer ring */}
+          <div className="w-16 h-16 border-4 border-slate-200 rounded-full animate-spin">
+            <div className="absolute inset-0 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
+          </div>
+          
+          {/* Inner pulse dot */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+        
+        {/* Loading text with animated dots */}
+        <div className="flex items-center space-x-1">
+          <span className="text-slate-600 font-medium text-lg">Loading</span>
+          <div className="flex space-x-1">
+            <div className="w-1 h-1 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+            <div className="w-1 h-1 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+            <div className="w-1 h-1 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          </div>
+        </div>
+      </div>
+    </div>
+        );
+      }
 
     if(signup){
 

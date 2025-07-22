@@ -200,7 +200,7 @@ function Layout() {
 
   return (
     <div>
-       <Header signup={signup} setSignup={setSignup}/>
+       <Header signup={signup} setSignup={setSignup} login={login} setLogin={setLogin}/>
        <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks}} />
        <Footer/>
     </div>

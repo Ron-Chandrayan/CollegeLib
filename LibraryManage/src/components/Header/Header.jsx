@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 //import { useOutletContext } from 'react-router-dom'; // only needed if you use context
 
-function Header({ signup, setSignup }) {
+function Header({ signup, setSignup , login,setLogin}) {
   // Option 1: If you want dynamic signup context
 
-
+const handleChange=(e)=>{
+  e.preventDefault();
+  localStorage.removeItem("token");
+  setSignup(false);
+  setLogin(false);
+}
   
 
   return (
@@ -20,7 +25,7 @@ function Header({ signup, setSignup }) {
             <div className='flex items-center space-x-1'>
               <div>
                 <NavLink
-                  to="/"
+                  to="/about"
                   className={({ isActive }) =>
                     `${isActive
                       ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"
@@ -36,7 +41,7 @@ function Header({ signup, setSignup }) {
                 <>
                   <div>
                     <NavLink
-                      to="/home"
+                      to="/"
                       className={({ isActive }) =>
                         `${isActive
                           ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"
@@ -86,11 +91,19 @@ function Header({ signup, setSignup }) {
                       PYQS
                     </NavLink>
                   </div>
+                  <div>
+                    <button 
+                      onClick={handleChange} 
+                      className="text-slate-300 hover:text-white hover:bg-slate-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
+                    >
+                      Log Out
+                    </button>
+                  </div>
                 </>
               ) : (
                 <div>
                     <NavLink
-                      to="/home"
+                      to="/"
                       className={({ isActive }) =>
                         `${isActive
                           ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"

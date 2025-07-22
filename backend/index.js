@@ -6,6 +6,8 @@ const cron = require('node-cron');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const jwt = require('jsonwebtoken');
+
 
 const router = express.Router();
 require('dotenv').config();
@@ -20,6 +22,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // app.options('*', cors());
+const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
+
 
 app.use('/qps', express.static(path.join(__dirname, 'uploads/qps')));
 
@@ -243,37 +247,71 @@ app.get('/fetchusers',async(req,res)=>{
 })
 
 app.post('/api/save', async (req, res) => {
+  const { name, PRN, password } = req.body;
 
-  const { name,PRN,password } = req.body;
+  if (name) {
+    // Signup
+    const userExists = await Users.findOne({ PRN });
 
-  console.log('✅ Data received from frontend:');
-  console.log('Name:', name);
-  console.log('PRN:', PRN);
-  console.log('Password:', password);
-
-  // You can store to MongoDB here (if needed)
-  if(name){
-    console.log("You signed Up");
-    const tocheck=await Users.find({PRN: PRN});
-    if(tocheck[0]){
-      res.status(401).json({success:false , message: "User exists"});
-    }else{ 
-    const entry =  new Users({name,PRN,password});
-    await entry.save();
-    res.status(200).json({success:true , message: "SignUp Successful"});}
-   
-  }else{
-    console.log("you logged in")
-    const tocheck = await Users.find({PRN: PRN});
-    if(tocheck[0].password===password){
-      res.status(200).json({success:true , message: "SignUp Successful"});
-    }else{
-      console.log("not ok")
-      res.status(401).json({success:false , message: "wrong password"});
+    if (userExists) {
+      return res.status(401).json({ success: false, message: "User exists" });
     }
-  }
 
+    const newUser = new Users({ name, PRN, password });
+    await newUser.save();
+
+    const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: "1h" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Signup successful",
+      token,
+      name
+    });
+  } else {
+    // Login
+    const user = await Users.findOne({ PRN });
+
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ success: false, message: "Wrong password" });
+    }
+
+    const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: "1h" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      name: user.name
+    });
+  }
 });
+
+
+app.get('/validate', async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) return res.status(401).json({ valid: false });
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await Users.findOne({ PRN: decoded.PRN });
+
+    if (!user) return res.status(401).json({ valid: false });
+
+    res.json({ valid: true, name: user.name });
+  } catch (err) {
+    res.status(401).json({ valid: false });
+  }
+});
+
+
 
 
 //for pyqs

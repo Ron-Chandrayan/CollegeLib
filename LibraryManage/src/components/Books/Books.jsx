@@ -7,13 +7,7 @@ function Books() {
     const{books, setBooks}=useOutletContext()
     const[i,seti]=useState(1);
     const[paginatedbooks,setpaginatedbooks]=useState([])
-    const[booksearch,setbooksearch]=useState("");
-    const[filter,setFilter]=useState("");
-    const[filter2,setFilter2]= useState("");
-    const[booksearch2,setbooksearch2]=useState("");
-    const[filter3,setFilter3]= useState("");
-    const[booksearch3,setbooksearch3]=useState("");
-    const[disable,setdisable]=useState(true);
+
       const [formData, setformData] = useState({
         title: '',
         author: '',
