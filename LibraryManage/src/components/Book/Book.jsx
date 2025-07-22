@@ -1,6 +1,10 @@
 import React from 'react'
 
 function Book({books}) {
+      function extractCopies(text) {
+      const match = text.match(/\((\d+)\)/);
+      return match ? parseInt(match[1]) : 0; // returns 0 if no match found
+    }
   return (
     <div className="p-6">
       {/* Header */}
@@ -13,7 +17,8 @@ function Book({books}) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {books.map((element,index)=>{
           const availability=element.Availability.trim().split(":")[1];
-          console.log(element.Availability.trim().split(":"));
+          const copies=extractCopies(element.Availability.trim().split(":")[2]);
+          //console.log(copies);
           return(
             <div key={index} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden group">
               
@@ -64,6 +69,27 @@ function Book({books}) {
                         : 'bg-red-100 text-red-800'
                     }`}>
                       {availability === 'Items available for loan'?"Available in Library":"Not Available in Library"}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Copies Available */}
+                <div className="flex items-center">
+                  <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-lg mr-3">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                      <circle cx="18" cy="6" r="3" fill="currentColor"/>
+                      <text x="18" y="7" textAnchor="middle" fontSize="8" fill="white" fontWeight="bold">3</text>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Copies Available:</p>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      availability === 'Items available for loan'
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {copies}
                     </span>
                   </div>
                 </div>
