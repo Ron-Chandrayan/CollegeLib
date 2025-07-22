@@ -22,8 +22,8 @@ function Layout() {
       useEffect(()=>{
       
            const  fetchData=()=>{   
-             const apiKey = '4rnWNLFd3I5sh4jMiP3BKnhOnxtPJ2sPcQRT4tplQK0';                  //for sies data
-              const baseUrl = 'https://libman.ethiccode.in.net/';  //for home page
+             const apiKey = import.meta.env.VITE_SECRET_KEY;                //for sies data
+              const baseUrl = import.meta.env.VITE_API_URL;  //for home page
                   
               try{fetch(`${baseUrl}/api/list_all`, {
                   headers: {
@@ -66,50 +66,6 @@ function Layout() {
                         settotalfootfall(totfootfall);
                       })
 
-      //               fetch('/api/?endpoint=list_all', {
-      //               headers: {
-      //                 'X-API-KEY': 'ahambrahmasmi'
-      //               }
-      //             })
-      //               .then(res => res.json())
-      //               .then(data => {
-      //                 //console.log(data);
-      //                 const info = data.data.students;
-      //                 console.log(info);
-      //                 setName(info);
-
-      //               })
-      //               .catch(err => console.error(err));
-
-                  
-      //               fetch('/api/?endpoint=todays_footfall', {
-      //               headers: {
-      //                 'X-API-KEY': 'ahambrahmasmi'
-      //               }
-      //             })
-      //               .then(res => res.json())
-      //               .then(data => {
-      //                 //console.log(data.data.todays_footfall);
-      //                 const info = data.data.todays_footfall;
-      //                 settodayfootfall(info);
-
-      //               })
-      //               .catch(err => console.error(err));
-
-      //               fetch('/api/?endpoint=total_footfall', {
-      //               headers: {
-      //                 'X-API-KEY': 'ahambrahmasmi'
-      //               }
-      //             })
-      //               .then(res => res.json())
-      //               .then(data => {console.log(data.data.total_footfall);
-      //                 const info = data.data.total_footfall;
-      //                 settotalfootfall(info);
-
-      //               })
-      //               .catch(err => console.error(err));
-
-
                     }
                     fetchData()
       
@@ -149,10 +105,10 @@ function Layout() {
 
         useEffect(()=>{
           const fetchData =async()=>{
-            const BASEURL = 'https://libman.ethiccode.in/api/index.php';
-            const apikey = 'ahambrahmasmi';
+            const BASEURL = import.meta.env.VITE_API_URL2;;
+            const apikey = import.meta.env.VITE_SECRET_KEY2;
 
-            try{fetch(`/api/api/index.php?endpoint=book_all&limit=10000`, {
+            try{fetch(`${BASEURL}`, {
                   headers: {
                       'x-api-key': apikey // Use XAPIKEY header
                   }
@@ -177,26 +133,7 @@ function Layout() {
           
         },[])
 
-// useEffect(() => {
-//   const getData = async () => {
-//     try {
-//       const response = await fetch(`http://localhost:5000/fetchtime`);
-//       const data = await response.json();
-//       //console.log(data); // check what you receive
-//       setStudents(data);
-//       console.log(Students);
-//       setloading(false);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
 
-//   getData(); // fetch immediately on mount
-
-//   const interval = setInterval(getData, 5000); // fetch every 5 sec
-
-//   return () => clearInterval(interval); // clear on unmount
-// }, []);
 
   return (
     <div>

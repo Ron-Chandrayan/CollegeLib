@@ -16,7 +16,8 @@ function  Questionpaper() {
   useEffect( ()=>{
       async function fetchData() {
     try {
-      const response = await fetch('http://localhost:5000/api/qps');
+      const URL = import.meta.env.VITE_API_URL6;
+      const response = await fetch(`${URL}`);
       const data = await response.json();
       console.log(data);
       setqp(data);

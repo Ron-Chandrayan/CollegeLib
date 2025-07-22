@@ -30,14 +30,15 @@ function Home() {
   });
 
             useEffect(() => {
-  const token = localStorage.getItem('token');
+            const URL = import.meta.env.VITE_API_URL3;
+            const token = localStorage.getItem('token');
 
               if (!token) {
                 setIsAuthLoading(false); // no token, done loading
                 return;
               }
 
-              fetch('http://localhost:5000/validate', {
+              fetch(`${URL}`, {
                 method: 'GET',
                 headers: {
                   'Authorization': `Bearer ${token}`,
@@ -72,7 +73,9 @@ function Home() {
 
    useEffect(()=>{
               const getData=async ()=>{
-             try{await fetch(`http://localhost:5000/fetchusers`) //for stats page
+             try{
+              const URL = import.meta.env.VITE_API_URL4;
+              await fetch(`${URL}`) //for stats page
                   .then(response => response.json())
                   .then(data => {
                    
@@ -117,7 +120,8 @@ function Home() {
         e.preventDefault(); // stop form reload
 
         try {
-          const res = await fetch('http://localhost:5000/api/save', {
+          const URL = import.meta.env.VITE_API_URL5;
+          const res = await fetch(`${URL}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -183,59 +187,7 @@ function Home() {
   }, []);
 
 
-    // useEffect(()=>{
-
-    //  const  fetchData=()=>{    const apiKey = 'e01131b313cc204b65f35c149650ae9569b0f0cf1dc614bafddf3edc62b2298b';
-    //     const baseUrl = 'https://api.ethiccode.in.net';
-            
-    //     try{fetch(`${baseUrl}/api/list_all`, {
-    //         headers: {
-    //             'XAPIKEY': apiKey // Use XAPIKEY header
-    //         }
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {console.log(data.students)
-    //             seterr(false)
-    //             const info = data.students
-    //              setName(info);
-    //             // console.log(info[0].name)
-                
-    //         })
-    //         }
-    //         catch(error){
-    //             seterr(true);
-    //             console.error(error);
-    //         }
-
-    //         fetch(`${baseUrl}/api/todays_footfall`, {
-    //             headers: {
-    //                 'XAPIKEY': apiKey // Use XAPIKEY header
-    //             }
-    //             })
-    //             .then(response => response.json())
-    //             .then(data => {console.log(data)
-    //               const curfootfall = Number(data.todays_footfall);
-    //               settodayfootfall(curfootfall);
-    //             });
-            
-    //         fetch(`${baseUrl}/api/total_footfall`, {
-    //             headers: {
-    //                 'XAPIKEY': apiKey // Use XAPIKEY header
-    //             }
-    //             })
-    //             .then(response => response.json())
-    //             .then(data => {console.log(data)
-    //               const totfootfall = Number(data.total_footfall);
-    //               settotalfootfall(totfootfall);
-    //             })
-    //           }
-    //           fetchData()
-
-    //        const interval= setInterval( fetchData , 10000);
-
-    //         return () => clearInterval(interval);
-
-    // },[]);
+  
           if (isAuthLoading) {
         return (
           <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">

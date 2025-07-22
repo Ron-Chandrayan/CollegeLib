@@ -21,7 +21,7 @@ function Books() {
     useEffect(()=>{
               const fetchData =async()=>{
                 const BASEURL = 'https://libman.ethiccode.in/api/index.php';
-                const apikey = 'ahambrahmasmi';
+                const apikey = import.meta.env.VITE_SECRET_KEY2;
     
                 try{fetch(`/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
                       headers: {
@@ -60,7 +60,7 @@ function Books() {
         e.preventDefault();
         setsearchActive(true);
         console.log(formData);
-        const apikey = 'ahambrahmasmi';
+        const apikey = import.meta.env.VITE_SECRET_KEY2;
         const title=formData.title;
         const author=formData.author.trim().split(" ")[0];
         const publisher = formData.publisher;
