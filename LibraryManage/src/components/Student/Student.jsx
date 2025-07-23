@@ -93,7 +93,7 @@ function Student({name , Students}) {
           ×
         </button>
                   */}
-                  <CountUpFromTime entryTime={entryTime} />
+                  {/* <CountUpFromTime entryTime={entryTime} /> */}
                 </div>
               );
             })}

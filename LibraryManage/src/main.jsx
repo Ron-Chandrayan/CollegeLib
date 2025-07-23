@@ -12,6 +12,7 @@ import Header from './components/Header/Header.jsx'
 import StatsWrapper from './components/StatsWrapper/StatsWrapper.jsx'
 import BooksWrapper from './components/BooksWrapper/BooksWrapper.jsx'
 import QuestionWrapper from './components/QuestionWrapper/QuestionWrapper.jsx'
+import Library from './components/Library/Library.jsx'
 
 
 const router = createBrowserRouter([
@@ -36,6 +37,9 @@ const router = createBrowserRouter([
       },{
         path: 'questionpaper',
         element: <QuestionWrapper /> // only this is protected
+      },{
+        path: 'library',
+        element: <Library />
       }
     ]
   }
