@@ -1,27 +1,33 @@
 // backend/index.js
+// Load environment variables as early as possible
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const cors = require('cors');
 const cron = require('node-cron');
 const path = require('path');
-const fs = require('fs');
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
-// load environment vars
-require('dotenv').config();
-
-// ensure JWT secret is set
+// Ensure JWT secret is set
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
   console.error('❌ Missing JWT_SECRET in .env');
   process.exit(1);
 }
 
-// models
-const dailyfootfall = require('./models/dailyfootfall');
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
+
+// Models\const dailyfootfall = require('./models/dailyfootfall');
 const hourlyfootfall = require('./models/hourlyfootfall');
 const members = require('./models/members');
 const lifetime = require('./models/lifetime');
@@ -30,14 +36,6 @@ const Users = require('./models/Users');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
-
 
 cron.schedule(('0 21 * * *'),async ()=>{
   try {
@@ -189,12 +187,16 @@ try {
 
 
 
+///////////////////////////////////////
+// API routes prefixed with /api to avoid conflicts
+///////////////////////////////////////
+const api = express.Router();
 
-})
-app.get('/', (req, res) => res.send('Backend is running'));
+// health check
+api.get('/health', (req, res) => res.send('Backend is running'));
 
 // data routes
-app.get('/fetch', async (req, res) => {
+api.get('/fetch', async (req, res) => {
   try {
     const all = await members.find().sort({ createdAt: 1 });
     res.json(all);
@@ -203,7 +205,7 @@ app.get('/fetch', async (req, res) => {
   }
 });
 
-app.get('/fetchtime', async (req, res) => {
+api.get('/fetchtime', async (req, res) => {
   try {
     const times = await lifetime.find().sort({ createdAt: -1 });
     res.json(times);
@@ -212,7 +214,7 @@ app.get('/fetchtime', async (req, res) => {
   }
 });
 
-app.get('/fetchusers', async (req, res) => {
+api.get('/fetchusers', async (req, res) => {
   try {
     const users = await Users.find();
     res.json(users);
@@ -221,12 +223,11 @@ app.get('/fetchusers', async (req, res) => {
   }
 });
 
-// auth: signup/login
-app.post('/api/save', async (req, res) => {
+// auth
+api.post('/save', async (req, res) => {
   const { name, PRN, password } = req.body;
   if (name) {
-    if (await Users.findOne({ PRN }))
-      return res.status(401).json({ success: false, message: 'User exists' });
+    if (await Users.findOne({ PRN })) return res.status(401).json({ success: false, message: 'User exists' });
     const user = new Users({ name, PRN, password });
     await user.save();
     const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
@@ -234,18 +235,16 @@ app.post('/api/save', async (req, res) => {
   } else {
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
-    if (user.password !== password)
-      return res.status(401).json({ success: false, message: 'Wrong password' });
+    if (user.password !== password) return res.status(401).json({ success: false, message: 'Wrong password' });
     const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
     return res.json({ success: true, message: 'Login successful', token, name: user.name });
   }
 });
 
-// token validation
-app.get('/validate', async (req, res) => {
-  const h = req.headers.authorization;
-  if (!h) return res.status(401).json({ valid: false });
-  const token = h.split(' ')[1];
+api.get('/validate', async (req, res) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ valid: false });
+  const token = auth.split(' ')[1];
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = await Users.findOne({ PRN: decoded.PRN });
@@ -256,63 +255,62 @@ app.get('/validate', async (req, res) => {
   }
 });
 
-// S3 PDF upload
+// S3 PDF upload routes
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) =>
-    file.mimetype === 'application/pdf'
-      ? cb(null, true)
-      : cb(new Error('Only PDF files are allowed'), false)
+    file.mimetype === 'application/pdf' ? cb(null, true) : cb(new Error('Only PDF files are allowed'), false),
 });
 
-app.post('/api/qps/upload', upload.single('file'), async (req, res) => {
+api.post('/qps/upload', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
     const { sem, subject, year } = req.body;
-    if (!sem || !subject || !year)
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    if (!sem || !subject || !year) return res.status(400).json({ success: false, message: 'Missing fields' });
     const filename = `${subject}${year}_${Date.now()}.pdf`;
     const key = `qps/${sem}/${subject}/${year}/${filename}`;
     const result = await uploadToS3(req.file, key);
-    if (result.success)
-      return res.json({ success: true, message: 'Uploaded', fileUrl: result.url, key, filename });
-    else
-      return res.status(500).json({ success: false, message: 'Upload failed', error: result.error });
+    if (result.success) return res.json({ success: true, fileUrl: result.url, key, filename });
+    throw new Error(result.error);
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Upload error', error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
-app.get('/api/qps', async (req, res) => {
+api.get('/qps', async (req, res) => {
   try {
     const { success, files, error } = await listS3Files();
     if (!success) throw new Error(error);
-    res.json(
-      files.map(f => ({ sem: f.sem, subject: f.subject, year: f.year, filename: f.filename, size: f.size, lastModified: f.lastModified }))
-    );
+    res.json(files.map(f => ({ sem: f.sem, subject: f.subject, year: f.year, filename: f.filename, size: f.size, lastModified: f.lastModified })));
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching files', error: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
-app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
-  const { sem, subject, year, filename } = req.params;
+api.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
   try {
-    const { success, url, error } = await getSignedUrl(`qps/${sem}/${subject}/${year}/${filename}`);
+    const key = `qps/${req.params.sem}/${req.params.subject}/${req.params.year}/${req.params.filename}`;
+    const { success, url, error } = await getSignedUrl(key);
     if (success) return res.json({ success: true, downloadUrl: url });
-    else return res.status(404).json({ success: false, message: 'File not found', error });
+    throw new Error(error);
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Error generating download URL', error: err.message });
+    res.status(404).json({ success: false, message: err.message });
   }
 });
 
-// static React build for client-side routing
-app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
+// Mount API under /api
+app.use('/api', api);
 
-// catch-all fallback to serve React app
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
+///////////////////////////////////////
+// Static serving of React build
+///////////////////////////////////////
+const clientBuildPath = path.join(__dirname, '../LibraryManage/dist');
+app.use(express.static(clientBuildPath));
+
+// Only handle GET requests that didn't match API or static
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(clientBuildPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
