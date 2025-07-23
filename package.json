@@ -1,0 +1,22 @@
+{
+    "name": "library-heroku",
+    "version": "1.0.0",
+    "main": "backend/index.js",
+    "scripts": {
+      "start": "node backend/index.js",
+      "heroku-postbuild": "cd LibraryManage && npm install && npm run build"
+    },
+    "dependencies": {
+      "aws-sdk": "^2.1692.0",
+    "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.2",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.0",
+    "nodemon": "^3.1.10"
+    
+    }
+  }
