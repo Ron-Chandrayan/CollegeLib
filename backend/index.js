@@ -29,3 +29,8 @@ app.get('/fetch', async (req, res) => {
     res.status(500).json({ error: "student data not found" });
   }
 });
+
+app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
+});
