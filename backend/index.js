@@ -38,12 +38,159 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// CRON job stubs
-// cron.schedule('0 21 * * *', async () => { /* daily footfall */ });
-// cron.schedule('0 6-20 * * *', async () => { /* hourly footfall */ });
-// cron.schedule('*/10 * * * * *', async () => { /* members sync */ });
 
-// basic health
+cron.schedule(('0 21 * * *'),async ()=>{
+  try {
+      const response = await axios.get(process.env.API_URL, { //daily footfall
+    headers: {
+      'XApiKey': process.env.API_KEY
+    }
+  });
+
+  const count = response.data.todays_footfall;
+
+  const entry = new dailyfootfall({ count }); //creating the document to be stored according to the footfall scema
+  await entry.save();// adding the documents to the db
+  console.log("data saved");
+   
+  } catch (error) {
+       console.error('CRON-error', error.message);
+      
+  }
+})
+
+cron.schedule(('0 6-20 * * *'),async ()=>{
+  try {
+      const response = await axios.get(process.env.API_URL, { //hourly footfall
+    headers: {
+      'XApiKey': process.env.API_KEY
+    }
+  });
+
+  const count = response.data.todays_footfall;
+
+  const entry = new hourlyfootfall({ count }); //creating the document to be stored according to the footfall scema
+  await entry.save();// adding the documents to the db
+  console.log("data saved");
+   
+  } catch (error) {
+       console.error('CRON-error', error.message);
+      
+  }
+})
+
+
+let isRunning = false
+
+cron.schedule('*/10 * * * * *',async ()=>{
+
+ if (isRunning) {
+  console.log("Previous job still running, skipping this run.");
+  return;
+}
+isRunning = true;
+
+try {
+      const response = await axios.get(process.env.API_URLZ, { 
+    headers: {
+      'XApiKey': process.env.API_KEY
+    }
+  })
+ // console.log(response.data.students);
+  const students = response.data.students || [];
+
+ const latest  = await members.find();
+
+ // console.log(latest);
+//  console.log(latest.length);
+//  console.log(students.length);
+
+ 
+
+  //members.insertMany(students).then(()=>console.log("student inserted")).catch((err)=>console.log("error"))
+
+  // const PRN = response.data.data.rollNo;
+  // const fullname  = response.data.data.name;
+  // const purpose = response.data.data.purpose;
+
+          if (latest.length === 0) {
+        console.log("Initial population — inserting all students.");
+        await members.insertMany(students);
+        await lifetime.insertMany(students); // createdAt will be auto-generated
+        return;
+      }
+
+      const normalizePRN = prn => String(prn).trim();
+
+      const oldPRNs = new Set(latest.map(user => normalizePRN(user.PRN)));
+      const newPRNs = new Set(students.map(user => normalizePRN(user.PRN)));
+
+      const came = students.filter(user => !oldPRNs.has(normalizePRN(user.PRN)));
+      const left = latest.filter(user => !newPRNs.has(normalizePRN(user.PRN)));
+
+      // ✅ Debounce: skip logging same student if they came within last 30s
+      const filteredCame = [];
+
+      for (const s of came) {
+        const lastVisit = await lifetime.findOne(
+          { PRN: s.PRN },
+          {},
+          { sort: { createdAt: -1 } }
+        );
+
+        const now = Date.now();
+        const lastTime = lastVisit ? new Date(lastVisit.createdAt).getTime() : 0;
+
+        if (!lastVisit || now - lastTime >= 60000) {
+          filteredCame.push(s); // Don't need to add createdAt manually
+        } else {
+          console.log(`⏱️ Skipped duplicate visit by ${s.name} within 30s`);
+        }
+      }
+
+      if (came.length === 0 && left.length === 0) {
+        console.log("✅ working good — no change");
+      } else {
+        if (filteredCame.length > 0) {
+          console.log(
+            `➕ ${filteredCame.length} student(s) came:`,
+            filteredCame.map(s => s.name)
+          );
+          await lifetime.insertMany(filteredCame);
+        }
+        if (left.length > 0) {
+          console.log(`➖ ${left.length} student(s) left:`, left.map(s => s.name));
+        }
+      }
+
+      // ✅ Upsert current members
+      await Promise.all(
+        students.map(s =>
+          members.updateOne(
+            { PRN: s.PRN },
+            { $set: s },
+            { upsert: true }
+          )
+        )
+      );
+
+      // ✅ Remove students no longer present
+      await members.deleteMany({
+        PRN: { $nin: students.map(s => s.PRN) }
+      });
+
+
+
+}catch(error){
+  console.log("no data found");
+}finally {
+  isRunning = false;
+}
+
+
+
+
+})
 app.get('/', (req, res) => res.send('Backend is running'));
 
 // data routes
@@ -149,20 +296,22 @@ app.get('/api/qps', async (req, res) => {
   }
 });
 
-// app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
-//   const { sem, subject, year, filename } = req.params;
-//   try {
-//     const { success, url, error } = await getSignedUrl(`qps/${sem}/${subject}/${year}/${filename}`);
-//     if (success) return res.json({ success: true, downloadUrl: url });
-//     else return res.status(404).json({ success: false, message: 'File not found', error });
-//   } catch (err) {
-//     res.status(500).json({ success: false, message: 'Error generating download URL', error: err.message });
-//   }
-// });
+app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
+  const { sem, subject, year, filename } = req.params;
+  try {
+    const { success, url, error } = await getSignedUrl(`qps/${sem}/${subject}/${year}/${filename}`);
+    if (success) return res.json({ success: true, downloadUrl: url });
+    else return res.status(404).json({ success: false, message: 'File not found', error });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Error generating download URL', error: err.message });
+  }
+});
 
-// static React build + catch-all for client-side routing
+// static React build for client-side routing
 app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
-app.get('/*', (req, res) => {
+
+// catch-all fallback to serve React app
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
 });
 
