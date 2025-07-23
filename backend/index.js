@@ -8,7 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
-const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('../s3Utils');
+const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
 // load environment vars
 require('dotenv').config();
