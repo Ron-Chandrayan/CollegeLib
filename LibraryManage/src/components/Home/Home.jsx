@@ -281,7 +281,12 @@ function Home() {
            <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
              <p className="text-sm font-medium text-slate-600 mb-2">Status</p>
             {isClosed?<p className="text-3xl font-bold text-red-600" >Library Closed</p>:<p className="text-3xl font-bold text-green-600" >Library Open</p>}</div>
-        </div>
+           </div>
+            <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+            <p className="text-sm font-medium text-slate-600 mb-2">Buzz</p>
+            <p className="text-3xl font-bold text-blue-600">{(name.length)>30?"Busy":"Not Busy"}</p>
+          </div>
+           
 
         {/* Search Section */}
       <div className='flex flex-wrap m-3'>
