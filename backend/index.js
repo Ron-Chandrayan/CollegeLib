@@ -149,16 +149,16 @@ app.get('/api/qps', async (req, res) => {
   }
 });
 
-app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
-  const { sem, subject, year, filename } = req.params;
-  try {
-    const { success, url, error } = await getSignedUrl(`qps/${sem}/${subject}/${year}/${filename}`);
-    if (success) return res.json({ success: true, downloadUrl: url });
-    else return res.status(404).json({ success: false, message: 'File not found', error });
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Error generating download URL', error: err.message });
-  }
-});
+// app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
+//   const { sem, subject, year, filename } = req.params;
+//   try {
+//     const { success, url, error } = await getSignedUrl(`qps/${sem}/${subject}/${year}/${filename}`);
+//     if (success) return res.json({ success: true, downloadUrl: url });
+//     else return res.status(404).json({ success: false, message: 'File not found', error });
+//   } catch (err) {
+//     res.status(500).json({ success: false, message: 'Error generating download URL', error: err.message });
+//   }
+// });
 
 // static React build + catch-all for client-side routing
 app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
