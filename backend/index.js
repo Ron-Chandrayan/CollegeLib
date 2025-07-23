@@ -307,11 +307,13 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
   }
 });
 
-// static React build for client-side routing
+// Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
 
-// catch-all fallback to serve React app
-app.use((req, res) => {
+// All API routes go above this line!
+
+// Catch-all: send back React's index.html for any GET route not handled above
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
 });
 
