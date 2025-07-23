@@ -21,12 +21,6 @@ const Users = require('./models/Users');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
-});
-
-const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -235,6 +229,13 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error generating download URL', error: error.message });
   }
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
