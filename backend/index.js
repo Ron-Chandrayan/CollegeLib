@@ -30,74 +30,74 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // CRON jobs
-cron.schedule('0 21 * * *', async () => {
-  try {
-    const response = await axios.get(process.env.API_URL, {
-      headers: { 'XApiKey': process.env.API_KEY }
-    });
-    const count = response.data.todays_footfall;
-    const entry = new dailyfootfall({ count });
-    await entry.save();
-    console.log("daily footfall saved");
-  } catch (error) {
-    console.error('CRON-error', error.message);
-  }
-});
+// cron.schedule('0 21 * * *', async () => {
+//   try {
+//     const response = await axios.get(process.env.API_URL, {
+//       headers: { 'XApiKey': process.env.API_KEY }
+//     });
+//     const count = response.data.todays_footfall;
+//     const entry = new dailyfootfall({ count });
+//     await entry.save();
+//     console.log("daily footfall saved");
+//   } catch (error) {
+//     console.error('CRON-error', error.message);
+//   }
+// });
 
-cron.schedule('0 6-20 * * *', async () => {
-  try {
-    const response = await axios.get(process.env.API_URL, {
-      headers: { 'XApiKey': process.env.API_KEY }
-    });
-    const count = response.data.todays_footfall;
-    const entry = new hourlyfootfall({ count });
-    await entry.save();
-    console.log("hourly footfall saved");
-  } catch (error) {
-    console.error('CRON-error', error.message);
-  }
-});
+// cron.schedule('0 6-20 * * *', async () => {
+//   try {
+//     const response = await axios.get(process.env.API_URL, {
+//       headers: { 'XApiKey': process.env.API_KEY }
+//     });
+//     const count = response.data.todays_footfall;
+//     const entry = new hourlyfootfall({ count });
+//     await entry.save();
+//     console.log("hourly footfall saved");
+//   } catch (error) {
+//     console.error('CRON-error', error.message);
+//   }
+// });
 
-let isRunning = false;
-cron.schedule('*/10 * * * * *', async () => {
-  if (isRunning) return;
-  isRunning = true;
-  try {
-    const response = await axios.get(process.env.API_URLZ, {
-      headers: { 'XApiKey': process.env.API_KEY }
-    });
-    const students = response.data.students || [];
-    const latest = await members.find();
+// let isRunning = false;
+// cron.schedule('*/10 * * * * *', async () => {
+//   if (isRunning) return;
+//   isRunning = true;
+//   try {
+//     const response = await axios.get(process.env.API_URLZ, {
+//       headers: { 'XApiKey': process.env.API_KEY }
+//     });
+//     const students = response.data.students || [];
+//     const latest = await members.find();
 
-    const normalizePRN = prn => String(prn).trim();
-    const oldPRNs = new Set(latest.map(user => normalizePRN(user.PRN)));
-    const newPRNs = new Set(students.map(user => normalizePRN(user.PRN)));
+//     const normalizePRN = prn => String(prn).trim();
+//     const oldPRNs = new Set(latest.map(user => normalizePRN(user.PRN)));
+//     const newPRNs = new Set(students.map(user => normalizePRN(user.PRN)));
 
-    const came = students.filter(user => !oldPRNs.has(normalizePRN(user.PRN)));
-    const left = latest.filter(user => !newPRNs.has(normalizePRN(user.PRN)));
+//     const came = students.filter(user => !oldPRNs.has(normalizePRN(user.PRN)));
+//     const left = latest.filter(user => !newPRNs.has(normalizePRN(user.PRN)));
 
-    const filteredCame = [];
-    for (const s of came) {
-      const lastVisit = await lifetime.findOne({ PRN: s.PRN }, {}, { sort: { createdAt: -1 } });
-      const now = Date.now();
-      const lastTime = lastVisit ? new Date(lastVisit.createdAt).getTime() : 0;
-      if (!lastVisit || now - lastTime >= 60000) {
-        filteredCame.push(s);
-      }
-    }
+//     const filteredCame = [];
+//     for (const s of came) {
+//       const lastVisit = await lifetime.findOne({ PRN: s.PRN }, {}, { sort: { createdAt: -1 } });
+//       const now = Date.now();
+//       const lastTime = lastVisit ? new Date(lastVisit.createdAt).getTime() : 0;
+//       if (!lastVisit || now - lastTime >= 60000) {
+//         filteredCame.push(s);
+//       }
+//     }
 
-    if (filteredCame.length > 0) await lifetime.insertMany(filteredCame);
-    if (left.length > 0) console.log(`➖ ${left.length} student(s) left.`);
+//     if (filteredCame.length > 0) await lifetime.insertMany(filteredCame);
+//     if (left.length > 0) console.log(`➖ ${left.length} student(s) left.`);
 
-    await Promise.all(students.map(s => members.updateOne({ PRN: s.PRN }, { $set: s }, { upsert: true })));
-    await members.deleteMany({ PRN: { $nin: students.map(s => s.PRN) } });
+//     await Promise.all(students.map(s => members.updateOne({ PRN: s.PRN }, { $set: s }, { upsert: true })));
+//     await members.deleteMany({ PRN: { $nin: students.map(s => s.PRN) } });
 
-  } catch (error) {
-    console.log("no data found");
-  } finally {
-    isRunning = false;
-  }
-});
+//   } catch (error) {
+//     console.log("no data found");
+//   } finally {
+//     isRunning = false;
+//   }
+// });
 
 // API routes
 app.get('/', (req, res) => res.send("Backend is running"));
