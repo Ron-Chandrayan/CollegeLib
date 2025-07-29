@@ -30,7 +30,6 @@ function Home() {
   });
 
             useEffect(() => {
-            const URL = import.meta.env.VITE_API_URL3;
             const token = localStorage.getItem('token');
 
               if (!token) {
@@ -38,7 +37,7 @@ function Home() {
                 return;
               }
 
-              fetch(`${URL}`, {
+              fetch('/validate', {
                 method: 'GET',
                 headers: {
                   'Authorization': `Bearer ${token}`,
@@ -74,8 +73,7 @@ function Home() {
    useEffect(()=>{
               const getData=async ()=>{
              try{
-              const URL = import.meta.env.VITE_API_URL4;
-              await fetch(`${URL}`) //for stats page
+              await fetch('/fetchusers') //for stats page
                   .then(response => response.json())
                   .then(data => {
                    
@@ -120,8 +118,7 @@ function Home() {
         e.preventDefault(); // stop form reload
 
         try {
-          const URL = import.meta.env.VITE_API_URL5;
-          const res = await fetch(`${URL}`, {
+          const res = await fetch('/api/save', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

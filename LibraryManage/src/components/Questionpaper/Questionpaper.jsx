@@ -16,7 +16,7 @@ function  Questionpaper() {
   useEffect( ()=>{
       async function fetchData() {
     try {
-      const response = await fetch('http://localhost:5000/api/qps');
+      const response = await fetch('/api/qps');
       const data = await response.json();
       console.log(data);
       setqp(data);
@@ -276,7 +276,7 @@ function  Questionpaper() {
                 <button 
                   onClick={async () => {
                     try {
-                      const response = await fetch(`http://localhost:5000/download/${qp.sem}/${qp.subject}/${qp.year}/${qp.filename}`);
+                      const response = await fetch(`/download/${qp.sem}/${qp.subject}/${qp.year}/${qp.filename}`);
                       const data = await response.json();
                       if (data.success) {
                         window.open(data.downloadUrl, '_blank');

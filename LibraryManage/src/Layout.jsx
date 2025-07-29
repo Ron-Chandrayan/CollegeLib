@@ -78,7 +78,7 @@ function Layout() {
 
       useEffect(()=>{
           const getData=async ()=>{
-             try{await fetch(`http://localhost:5000/fetchtime`) //for stats page
+             try{await fetch(`/fetchtime`) //for stats page
                   .then(response => response.json())
                   .then(data => {
                     setloading(false);

@@ -17,7 +17,7 @@ const UploadForm = ({ onClose }) => {
     formData.append('year', year);
 
     try {
-      const res = await fetch('http://localhost:5000/api/qps/upload', {
+      const res = await fetch('/api/qps/upload', {
         method: 'POST',
         body: formData
       });
