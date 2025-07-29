@@ -195,7 +195,6 @@ try {
 
 
 })
-app.get('/', (req, res) => res.send('Backend is running'));
 
 // data routes
 app.get('/fetch', async (req, res) => {
@@ -312,11 +311,18 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
 });
 
 // static React build for client-side routing
-app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
+const staticPath = path.join(__dirname, '../LibraryManage/dist');
+console.log('📁 Static files path:', staticPath);
+console.log('📁 Static path exists:', fs.existsSync(staticPath));
+
+app.use(express.static(staticPath));
 
 // catch-all fallback to serve React app
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
+  const indexPath = path.join(__dirname, '../LibraryManage/dist/index.html');
+  console.log('📄 Serving index.html from:', indexPath);
+  console.log('📄 Index file exists:', fs.existsSync(indexPath));
+  res.sendFile(indexPath);
 });
 
 const PORT = process.env.PORT || 5000;
