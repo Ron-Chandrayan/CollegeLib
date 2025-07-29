@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "heroku-postbuild": "npm install --prefix ./LibraryManage && npm run build --prefix ./LibraryManage"
+    "preview": "vite preview"
   },
   "dependencies": {
     "lucide-react": "^0.525.0",

@@ -6,14 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://libman.ethiccode.in',
+        target: 'http://localhost:5000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      '/altapi': {
-        target: 'https://libman.ethiccode.in.net/api',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/altapi/, ''),
       }
     }
   }
