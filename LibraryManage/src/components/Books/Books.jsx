@@ -20,7 +20,7 @@ function Books() {
 
     useEffect(()=>{
               const fetchData =async()=>{
-                const BASEURL = 'https://libman.ethiccode.in/api/index.php';
+                const BASEURL = 'https://libman.ethiccode.in';
                 const apikey = import.meta.env.VITE_SECRET_KEY2;
     
                 try{fetch(`${BASEURL}/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
