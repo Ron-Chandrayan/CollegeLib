@@ -105,7 +105,7 @@ function Layout() {
 
         useEffect(()=>{
           const fetchData =async()=>{
-            const BASEURL = import.meta.env.TEMP_URL;;
+            const BASEURL = import.meta.env.TEMP_URL;
             const apikey = import.meta.env.VITE_SECRET_KEY2;
             console.log(BASEURL);
             try{fetch(`${BASEURL}`, {
