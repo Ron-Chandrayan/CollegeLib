@@ -64,7 +64,7 @@ function Books() {
         const title=formData.title;
         const author=formData.author.trim().split(" ")[0];
         const publisher = formData.publisher;
-         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
+         try{fetch(`/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
                   headers: {
                       'x-api-key': apikey // Use XAPIKEY header
                   }
