@@ -23,7 +23,7 @@ function Books() {
                 const BASEURL = 'https://libman.ethiccode.in';
                 const apikey = import.meta.env.VITE_SECRET_KEY2;
     
-                try{fetch(`/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
+                try{fetch(`/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
                       headers: {
                           'x-api-key': apikey // Use XAPIKEY header
                       }
@@ -64,7 +64,7 @@ function Books() {
         const title=formData.title;
         const author=formData.author.trim().split(" ")[0];
         const publisher = formData.publisher;
-         try{fetch(`/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
+         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
                   headers: {
                       'x-api-key': apikey // Use XAPIKEY header
                   }
