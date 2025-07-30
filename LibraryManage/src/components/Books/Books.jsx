@@ -23,7 +23,7 @@ function Books() {
                 const BASEURL = 'https://libman.ethiccode.in/api/index.php';
                 const apikey = import.meta.env.VITE_SECRET_KEY2;
     
-                try{fetch(`/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
+                try{fetch(`${BASEURL}/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
                       headers: {
                           'x-api-key': apikey // Use XAPIKEY header
                       }
