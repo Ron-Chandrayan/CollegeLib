@@ -105,7 +105,7 @@ function Layout() {
 
         useEffect(()=>{
           const fetchData =async()=>{
-            const BASEURL = "/api/api/index.php?endpoint=book_all&limit=10000";//import.meta.env.VITE_API_URL2;;
+            const BASEURL = "https://libman.ethiccode.in/api/index.php?endpoint=book_all&limit=10000";//import.meta.env.VITE_API_URL2;;
             const apikey = import.meta.env.VITE_SECRET_KEY2;
             console.log(BASEURL);
             try{fetch(`${BASEURL}`, {
