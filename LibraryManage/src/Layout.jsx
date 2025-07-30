@@ -107,7 +107,7 @@ function Layout() {
           const fetchData =async()=>{
             const BASEURL = import.meta.env.VITE_API_URL2;;
             const apikey = import.meta.env.VITE_SECRET_KEY2;
-
+            console.log(BASEURL);
             try{fetch(`${BASEURL}`, {
                   headers: {
                       'x-api-key': apikey // Use XAPIKEY header
