@@ -117,6 +117,7 @@ function Layout() {
                   .then(data => {console.log(data.data.books);
                     const kitab = data.data.books;
                     setBooks(kitab);
+                    console.log(kitab);
                       //seterr(false)
                       // const info = data.students
                       // setName(info);
