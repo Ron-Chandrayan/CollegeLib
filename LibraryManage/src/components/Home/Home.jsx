@@ -80,7 +80,7 @@ function Home() {
                     //console.log(data);
                     if(signup===false && login===false){
                     }else{
-                      console.log(data);
+                      //console.log(data);
                       data.forEach(element => {
                         if(element.PRN===formData.PRN){
                          // console.log(element.name);
@@ -129,9 +129,9 @@ function Home() {
           const data = await res.json();
 
                     if (res.status === 200 && data.success) {
-            console.log('✅ Form successfully submitted!');
-            console.log('📤 Submitted Data:', formData);
-            console.log('📥 Server Response:', data);
+            // console.log('✅ Form successfully submitted!');
+            // console.log('📤 Submitted Data:', formData);
+            // console.log('📥 Server Response:', data);
             setFormData({
                name: '',
                 PRN: '',
