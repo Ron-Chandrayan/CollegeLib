@@ -18,6 +18,10 @@ heroku config:set VITE_API_URL=https://libman.ethiccode.in
 heroku config:set VITE_SECRET_KEY2=your-api-key-here
 ```
 
+**Important**: Make sure the URL does NOT have a trailing slash. The correct format is:
+- ✅ `https://libman.ethiccode.in`
+- ❌ `https://libman.ethiccode.in/`
+
 Or through Heroku Dashboard:
 1. Go to your app settings
 2. Click "Reveal Config Vars"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import { getApiUrl, getApiHeaders } from '../../utils/apiConfig';
+import { getApiUrl, getApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 import Book from '../Book/Book';
 
@@ -8,6 +8,11 @@ function Books() {
     const{books, setBooks}=useOutletContext()
     const[i,seti]=useState(1);
     const[paginatedbooks,setpaginatedbooks]=useState([])
+    
+    // Debug API configuration on component mount
+    useEffect(() => {
+        debugApiConfig();
+    }, []);
 
       const [formData, setformData] = useState({
         title: '',
