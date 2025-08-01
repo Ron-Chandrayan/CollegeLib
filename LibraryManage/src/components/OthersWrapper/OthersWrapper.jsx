@@ -9,7 +9,7 @@ function OthersWrapper() {
     return <Navigate to="/" replace />;
   }
 
-  return <OthersWrapper />;
+  return <Others/>;
 }
 
 export default OthersWrapper;
