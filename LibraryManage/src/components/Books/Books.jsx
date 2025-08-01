@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { getApiUrl, getApiHeaders } from '../../utils/apiConfig';
 
 import Book from '../Book/Book';
 
@@ -20,29 +21,26 @@ function Books() {
 
     useEffect(()=>{
               const fetchData =async()=>{
-                const BASEURL = 'https://libman.ethiccode.in';
-                const apikey = import.meta.env.VITE_SECRET_KEY2;
-    
-                try{fetch(`/api/api/index.php?endpoint=book_all&page=${i}&limit=20`, {
-                      headers: {
-                          'x-api-key': apikey // Use XAPIKEY header
-                      }
-                      })
-                      .then(response => response.json())
-                      .then(data => {console.log(data.data.books);
-                        const paginatedkitab = data.data.books
-                          //seterr(false)
-                          // const info = data.students
-                          // setName(info);
-                          // // console.log(info[0].name)
-                          setpaginatedbooks(paginatedkitab)
-                          
-                      })
-                      }
-                      catch(error){
-                          seterr(true);
-                          console.error(error);
-                      }
+                try{
+                  const response = await fetch(getApiUrl(`endpoint=book_all&page=${i}&limit=20`), {
+                      headers: getApiHeaders()
+                  });
+                  
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                  }
+                  
+                  const data = await response.json();
+                  console.log('Paginated books data:', data);
+                  
+                  if (data.data && data.data.books) {
+                    setpaginatedbooks(data.data.books);
+                  } else {
+                    console.error('Invalid data structure:', data);
+                  }
+                } catch(error){
+                    console.error('Error fetching paginated books:', error);
+                }
               }
               fetchData();
               
@@ -56,38 +54,36 @@ function Books() {
         }));
       };
 
-      const handleSubmit = (e)=>{
+      const handleSubmit = async (e)=>{
         e.preventDefault();
         setsearchActive(true);
-        console.log(formData);
-        const apikey = import.meta.env.VITE_SECRET_KEY2;
-        const title=formData.title;
-        const author=formData.author.trim().split(" ")[0];
-        const publisher = formData.publisher;
-         try{fetch(`/api/api/index.php?endpoint=book_search&title=${title}&author=${author}&publisher=${publisher}&limit=1000`, {
-                  headers: {
-                      'x-api-key': apikey // Use XAPIKEY header
-                  }
-                  })
-                  .then(response => response.json())
-                  .then(data => {console.log(data.data.books);
-                    // const kitab = data.data.books;
-                    setfilterbooks(data.data.books)
-                    // setBooks(kitab);
-                      //seterr(false)
-                      // const info = data.students
-                      // setName(info);
-                      // // console.log(info[0].name)
-                      seti(1);
-                      
-                  })
-                  }
-                  catch(error){
-                      seterr(true);
-                      console.error(error);
-                  }
-      
+        console.log('Search form data:', formData);
         
+        const title = formData.title;
+        const author = formData.author.trim().split(" ")[0];
+        const publisher = formData.publisher;
+        
+        try{
+          const response = await fetch(getApiUrl(`endpoint=book_search&title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}&publisher=${encodeURIComponent(publisher)}&limit=1000`), {
+                  headers: getApiHeaders()
+          });
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          console.log('Search results:', data);
+          
+          if (data.data && data.data.books) {
+            setfilterbooks(data.data.books);
+            seti(1);
+          } else {
+            console.error('Invalid search data structure:', data);
+          }
+        } catch(error){
+            console.error('Error searching books:', error);
+        }
       }
 
 return(<>

@@ -3,6 +3,7 @@ import {Outlet} from 'react-router-dom'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import { useState, useEffect } from 'react'
+import { getApiUrl, getApiHeaders } from './utils/apiConfig';
 
 function Layout() {
   const [name,setName]= useState([])
@@ -105,31 +106,30 @@ function Layout() {
 
         useEffect(()=>{
           const fetchData =async()=>{
-            const BASEURL = import.meta.env.TEMP_URL;
-            const apikey = import.meta.env.VITE_SECRET_KEY2;
-            console.log(BASEURL);
-            try{fetch(`${BASEURL}`, {
-                  headers: {
-                      'x-api-key': apikey // Use XAPIKEY header
-                  }
-                  })
-                  .then(response => response.json())
-                  .then(data => {console.log(data.data.books);
-                    const kitab = data.data.books;
-                    setBooks(kitab);
-                    console.log(kitab);
-                    console.log(data);
-                      //seterr(false)
-                      // const info = data.students
-                      // setName(info);
-                      // // console.log(info[0].name)
-                      
-                  })
-                  }
-                  catch(error){
-                      seterr(true);
-                      console.error(error);
-                  }
+            console.log('Fetching books...');
+            try{
+              const response = await fetch(getApiUrl('endpoint=book_all&page=1&limit=1000'), {
+                      headers: getApiHeaders()
+              });
+              
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const data = await response.json();
+              console.log('Books data:', data);
+              
+              if (data.data && data.data.books) {
+                const kitab = data.data.books;
+                setBooks(kitab);
+                console.log('Books set:', kitab);
+              } else {
+                console.error('Invalid data structure:', data);
+              }
+            }
+            catch(error){
+                console.error('Error fetching books:', error);
+            }
           }
           fetchData();
           
