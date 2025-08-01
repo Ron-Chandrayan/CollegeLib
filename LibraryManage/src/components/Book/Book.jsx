@@ -2,8 +2,9 @@ import React from 'react'
 
 function Book({books}) {
       function extractCopies(text) {
-      const match = text.match(/\((\d+)\)/);
-      return match ? parseInt(match[1]) : 0; // returns 0 if no match found
+      if (typeof text !== 'string') return 0;
+     const match = text.match(/\((\d+)\)/);
+     return match ? parseInt(match[1]) : 0;
     }
   return (
     <div className="p-6">
