@@ -81,7 +81,6 @@ function Home() {
                     if(signup===false && login===false){
                       console.log("not logged in ")
                     }else{
-                      console.log(data);
                       data.forEach(element => {
                         if(element.PRN===formData.PRN){
                          // console.log(element.name);
