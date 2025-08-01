@@ -79,14 +79,12 @@ function Home() {
                    
                     //console.log(data);
                     if(signup===false && login===false){
-                      
                     }else{
-                     // console.log(data);
+                      console.log(data);
                       data.forEach(element => {
                         if(element.PRN===formData.PRN){
-                         
+                         // console.log(element.name);
                           setwelcome(element.name);
-                          
                           
                         }
                       });
