@@ -3,7 +3,7 @@ import {Outlet} from 'react-router-dom'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import { useState, useEffect } from 'react'
-import { getApiUrl, getApiHeaders } from './utils/apiConfig';
+import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from './utils/apiConfig';
 
 function Layout() {
   const [name,setName]= useState([])
@@ -16,6 +16,11 @@ function Layout() {
       const [welcome,setwelcome]=useState("");
       const[books,setBooks]=useState([]);
       
+      // Debug API configuration on component mount
+      useEffect(() => {
+          debugApiConfig();
+      }, []);
+      
       
       
 
@@ -23,58 +28,54 @@ function Layout() {
       useEffect(()=>{
       
            const  fetchData=()=>{   
-             const apiKey = import.meta.env.VITE_SECRET_KEY;                //for sies data
-              const baseUrl = import.meta.env.VITE_API_URL;  //for home page
-                  
-              try{fetch(`${baseUrl}/api/list_all`, {
-                  headers: {
-                      'XApiKey': apiKey // Use XAPIKEY header
-                  }
-                  })
-                  .then(response => response.json())
-                  .then(data => {console.log(data)
-                      //seterr(false)
-                      const info = data.students
-                      setName(info);
-                      // console.log(info[0].name)
-                      
-                  })
-                  }
-                  catch(error){
-                      seterr(true);
-                      console.error(error);
-                  }
-      
-                  fetch(`${baseUrl}/api/todays_footfall`, {
-                      headers: {
-                          'XAPIKEY': apiKey // Use XAPIKEY header
-                      }
-                      })
-                      .then(response => response.json())
-                      .then(data => {console.log(data)
-                        const curfootfall = Number(data.todays_footfall);
-                        settodayfootfall(curfootfall);
-                      });
-                  
-                  fetch(`${baseUrl}/api/total_footfall`, {
-                      headers: {
-                          'XAPIKEY': apiKey // Use XAPIKEY header
-                      }
-                      })
-                      .then(response => response.json())
-                      .then(data => {console.log(data)
-                        const totfootfall = Number(data.total_footfall);
-                        settotalfootfall(totfootfall);
-                      })
+             try{
+               fetch(getLibraryApiUrl('list_all'), {
+                   headers: getLibraryApiHeaders()
+               })
+               .then(response => response.json())
+               .then(data => {console.log(data)
+                   const info = data.students
+                   setName(info);
+               })
+               .catch(error => {
+                   console.error('Error fetching students:', error);
+               });
+       
+               fetch(getLibraryApiUrl('todays_footfall'), {
+                   headers: getLibraryApiHeaders()
+               })
+               .then(response => response.json())
+               .then(data => {console.log(data)
+                 const curfootfall = Number(data.todays_footfall);
+                 settodayfootfall(curfootfall);
+               })
+               .catch(error => {
+                   console.error('Error fetching today\'s footfall:', error);
+               });
+               
+               fetch(getLibraryApiUrl('total_footfall'), {
+                   headers: getLibraryApiHeaders()
+               })
+               .then(response => response.json())
+               .then(data => {console.log(data)
+                 const totfootfall = Number(data.total_footfall);
+                 settotalfootfall(totfootfall);
+               })
+               .catch(error => {
+                   console.error('Error fetching total footfall:', error);
+               });
 
-                    }
-                    fetchData()
-      
-                 const interval= setInterval( fetchData , 3000);
-      
-                  return () => clearInterval(interval);
-      
-          },[]);
+             } catch(error){
+                 console.error('Error in fetchData:', error);
+             }
+           }
+           fetchData()
+   
+        const interval= setInterval( fetchData , 3000);
+   
+         return () => clearInterval(interval);
+   
+     },[]);
       
 
       useEffect(()=>{

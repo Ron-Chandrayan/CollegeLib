@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { getLibraryApiUrl, getLibraryApiHeaders } from '../../utils/apiConfig';
 
 const PURPOSE_OPTIONS = [
   { value: '', label: 'Select Purpose' },
@@ -62,15 +63,13 @@ function Library() {
   const [filter, setFilter] = useState("name");
   const fetchStudents = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_URL;
-      const apiKey = import.meta.env.VITE_SECRET_KEY;
-      const res = await fetch(`${baseUrl}api/list_all`, {
-        headers: { 'XApiKey': apiKey },
+      const res = await fetch(getLibraryApiUrl('list_all'), {
+        headers: getLibraryApiHeaders(),
       });
       const data = await res.json();
       setAllStudents(data.students || []);
     } catch (err) {
-      // Optionally keep previous students on error
+      console.error('Error fetching students:', err);
     }
   };
 
@@ -113,20 +112,15 @@ function Library() {
     setSuccess('');
     setIsSubmitting(true);
     try {
-      const baseUrl = import.meta.env.VITE_API_URL;
-      const apiKey = import.meta.env.VITE_SECRET_KEY;
       const payload = {
         PRN: formData.PRN,
         purpose: formData.purpose,
       //  action: action, // optionally send action if backend supports
       };
       console.log(payload);
-      const res = await fetch(`/altapi/in_out`, {
+      const res = await fetch(getLibraryApiUrl('in_out'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'XApiKey': apiKey,
-        },
+        headers: getLibraryApiHeaders(),
         body: JSON.stringify(payload),
       });
       const data = await res.json();

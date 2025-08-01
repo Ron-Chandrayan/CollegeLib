@@ -10,6 +10,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/api/, '/api'),
       },
+      '/altapi': {
+        target: 'https://libman.ethiccode.in.net',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/altapi/, '/api'),
+      },
     },
   },
   build: {
