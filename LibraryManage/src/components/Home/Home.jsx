@@ -30,6 +30,12 @@ function Home() {
     PRN: '',
     password: ''
   });
+          const crowdClass = 
+          name.length >= 120 ? 'text-red-600' :
+          name.length >= 90 ? 'text-orange-600' :
+          name.length >= 45 ? 'text-yellow-600' :
+          name.length > 0 ? 'text-green-600' :
+          'text-slate-400';
 
             useEffect(() => {
             const token = localStorage.getItem('token');
@@ -369,8 +375,14 @@ function Home() {
               <div className={`w-3 h-3 rounded-full animate-pulse ${(name.length) > 30 ? 'bg-orange-500' : 'bg-indigo-500'}`}></div>
             </div>
             <p className="text-sm font-semibold text-slate-600 mb-2">Activity Level</p>
-            <p className={`text-2xl sm:text-3xl font-bold ${(name.length) > 30 ? 'text-orange-600' : 'text-indigo-600'}`}>
-              {(name.length) > 30 ? 'Busy' : 'Normal'}
+            <p className={`text-2xl sm:text-3xl font-bold ${crowdClass}`}>
+               {
+                    name.length >= 120 ? "Overcrowded" :
+                    name.length >= 90 ? "Busy" :
+                    name.length >= 45 ? "Normal" :
+                    name.length > 0 ? "Light Crowd" :
+                    "Empty"
+                  }
             </p>
           </div>
         </div>
