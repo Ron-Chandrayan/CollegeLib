@@ -79,13 +79,17 @@ function Home() {
                    
                     //console.log(data);
                     if(signup===false && login===false){
-                      console.log("not logged in ")
+                      
                     }else{
+<<<<<<< HEAD
+=======
+                     // console.log(data);
+>>>>>>> 8eef5a616de89bca7c17eee07387e9512e91c823
                       data.forEach(element => {
                         if(element.PRN===formData.PRN){
-                         // console.log(element.name);
+                         
                           setwelcome(element.name);
-                          console.log(welcome);
+                          
                           
                         }
                       });
