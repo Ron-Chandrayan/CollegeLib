@@ -127,12 +127,12 @@ function Book({books}) {
               <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-500">Book #{index + 1}</span>
-                  <button className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 flex items-center">
+                  {/* <button className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200 flex items-center">
                     View Details
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                     </svg>
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
