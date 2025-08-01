@@ -16,10 +16,7 @@ function Layout() {
       const [welcome,setwelcome]=useState("");
       const[books,setBooks]=useState([]);
       
-      // Debug API configuration on component mount
-      useEffect(() => {
-          debugApiConfig();
-      }, []);
+      
       
       
       
@@ -33,10 +30,10 @@ function Layout() {
                    headers: getLibraryApiHeaders()
                })
                .then(response => response.json())
-               .then(data => {console.log(data)
-                   const info = data.students
-                   setName(info);
-               })
+                               .then(data => {
+                    const info = data.students
+                    setName(info);
+                })
                .catch(error => {
                    console.error('Error fetching students:', error);
                });
@@ -45,10 +42,10 @@ function Layout() {
                    headers: getLibraryApiHeaders()
                })
                .then(response => response.json())
-               .then(data => {console.log(data)
-                 const curfootfall = Number(data.todays_footfall);
-                 settodayfootfall(curfootfall);
-               })
+                               .then(data => {
+                  const curfootfall = Number(data.todays_footfall);
+                  settodayfootfall(curfootfall);
+                })
                .catch(error => {
                    console.error('Error fetching today\'s footfall:', error);
                });
@@ -57,10 +54,10 @@ function Layout() {
                    headers: getLibraryApiHeaders()
                })
                .then(response => response.json())
-               .then(data => {console.log(data)
-                 const totfootfall = Number(data.total_footfall);
-                 settotalfootfall(totfootfall);
-               })
+                               .then(data => {
+                  const totfootfall = Number(data.total_footfall);
+                  settotalfootfall(totfootfall);
+                })
                .catch(error => {
                    console.error('Error fetching total footfall:', error);
                });
@@ -105,53 +102,36 @@ function Layout() {
           
         },[]);
 
-        useEffect(()=>{
-          const fetchData =async()=>{
-            console.log('Fetching books...');
-            try{
-              const booksUrl = getApiUrl('endpoint=book_all&page=1&limit=1000');
-              const booksHeaders = getApiHeaders();
-              
-              console.log('Books URL:', booksUrl);
-              console.log('Books Headers:', booksHeaders);
-              
-                             console.log('Starting fetch request...');
+                 useEffect(()=>{
+           const fetchData =async()=>{
+             try{
+               const booksUrl = getApiUrl('endpoint=book_all&page=1&limit=1000');
+               const booksHeaders = getApiHeaders();
                
                const response = await fetch(booksUrl, {
                        headers: booksHeaders
                });
-              console.log('Fetch response received:', response);
-              console.log('Response status:', response.status);
-              console.log('Response ok:', response.ok);
-              
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              
-              console.log('Parsing JSON response...');
-              const data = await response.json();
-              console.log('Books data:', data);
-              
-              if (data.data && data.data.books) {
-                const kitab = data.data.books;
-                setBooks(kitab);
-                console.log('Books set:', kitab);
-              } else {
-                console.error('Invalid data structure:', data);
-              }
-            }
-            catch(error){
-                console.error('Error fetching books:', error);
-                console.error('Error details:', {
-                    message: error.message,
-                    stack: error.stack
-                });
-                console.error('Error type:', error.constructor.name);
-            }
-          }
-          fetchData();
-          
-        },[])
+               
+               if (!response.ok) {
+                 throw new Error(`HTTP error! status: ${response.status}`);
+               }
+               
+               const data = await response.json();
+               
+               if (data.data && data.data.books) {
+                 const kitab = data.data.books;
+                 setBooks(kitab);
+               } else {
+                 console.error('Invalid data structure:', data);
+               }
+             }
+             catch(error){
+                 console.error('Error fetching books:', error);
+             }
+           }
+           fetchData();
+           
+         },[])
 
 
 

@@ -9,10 +9,7 @@ function Books() {
     const[i,seti]=useState(1);
     const[paginatedbooks,setpaginatedbooks]=useState([])
     
-    // Debug API configuration on component mount
-    useEffect(() => {
-        debugApiConfig();
-    }, []);
+    
 
       const [formData, setformData] = useState({
         title: '',
@@ -25,38 +22,30 @@ function Books() {
 
 
     useEffect(()=>{
-              const fetchData =async()=>{
-                try{
-                  const booksUrl = getApiUrl(`endpoint=book_all&page=${i}&limit=20`);
-                  const booksHeaders = getApiHeaders();
-                  
-                  console.log('Paginated Books URL:', booksUrl);
-                  console.log('Paginated Books Headers:', booksHeaders);
-                  
-                  const response = await fetch(booksUrl, {
-                      headers: booksHeaders
-                  });
-                  
-                  if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                  }
-                  
-                  const data = await response.json();
-                  console.log('Paginated books data:', data);
-                  
-                  if (data.data && data.data.books) {
-                    setpaginatedbooks(data.data.books);
-                  } else {
-                    console.error('Invalid data structure:', data);
-                  }
-                } catch(error){
-                    console.error('Error fetching paginated books:', error);
-                    console.error('Error details:', {
-                        message: error.message,
-                        stack: error.stack
-                    });
-                }
-              }
+                             const fetchData =async()=>{
+                 try{
+                   const booksUrl = getApiUrl(`endpoint=book_all&page=${i}&limit=20`);
+                   const booksHeaders = getApiHeaders();
+                   
+                   const response = await fetch(booksUrl, {
+                       headers: booksHeaders
+                   });
+                   
+                   if (!response.ok) {
+                     throw new Error(`HTTP error! status: ${response.status}`);
+                   }
+                   
+                   const data = await response.json();
+                   
+                   if (data.data && data.data.books) {
+                     setpaginatedbooks(data.data.books);
+                   } else {
+                     console.error('Invalid data structure:', data);
+                   }
+                 } catch(error){
+                     console.error('Error fetching paginated books:', error);
+                 }
+               }
               fetchData();
               
             },[i])
@@ -69,37 +58,35 @@ function Books() {
         }));
       };
 
-      const handleSubmit = async (e)=>{
-        e.preventDefault();
-        setsearchActive(true);
-        console.log('Search form data:', formData);
-        
-        const title = formData.title;
-        const author = formData.author.trim().split(" ")[0];
-        const publisher = formData.publisher;
-        
-        try{
-          const response = await fetch(getApiUrl(`endpoint=book_search&title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}&publisher=${encodeURIComponent(publisher)}&limit=1000`), {
-                  headers: getApiHeaders()
-          });
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          console.log('Search results:', data);
-          
-          if (data.data && data.data.books) {
-            setfilterbooks(data.data.books);
-            seti(1);
-          } else {
-            console.error('Invalid search data structure:', data);
-          }
-        } catch(error){
-            console.error('Error searching books:', error);
-        }
-      }
+             const handleSubmit = async (e)=>{
+         e.preventDefault();
+         setsearchActive(true);
+         
+         const title = formData.title;
+         const author = formData.author.trim().split(" ")[0];
+         const publisher = formData.publisher;
+         
+         try{
+           const response = await fetch(getApiUrl(`endpoint=book_search&title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}&publisher=${encodeURIComponent(publisher)}&limit=1000`), {
+                   headers: getApiHeaders()
+           });
+           
+           if (!response.ok) {
+             throw new Error(`HTTP error! status: ${response.status}`);
+           }
+           
+           const data = await response.json();
+           
+           if (data.data && data.data.books) {
+             setfilterbooks(data.data.books);
+             seti(1);
+           } else {
+             console.error('Invalid search data structure:', data);
+           }
+         } catch(error){
+             console.error('Error searching books:', error);
+         }
+       }
 
 return(<>
     {/* Header Section */}
