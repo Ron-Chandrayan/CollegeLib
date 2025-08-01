@@ -115,7 +115,7 @@ const toggleMobileMenu = () => {
                   </div>
                   <div>
                     <NavLink
-                      to="/questionpaper"
+                      to="/others"
                       className={({ isActive }) =>
                         `${isActive
                           ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"
