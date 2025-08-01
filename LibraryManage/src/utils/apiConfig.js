@@ -4,7 +4,7 @@ export const getApiUrl = (endpoint) => {
   
   if (isDevelopment) {
     // Use Vite proxy in development
-    const url = `/api/api/index.php?${endpoint}`;
+    const url = `/api/api/index.php?${endpoint}&api_key=${import.meta.env.VITE_SECRET_KEY2}`;
     console.log('Development Books API URL:', url);
     return url;
   } else {
@@ -14,7 +14,7 @@ export const getApiUrl = (endpoint) => {
     // Remove trailing slash if present to avoid double slashes
     baseUrl = baseUrl.replace(/\/$/, '');
     
-    const url = `${baseUrl}/api/index.php?${endpoint}`;
+    const url = `${baseUrl}/api/index.php?${endpoint}&api_key=${import.meta.env.VITE_SECRET_KEY2}`;
     console.log('Production Books API URL:', url);
     return url;
   }
@@ -44,8 +44,6 @@ export const getLibraryApiUrl = (endpoint) => {
 
 export const getApiHeaders = () => {
   return {
-    'x-api-key': import.meta.env.VITE_SECRET_KEY2,
-    'XApiKey': import.meta.env.VITE_SECRET_KEY2, // Try both header names
     'Content-Type': 'application/json',
   };
 };

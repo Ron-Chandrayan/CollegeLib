@@ -115,18 +115,11 @@ function Layout() {
               console.log('Books URL:', booksUrl);
               console.log('Books Headers:', booksHeaders);
               
-              console.log('Starting fetch request...');
-              
-              // Add timeout to prevent hanging
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-              
-              const response = await fetch(booksUrl, {
-                      headers: booksHeaders,
-                      signal: controller.signal
-              });
-              
-              clearTimeout(timeoutId);
+                             console.log('Starting fetch request...');
+               
+               const response = await fetch(booksUrl, {
+                       headers: booksHeaders
+               });
               console.log('Fetch response received:', response);
               console.log('Response status:', response.status);
               console.log('Response ok:', response.ok);
