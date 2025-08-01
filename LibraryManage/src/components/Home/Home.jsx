@@ -16,10 +16,12 @@ function Home() {
     const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome} = useOutletContext()
 
     const[err,seterr]= useState(false)
+    const[errMessage, setErrMessage] = useState("")
     const[search,setsearch]=useState("");
     const[filter,setFilter]= useState("");
     const [isClosed, setIsClosed] = useState(false);
     const [isAuthLoading, setIsAuthLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     
 
@@ -116,6 +118,11 @@ function Home() {
 
       const handleSubmit = async (e) => {
         e.preventDefault(); // stop form reload
+        
+        // Reset error state
+        seterr(false);
+        setErrMessage("");
+        setIsSubmitting(true);
 
         try {
           const res = await fetch('/api/save', {
@@ -126,14 +133,10 @@ function Home() {
             body: JSON.stringify(formData)
           });
 
-          
-
           const data = await res.json();
 
-                    if (res.status === 200 && data.success) {
-            // console.log('✅ Form successfully submitted!');
-            // console.log('📤 Submitted Data:', formData);
-            // console.log('📥 Server Response:', data);
+          if (res.status === 200 && data.success) {
+            // Success case
             setFormData({
                name: '',
                 PRN: '',
@@ -150,16 +153,42 @@ function Home() {
             setSignup(true);
            // setLogin(true);
             seterr(false);
+            setErrMessage("");
           } else {
-            if (data.message === "User exists" || data.message === "wrong password") {
-              setSignup(false);
+            // Handle different error cases
+            if (data.message === "User exists") {
               seterr(true);
+              setErrMessage("User already exists. Please sign in instead.");
+            } else if (data.message === "wrong password") {
+              seterr(true);
+              setErrMessage("Incorrect password. Please try again.");
+            } else if (data.message === "User not found") {
+              seterr(true);
+              setErrMessage("User not found. Please check your PRN or sign up.");
+            } else if (data.message === "Invalid credentials") {
+              seterr(true);
+              setErrMessage("Invalid PRN or password. Please try again.");
+            } else {
+              // Generic error handling
+              seterr(true);
+              setErrMessage(data.message || "An error occurred. Please try again.");
+            }
+            
+            // Reset form on login errors but keep PRN for convenience
+            if (login && (data.message === "wrong password" || data.message === "User not found" || data.message === "Invalid credentials")) {
+              setFormData(prev => ({
+                ...prev,
+                password: ''
+              }));
             }
           }
 
-      
         } catch (err) {
           console.error('❌ Error:', err.message);
+          seterr(true);
+          setErrMessage("Network error. Please check your connection and try again.");
+        } finally {
+          setIsSubmitting(false);
         }
       };
 
@@ -473,10 +502,26 @@ function Home() {
 
                 <button 
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white font-semibold py-4 px-6 rounded-xl hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl focus:ring-4 focus:ring-blue-300 focus:outline-none text-base relative overflow-hidden group"
+                  disabled={isSubmitting}
+                  className={`w-full font-semibold py-4 px-6 rounded-xl transition-all duration-300 shadow-xl focus:ring-4 focus:ring-blue-300 focus:outline-none text-base relative overflow-hidden group ${
+                    isSubmitting 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 transform hover:scale-105 hover:shadow-2xl'
+                  }`}
                 >
-                  <span className="relative z-10">{login ? "Sign In" : "Create Account"}</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span className="relative z-10">
+                    {isSubmitting ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>{login ? "Signing In..." : "Creating Account..."}</span>
+                      </div>
+                    ) : (
+                      login ? "Sign In" : "Create Account"
+                    )}
+                  </span>
+                  {!isSubmitting && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  )}
                 </button>
                 
                 <div className="text-center">
@@ -488,9 +533,10 @@ function Home() {
                     onClick={() => {
                       setLogin(!login);
                       seterr(false);
+                      setErrMessage("");
                       setFormData({
                         name: '',
-                        PRN: '',
+                        PRN: formData.PRN, // Keep PRN when switching modes
                         password: ''
                       });
                     }}
@@ -502,16 +548,60 @@ function Home() {
               </form>
 
               {err && (
-                <div className="mt-6">
+                <div className="mt-6 animate-fade-in">
                   <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-0.5">
                       <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <p className="text-red-700 font-medium text-sm">
-                      {login ? "Invalid credentials. Please try again." : "User already exists. Please sign in instead."}
-                    </p>
+                    <div className="flex-1">
+                      <p className="text-red-700 font-medium text-sm mb-1">
+                        {errMessage}
+                      </p>
+                      {login && errMessage.includes("User not found") && (
+                        <p className="text-red-600 text-xs">
+                          Don't have an account? 
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              setLogin(false);
+                              seterr(false);
+                              setErrMessage("");
+                              setFormData({
+                                name: '',
+                                PRN: formData.PRN, // Keep PRN for convenience
+                                password: ''
+                              });
+                            }}
+                            className="ml-1 underline hover:text-red-700 font-medium"
+                          >
+                            Sign up here
+                          </button>
+                        </p>
+                      )}
+                      {!login && errMessage.includes("User already exists") && (
+                        <p className="text-red-600 text-xs">
+                          Already have an account? 
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              setLogin(true);
+                              seterr(false);
+                              setErrMessage("");
+                              setFormData({
+                                name: '',
+                                PRN: formData.PRN, // Keep PRN for convenience
+                                password: ''
+                              });
+                            }}
+                            className="ml-1 underline hover:text-red-700 font-medium"
+                          >
+                            Sign in here
+                          </button>
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
