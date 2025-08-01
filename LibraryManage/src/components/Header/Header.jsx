@@ -229,6 +229,20 @@ const toggleMobileMenu = () => {
                       PYQS
                     </NavLink>
                   </div>
+                   <div>
+                    <NavLink
+                      to="/others"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `${isActive
+                          ? "text-cyan-400 bg-slate-800 border-l-4 border-cyan-400"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700"
+                        } block px-4 py-3 rounded-lg font-medium transition-all duration-200`
+                      }
+                    >
+                      Others
+                    </NavLink>
+                  </div>
                   <div>
                     <button 
                       onClick={(e) => {
