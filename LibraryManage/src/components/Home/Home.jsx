@@ -219,21 +219,25 @@ function Home() {
     if(signup){
 
       return (
-   <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-         <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
-      <div className="flex items-start justify-between mb-6">
-        <div className="flex-1">
+         <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8 border border-blue-200/50 backdrop-blur-sm">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 sm:mb-6">
+        <div className="flex-1 mb-4 sm:mb-0">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
               Library Dashboard
             </h1>
           </div>
-          <p className="text-slate-600/80 text-lg font-medium">
+          <p className="text-slate-600/80 text-base sm:text-lg font-medium">
             Student presence tracking system
           </p>
+        </div>
+        <div className="flex sm:hidden items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-white/20 self-start">
+          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+          <span className="text-sm font-medium text-slate-700">Live</span>
         </div>
         <div className="hidden sm:flex items-center gap-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-white/20">
           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -241,18 +245,18 @@ function Home() {
         </div>
       </div>
       
-      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/30 shadow-sm">
+      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/30 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
           <div>
-            <p className="text-slate-500 text-sm font-medium uppercase tracking-wider">
+            <p className="text-slate-500 text-xs sm:text-sm font-medium uppercase tracking-wider">
               {login?"Welcome Back":"Welcome"}
             </p>
-            <h2 className="text-2xl font-bold text-slate-800 mt-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mt-1">
               {welcome}
             </h2>
           </div>
@@ -262,34 +266,34 @@ function Home() {
 
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-slate-200">
             <p className="text-sm font-medium text-slate-600 mb-2">Today's Footfall</p>
-            <p className="text-3xl font-bold text-green-600">{todayfootfall}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-green-600">{todayfootfall}</p>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-slate-200">
             <p className="text-sm font-medium text-slate-600 mb-2">Total Footfall</p>
-            <p className="text-3xl font-bold text-blue-600">{totalfootfall}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-blue-600">{totalfootfall}</p>
           </div>
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-slate-200">
             <p className="text-sm font-medium text-slate-600 mb-2">No. of students in library</p>
-            <p className="text-3xl font-bold text-blue-600">{name.length}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-blue-600">{name.length}</p>
           </div>
-           <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+           <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-slate-200">
              <p className="text-sm font-medium text-slate-600 mb-2">Status</p>
-            {isClosed?<p className="text-3xl font-bold text-red-600" >Library Closed</p>:<p className="text-3xl font-bold text-green-600" >Library Open</p>}</div>
-           </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+            {isClosed?<p className="text-2xl sm:text-3xl font-bold text-red-600" >Library Closed</p>:<p className="text-2xl sm:text-3xl font-bold text-green-600" >Library Open</p>}</div>
+           <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-slate-200 sm:col-span-1 lg:col-span-1">
             <p className="text-sm font-medium text-slate-600 mb-2">Buzz</p>
-            <p className="text-3xl font-bold text-blue-600">{(name.length)>30?"Busy":"Not Busy"}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-blue-600">{(name.length)>30?"Busy":"Not Busy"}</p>
           </div>
+        </div>
            
 
         {/* Search Section */}
-      <div className='flex flex-wrap m-3'>
+      <div className='flex flex-wrap m-2 sm:m-3'>
             <form onSubmit={(e)=>{
               e.preventDefault();
-            }} className="flex items-center gap-3 p-4 bg-white rounded-lg shadow-sm border border-gray-200 w-full max-w-md">
+            }} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-4 bg-white rounded-lg shadow-sm border border-gray-200 w-full max-w-none sm:max-w-md">
               <input 
                 type="text" 
                 placeholder="Search" 
@@ -305,7 +309,7 @@ function Home() {
                 onChange={(e)=>{
                   setFilter(e.target.value);
                 }} 
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 bg-white cursor-pointer transition-colors duration-200 min-w-20"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 bg-white cursor-pointer transition-colors duration-200 min-w-20 w-full sm:w-auto"
               >
                  <option value="name">Name</option>
                  <option value="PRN">PRN</option>
@@ -323,16 +327,16 @@ function Home() {
 
     }else{
       return(<>
-<div className="min-h-screen bg-cover bg-center  flex items-center justify-center p-4"  style={{ backgroundImage: `url(${wallpaper})` }}>
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome</h2>
-            <p className="text-gray-600">{login?"Welcome Back":"Create your account to get started"}</p> 
+<div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4"  style={{ backgroundImage: `url(${wallpaper})` }}>
+      <div className="w-full max-w-md mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Welcome</h2>
+            <p className="text-gray-600 text-sm sm:text-base">{login?"Welcome Back":"Create your account to get started"}</p> 
           </div>
 
           <div className='flex flex-wrap'>
-            <div onSubmit={handleSubmit} className="w-full space-y-6">
+            <div onSubmit={handleSubmit} className="w-full space-y-4 sm:space-y-6">
               {login?(null):(<div> 
                 <p className="text-sm font-semibold text-gray-700 mb-2">Name</p>
                 <div>
@@ -343,7 +347,7 @@ function Home() {
                     onChange={handleChange} 
                     value={formData.name} 
                     required 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white text-base"
                   />
                 </div>
               </div>)}
@@ -359,7 +363,7 @@ function Home() {
                     onChange={handleChange} 
                     value={formData.PRN} 
                     required 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white text-base"
                   />
                 </div>
               </div>
@@ -374,7 +378,7 @@ function Home() {
                     onChange={handleChange} 
                     value={formData.password} 
                     required 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-gray-50 hover:bg-white text-base"
                   />
                 </div>
               </div>
@@ -382,11 +386,11 @@ function Home() {
               <button 
                 type='Submit'
                 onClick={handleSubmit}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl focus:ring-4 focus:ring-blue-300 focus:outline-none"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl focus:ring-4 focus:ring-blue-300 focus:outline-none text-base"
               >
                 Submit
               </button>
-              <div >Click here to&nbsp;<span  className='text-blue-600 cursor-pointer' onClick={()=>{setLogin(!login) 
+              <div className="text-sm sm:text-base">Click here to&nbsp;<span  className='text-blue-600 cursor-pointer' onClick={()=>{setLogin(!login) 
                 seterr(false)
                 setFormData({
                       name: '',
@@ -396,13 +400,13 @@ function Home() {
             </div>
 
             {err ? (<div className="w-full mt-4">
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center space-x-3">
-                  <div className="flex-shrink-0">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 flex items-start sm:items-center space-x-3">
+                  <div className="flex-shrink-0 mt-0.5 sm:mt-0">
                     <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <p className="text-red-700 font-medium">{login?"Wrong Password":"User already exists. Please LogIn"}</p>
+                  <p className="text-red-700 font-medium text-sm sm:text-base">{login?"Wrong Password":"User already exists. Please LogIn"}</p>
                 </div>
               </div>): null }
           </div>
