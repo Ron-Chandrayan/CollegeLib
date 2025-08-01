@@ -226,11 +226,6 @@ function Others() {
         </div>
 
         {/* Footer */}
-        <div className="text-center py-8">
-          <p className="text-gray-500 text-sm">
-            © 2024 GST Central Library Portal. Designed for academic excellence.
-          </p>
-        </div>
       </div>
     </div>
   );
