@@ -109,14 +109,33 @@ function Layout() {
           const fetchData =async()=>{
             console.log('Fetching books...');
             try{
-              const response = await fetch(getApiUrl('endpoint=book_all&page=1&limit=1000'), {
-                      headers: getApiHeaders()
+              const booksUrl = getApiUrl('endpoint=book_all&page=1&limit=1000');
+              const booksHeaders = getApiHeaders();
+              
+              console.log('Books URL:', booksUrl);
+              console.log('Books Headers:', booksHeaders);
+              
+              console.log('Starting fetch request...');
+              
+              // Add timeout to prevent hanging
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+              
+              const response = await fetch(booksUrl, {
+                      headers: booksHeaders,
+                      signal: controller.signal
               });
+              
+              clearTimeout(timeoutId);
+              console.log('Fetch response received:', response);
+              console.log('Response status:', response.status);
+              console.log('Response ok:', response.ok);
               
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
               }
               
+              console.log('Parsing JSON response...');
               const data = await response.json();
               console.log('Books data:', data);
               
@@ -130,6 +149,11 @@ function Layout() {
             }
             catch(error){
                 console.error('Error fetching books:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack
+                });
+                console.error('Error type:', error.constructor.name);
             }
           }
           fetchData();

@@ -27,8 +27,14 @@ function Books() {
     useEffect(()=>{
               const fetchData =async()=>{
                 try{
-                  const response = await fetch(getApiUrl(`endpoint=book_all&page=${i}&limit=20`), {
-                      headers: getApiHeaders()
+                  const booksUrl = getApiUrl(`endpoint=book_all&page=${i}&limit=20`);
+                  const booksHeaders = getApiHeaders();
+                  
+                  console.log('Paginated Books URL:', booksUrl);
+                  console.log('Paginated Books Headers:', booksHeaders);
+                  
+                  const response = await fetch(booksUrl, {
+                      headers: booksHeaders
                   });
                   
                   if (!response.ok) {
@@ -45,6 +51,10 @@ function Books() {
                   }
                 } catch(error){
                     console.error('Error fetching paginated books:', error);
+                    console.error('Error details:', {
+                        message: error.message,
+                        stack: error.stack
+                    });
                 }
               }
               fetchData();

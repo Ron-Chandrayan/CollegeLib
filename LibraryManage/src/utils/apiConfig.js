@@ -45,6 +45,7 @@ export const getLibraryApiUrl = (endpoint) => {
 export const getApiHeaders = () => {
   return {
     'x-api-key': import.meta.env.VITE_SECRET_KEY2,
+    'XApiKey': import.meta.env.VITE_SECRET_KEY2, // Try both header names
     'Content-Type': 'application/json',
   };
 };
