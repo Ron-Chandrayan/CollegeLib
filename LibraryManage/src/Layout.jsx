@@ -105,7 +105,7 @@ function Layout() {
                  useEffect(()=>{
            const fetchData =async()=>{
              try{
-               const booksUrl = getApiUrl('endpoint=book_all&page=1&limit=1000');
+               const booksUrl = getApiUrl('endpoint=book_all&limit=10000');
                const booksHeaders = getApiHeaders();
                
                const response = await fetch(booksUrl, {
