@@ -76,7 +76,7 @@ function About() {
           <p className="text-amber-700">
             This system is currently in active development. We're continuously working to enhance 
             functionality and add new features based on user feedback and library requirements.
-            We are in the process of upadating our PYQ page. all the PYQ question papers are getting uploaded and will take 3-4 business days.
+            We are in the process of upadating our PYQ page. All the PYQ question papers are getting uploaded and will take 3-4 business days.
           </p>
         </div>
 
