@@ -199,7 +199,7 @@ function Home() {
       const currentMinutes = now.getMinutes();
 
       // 17:35 in 24-hour format = 5:35 PM
-      if (((currentHours > 19 || (currentHours === 19 && currentMinutes >= 30)) )||(currentHours<8 || (currentHours === 8 && currentMinutes <= 15))) {
+      if (((currentHours > 17 || (currentHours === 17 && currentMinutes >= 45)) )||(currentHours<8 || (currentHours === 8 && currentMinutes <= 15))) {
         setIsClosed(true);
       } else {
         setIsClosed(false);
