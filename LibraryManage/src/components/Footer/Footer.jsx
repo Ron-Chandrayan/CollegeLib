@@ -62,6 +62,10 @@ function Footer() {
               <p className='text-slate-400 text-sm'>
                 © 2025 LiBManage. All rights reserved.
               </p>
+               <p className='text-slate-400 text-sm'>
+                Made with ❤️ for SIES GST
+
+              </p>
               <div className='flex space-x-6 mt-4 md:mt-0'>
                 <NavLink to="#" className='text-slate-400 hover:text-cyan-400 transition-colors duration-200 text-sm'>
                   Privacy Policy
