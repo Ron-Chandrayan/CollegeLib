@@ -18,7 +18,6 @@ function  Questionpaper() {
     try {
       const response = await fetch('/api/qps');
       const data = await response.json();
-      console.log(data);
       setqp(data);
     } catch (error) {
       console.error('Error fetching qps:', error);
