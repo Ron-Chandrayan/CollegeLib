@@ -148,7 +148,7 @@ function Home() {
 
             // Set signup/login state true
             setSignup(true);
-            setLogin(true);
+           // setLogin(true);
             seterr(false);
           } else {
             if (data.message === "User exists" || data.message === "wrong password") {
