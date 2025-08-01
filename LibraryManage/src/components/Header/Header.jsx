@@ -114,6 +114,19 @@ const toggleMobileMenu = () => {
                     </NavLink>
                   </div>
                   <div>
+                    <NavLink
+                      to="/questionpaper"
+                      className={({ isActive }) =>
+                        `${isActive
+                          ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"
+                          : "text-slate-300 hover:text-white hover:bg-slate-700"
+                        } px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105`
+                      }
+                    >
+                      Others
+                    </NavLink>
+                  </div>
+                  <div>
                     <button 
                       onClick={handleChange} 
                       className="text-slate-300 hover:text-white hover:bg-slate-700 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
