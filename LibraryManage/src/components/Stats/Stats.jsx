@@ -34,7 +34,7 @@ function Stats() {
     
   // },[]);
 
-  (
+  return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center p-4">
           <div className="bg-white shadow-lg rounded-2xl p-6 max-w-md">
             <h1 className="text-2xl font-bold text-red-600 mb-2">⚠️ Under Maintenance</h1>
