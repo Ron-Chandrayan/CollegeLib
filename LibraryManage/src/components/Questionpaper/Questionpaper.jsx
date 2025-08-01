@@ -239,70 +239,98 @@ function  Questionpaper() {
         {filteredqp.length>0?       
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {filteredqp.map((qp,index)=>(         
-              <div key={index} className="group bg-gradient-to-br from-white via-blue-50/30 to-indigo-50/50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border-2 border-white/60 hover:border-indigo-300/50 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 sm:hover:-translate-y-2 hover:rotate-1 backdrop-blur-sm">           
-                <div className="flex items-center mb-4 sm:mb-6">
-                  <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl sm:rounded-2xl p-2 sm:p-3 mr-3 sm:mr-4 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                    <svg className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-lg sm:text-xl font-bold text-gray-800 group-hover:text-indigo-700 transition-colors duration-300">📄 Question Paper</h4>
-                    <p className="text-xs sm:text-sm text-gray-500">Academic Resource</p>
+              <div key={index} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden group">
+                
+                {/* Question Paper Header */}
+                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-white font-bold text-lg leading-tight mb-1 group-hover:text-indigo-100 transition-colors duration-200">
+                        📄 Question Paper
+                      </h3>
+                      <p className="text-indigo-100 text-sm">Academic Resource</p>
+                    </div>
+                    <div className="ml-3">
+                      <svg className="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                  <div className="flex items-center justify-between p-2 sm:p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl sm:rounded-2xl border border-indigo-100">
-                    <span className="text-xs sm:text-sm font-bold text-indigo-700 flex items-center">
-                      🎓 <span className="ml-1 sm:ml-2">Semester:</span>
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-gray-800 bg-white px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl shadow-sm">{qp.sem}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 sm:p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl sm:rounded-2xl border border-purple-100">
-                    <span className="text-xs sm:text-sm font-bold text-purple-700 flex items-center">
-                      📚 <span className="ml-1 sm:ml-2">Subject:</span>
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-gray-800 bg-white px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl shadow-sm">{qp.subject}</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 sm:p-3 bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl sm:rounded-2xl border border-pink-100">
-                    <span className="text-xs sm:text-sm font-bold text-pink-700 flex items-center">
-                      📅 <span className="ml-1 sm:ml-2">Year:</span>
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-gray-800 bg-white px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl shadow-sm">{qp.year}</span>
-                  </div>
-                </div>
-                
-                <button 
-                  onClick={async () => {
-                    try {
-                      const response = await fetch(`/download/${qp.sem}/${qp.subject}/${qp.year}/${qp.filename}`);
-                      const data = await response.json();
-                      if (data.success) {
-                        window.open(data.downloadUrl, '_blank');
-                      } else {
-                        alert('Error: ' + data.message);
-                      }
-                    } catch (error) {
-                      alert('Error downloading file');
-                    }
-                  }}
-                  className='group relative w-full px-4 sm:px-5 lg:px-6 py-3 sm:py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl sm:rounded-2xl hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg overflow-hidden text-sm sm:text-base lg:text-lg' 
-                >
-                  {/* Button background animation */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+
+                {/* Question Paper Details */}
+                <div className="p-5 space-y-4">
                   
-                  <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    <span>👁️ View Paper</span>
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
+                  {/* Semester */}
+                  <div className="flex items-center">
+                    <div className="flex items-center justify-center w-8 h-8 bg-indigo-100 rounded-lg mr-3">
+                      <svg className="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Semester</p>
+                      <p className="text-gray-800 font-semibold">{qp.sem}</p>
+                    </div>
                   </div>
-                </button>         
+
+                  {/* Subject */}
+                  <div className="flex items-center">
+                    <div className="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-lg mr-3">
+                      <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Subject</p>
+                      <p className="text-gray-800 font-semibold">{qp.subject}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Year */}
+                  <div className="flex items-center">
+                    <div className="flex items-center justify-center w-8 h-8 bg-pink-100 rounded-lg mr-3">
+                      <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Year</p>
+                      <p className="text-gray-800 font-semibold">{qp.year}</p>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Card Footer */}
+                <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">Paper #{index + 1}</span>
+                    <button 
+                      onClick={async () => {
+                        try {
+                          const response = await fetch(`/download/${qp.sem}/${qp.subject}/${qp.year}/${qp.filename}`);
+                          const data = await response.json();
+                          if (data.success) {
+                            window.open(data.downloadUrl, '_blank');
+                          } else {
+                            alert('Error: ' + data.message);
+                          }
+                        } catch (error) {
+                          alert('Error downloading file');
+                        }
+                      }}
+                      className="text-indigo-600 hover:text-indigo-700 text-sm font-medium transition-colors duration-200 flex items-center"
+                    >
+                      View Paper
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
               </div>       
             ))}
           </div>
