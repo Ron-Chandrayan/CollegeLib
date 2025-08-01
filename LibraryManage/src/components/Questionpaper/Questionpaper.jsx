@@ -29,9 +29,9 @@ function  Questionpaper() {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-    console.log(sem);
-    console.log(subject);
-    console.log(year);
+    // console.log(sem);
+    // console.log(subject);
+    // console.log(year);
 
     const filtered = qp.filter((item)=>
       {return((!sem || item.sem === sem) &&
@@ -42,7 +42,7 @@ function  Questionpaper() {
 
     setfirstvisit(false);
 
-    console.log(filteredqp);
+    // console.log(filteredqp);
 
   }
 
