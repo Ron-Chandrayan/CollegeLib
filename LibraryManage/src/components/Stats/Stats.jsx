@@ -40,7 +40,7 @@ function Stats() {
 
    useEffect(()=>{
     const getData=async ()=>{
-       try{await fetch(`/api/hourlyfootfal`)
+       try{await fetch(`/api/hourlyfootfall`)
             .then(response => response.json())
             .then(data => {
               
