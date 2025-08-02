@@ -61,6 +61,8 @@ cron.schedule(("0 22 * * *"),async ()=>{
        console.error('CRON-error', error.message);
       
   }
+}, {
+  timezone: "Asia/Kolkata"
 })
 
 cron.schedule(('0 6-20 * * *'),async ()=>{
@@ -81,6 +83,8 @@ cron.schedule(('0 6-20 * * *'),async ()=>{
        console.error('CRON-error', error.message);
       
   }
+}, {
+  timezone: "Asia/Kolkata"
 })
 
 
