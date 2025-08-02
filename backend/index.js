@@ -330,6 +330,17 @@ app.get('/api/hourlyfootfall', async (req, res) => {
 });
 
 
+app.get('/api/dailyfootfall', async (req, res) => {
+  try {
+    const data = await dailyfootfall.find().sort({timestamp:1});
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching footfall data' });
+  }
+});
+
+
 
 // static React build for client-side routing
 const staticPath = path.join(__dirname, '../LibraryManage/dist');

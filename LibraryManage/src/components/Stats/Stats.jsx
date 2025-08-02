@@ -47,7 +47,7 @@ function Stats() {
             .then(response => response.json())
             .then(data => {
               
-              console.log(data)
+              // console.log(data)
               setInfo(data)
                                          
             })
@@ -59,6 +59,21 @@ function Stats() {
     }
 
     getData()
+    const getData2=async ()=>{
+       try{await fetch(`/api/dailyfootfall`)
+            .then(response => response.json())
+            .then(data => {
+              
+              console.log(data)
+                                         
+            })
+            }
+            catch(error){
+                //seterr(true);                
+                console.error(error);             
+            }
+    }
+    getData2
 
     
   },[]);
