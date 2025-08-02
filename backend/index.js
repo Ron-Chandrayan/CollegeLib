@@ -316,8 +316,12 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
 
 app.get('/api/hourlyfootfall', async (req, res) => {
   try {
-    const start = new Date("2025-08-01T00:00:00.000Z");
-    const end = new Date("2025-08-02T00:00:00.000Z");
+        const start = new Date();
+      start.setHours(0, 0, 0, 0);  // sets time to midnight
+
+      // Tomorrow at 00:00:00
+      const end = new Date(today);
+      end.setDate(tomorrow.getDate() + 1);
     const data = await hourlyfootfall.find({
                 timestamp: { $gte: start, $lt: end }
               }).sort({ timestamp: 1 });
