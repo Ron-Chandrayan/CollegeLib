@@ -25,7 +25,7 @@ export default function Linegraph({data}) {
           <Legend />
           <Line
             type="monotone"
-            dataKey="footfall"
+            dataKey="count"
             stroke="#2563EB" // Tailwind blue-600 color hex
             strokeWidth={2}
             activeDot={{ r: 8 }}
