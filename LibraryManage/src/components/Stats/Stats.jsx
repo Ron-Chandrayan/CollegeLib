@@ -73,7 +73,7 @@ function Stats() {
                 console.error(error);             
             }
     }
-    getData2
+    getData2()
 
     
   },[]);
