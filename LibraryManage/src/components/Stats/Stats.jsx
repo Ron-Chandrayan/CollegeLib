@@ -8,6 +8,7 @@ function Stats() {
 
   const{Students,setStudents,loading,setloading}= useOutletContext()
   //console.log(Students);
+  const[info, setInfo]=useState([]);
   
 
   // useEffect(()=>{
@@ -45,6 +46,7 @@ function Stats() {
             .then(data => {
               
               console.log(data)
+              setInfo(data)
                                          
             })
             }
@@ -54,14 +56,14 @@ function Stats() {
             }
     }
 
-    setInterval(getData,5000);
+    getData()
 
     
   },[]);
 
   return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <Linegraph />
+      <Linegraph data={info} />
        </div>
       );
 
