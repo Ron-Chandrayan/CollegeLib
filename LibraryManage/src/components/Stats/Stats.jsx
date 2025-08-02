@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { data } from 'react-router-dom';
 import { useOutletContext } from 'react-router-dom';
 import Linegraph from '../Linegraph/Linegraph';
+import Barcharts from '../Barcharts/Barcharts';
+
 
 function Stats() {
 
@@ -64,6 +66,7 @@ function Stats() {
   return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
+      <Barcharts/>
        </div>
       );
 
