@@ -316,20 +316,23 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
 
 app.get('/api/hourlyfootfall', async (req, res) => {
   try {
-        const start = new Date();
-      start.setHours(0, 0, 0, 0);  // sets time to midnight
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);  // today at midnight
 
-      // Tomorrow at 00:00:00
-      const end = new Date(today);
-      end.setDate(tomorrow.getDate() + 1);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1); // tomorrow at midnight
+
     const data = await hourlyfootfall.find({
-                timestamp: { $gte: start, $lt: end }
-              }).sort({ timestamp: 1 });
+      timestamp: { $gte: start, $lt: end }
+    }).sort({ timestamp: 1 });
+
     res.json(data);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error fetching footfall data' });
   }
 });
+
 
 
 // static React build for client-side routing
