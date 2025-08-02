@@ -43,7 +43,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 
-cron.schedule(("*/2 * * * *"),async ()=>{
+cron.schedule(("0 22 * * *"),async ()=>{
   try {
       const response = await axios.get(process.env.API_URL, { //daily footfall
     headers: {
