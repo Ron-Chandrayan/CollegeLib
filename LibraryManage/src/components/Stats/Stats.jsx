@@ -35,6 +35,30 @@ function Stats() {
     
   // },[]);
 
+
+
+
+   useEffect(()=>{
+    const getData=async ()=>{
+       try{await fetch(`/api/hourlyfootfal`)
+            .then(response => response.json())
+            .then(data => {
+              
+              console.log(data)
+                                         
+            })
+            }
+            catch(error){
+                //seterr(true);                
+                console.error(error);             
+            }
+    }
+
+    setInterval(getData,5000);
+
+    
+  },[]);
+
   return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph />

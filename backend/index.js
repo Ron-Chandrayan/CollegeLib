@@ -314,6 +314,20 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
   }
 });
 
+app.get('/api/hourlyfootfall', async (req, res) => {
+  try {
+    const start = new Date("2025-08-01T00:00:00.000Z");
+    const end = new Date("2025-08-02T00:00:00.000Z");
+    const data = await hourlyfootfall.find({
+                timestamp: { $gte: start, $lt: end }
+              }).sort({ timestamp: 1 });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching footfall data' });
+  }
+});
+
+
 // static React build for client-side routing
 const staticPath = path.join(__dirname, '../LibraryManage/dist');
 console.log('📁 Static files path:', staticPath);
