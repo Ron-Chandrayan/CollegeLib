@@ -68,7 +68,7 @@ function Footer() {
                 <img 
                   src={siesLogo} 
                   alt="SIES Graduate School of Technology" 
-                  className="h-6 w-auto mx-2 inline-block"
+                  className="h-8 w-auto mx-2 inline-block"
                 />
               </p>
               <div className='flex space-x-6 mt-4 md:mt-0'>
