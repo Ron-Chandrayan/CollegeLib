@@ -11,6 +11,7 @@ function Stats() {
   const{Students,setStudents,loading,setloading}= useOutletContext()
   //console.log(Students);
   const[info, setInfo]=useState([]);
+   const[info2, setInfo2]=useState([]);
   
 
   // useEffect(()=>{
@@ -65,6 +66,7 @@ function Stats() {
             .then(data => {
               
               console.log(data)
+              setInfo2(data)
                                          
             })
             }
@@ -81,7 +83,7 @@ function Stats() {
   return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
-      <Barcharts/>
+      <Barcharts data={info2}/>
        </div>
       );
 
