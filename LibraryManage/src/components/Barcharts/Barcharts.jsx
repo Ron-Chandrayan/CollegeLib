@@ -19,9 +19,10 @@ import {
 // ];
 
 export default function Barcharts({data}) {
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+ const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { month: 'short', day: 'numeric' });
+    // You can customize locale and options as needed
   };
 
   return (
@@ -33,9 +34,9 @@ export default function Barcharts({data}) {
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="timestamp" /*tickFormatter={formatDate}*/ />
+          <XAxis dataKey="timestamp" tickFormatter={formatDate} />
           <YAxis />
-          <Tooltip /*labelFormatter={formatDate}*/ />
+          <Tooltip labelFormatter={formatDate} />
           <Legend />
           <Bar dataKey="count" fill="#2563EB" />
         </BarChart>
