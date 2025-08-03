@@ -12,6 +12,8 @@ function Stats() {
   //console.log(Students);
   const[info, setInfo]=useState([]);
    const[info2, setInfo2]=useState([]);
+   const[prn,setprn]=useState("");
+   setprn(universalformData.PRN);
   // console.log(universalformData);
 
   // useEffect(()=>{
@@ -80,11 +82,12 @@ function Stats() {
     
   },[]);
 
-  return (
+  return (<>
+        <p>Welcome {prn}</p>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
       <Barcharts data={info2}/>
-       </div>
+       </div></>
       );
 
 }
