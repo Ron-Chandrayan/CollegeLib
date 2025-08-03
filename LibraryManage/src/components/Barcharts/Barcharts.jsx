@@ -10,15 +10,15 @@ import {
   Bar,
 } from "recharts";
 
-const data = [
-  { date: "2025-08-01", count: 120 },
-  { date: "2025-08-02", count: 150 },
-  { date: "2025-08-03", count: 180 },
-  { date: "2025-08-04", count: 90 },
-  { date: "2025-08-05", count: 200 },
-];
+// const data = [
+//   { date: "2025-08-01", count: 120 },
+//   { date: "2025-08-02", count: 150 },
+//   { date: "2025-08-03", count: 180 },
+//   { date: "2025-08-04", count: 90 },
+//   { date: "2025-08-05", count: 200 },
+// ];
 
-export default function Barcharts() {
+export default function Barcharts({data}) {
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
@@ -33,9 +33,9 @@ export default function Barcharts() {
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tickFormatter={formatDate} />
+          <XAxis dataKey="timestamp" /*tickFormatter={formatDate}*/ />
           <YAxis />
-          <Tooltip labelFormatter={formatDate} />
+          <Tooltip /*labelFormatter={formatDate}*/ />
           <Legend />
           <Bar dataKey="count" fill="#2563EB" />
         </BarChart>
