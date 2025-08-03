@@ -1,6 +1,5 @@
 import React from 'react'
 import { NavLink , Link } from 'react-router-dom'
-import siesLogo from '../../assets/sies-gst.png';
 
 function Footer() {
   return (
@@ -63,13 +62,8 @@ function Footer() {
               <p className='text-slate-400 text-sm'>
                 © 2025 LiBManage. All rights reserved.
               </p>
-               <p className='text-slate-400 text-sm flex items-center'>
-                Made with ❤️ for 
-                <img 
-                  src={siesLogo} 
-                  alt="SIES Graduate School of Technology" 
-                  className="h-8 w-auto mx-2 inline-block"
-                />
+               <p className='text-slate-400 text-sm'>
+                Made with ❤️ for SIES GST
               </p>
               <div className='flex space-x-6 mt-4 md:mt-0'>
                 <NavLink to="#" className='text-slate-400 hover:text-cyan-400 transition-colors duration-200 text-sm'>
