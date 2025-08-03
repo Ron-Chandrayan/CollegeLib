@@ -15,7 +15,10 @@ function Layout() {
       const[login,setLogin]= useState(false);
       const [welcome,setwelcome]=useState("");
       const[books,setBooks]=useState([]);
-      
+      const [universalformData, setuniversalFormData] = useState({
+          name: '',
+          PRN: ''
+        });
       
       
       
@@ -138,7 +141,7 @@ function Layout() {
   return (
     <div>
        <Header signup={signup} setSignup={setSignup} login={login} setLogin={setLogin}/>
-       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks}} />
+       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks,universalformData,setuniversalFormData}} />
        <Footer/>
     </div>
   )

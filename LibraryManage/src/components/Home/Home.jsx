@@ -13,7 +13,7 @@ function Home() {
     // const[totalfootfall,settotalfootfall]=useState("Loading...")
 
 
-    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome} = useOutletContext()
+    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData} = useOutletContext()
 
     const[err,seterr]= useState(false)
     const[errMessage, setErrMessage] = useState("")
@@ -129,6 +129,12 @@ function Home() {
         seterr(false);
         setErrMessage("");
         setIsSubmitting(true);
+
+        setuniversalFormData({
+           name: formData.name,
+          PRN: formData.PRN
+        }
+        )
 
         try {
           const res = await fetch('/api/save', {

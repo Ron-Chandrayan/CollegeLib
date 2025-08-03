@@ -8,11 +8,11 @@ import Barcharts from '../Barcharts/Barcharts';
 
 function Stats() {
 
-  const{Students,setStudents,loading,setloading}= useOutletContext()
+  const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData}= useOutletContext()
   //console.log(Students);
   const[info, setInfo]=useState([]);
    const[info2, setInfo2]=useState([]);
-  
+  console.log(universalformData);
 
   // useEffect(()=>{
   //   const getData=async ()=>{
