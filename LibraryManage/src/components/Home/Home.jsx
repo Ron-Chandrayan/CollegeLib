@@ -162,6 +162,7 @@ function Home() {
 
             // Save user name from response to welcome state
             setwelcome(data.name);
+            setwelcome2(data.PRN);
 
             // Set signup/login state true
             setSignup(true);
