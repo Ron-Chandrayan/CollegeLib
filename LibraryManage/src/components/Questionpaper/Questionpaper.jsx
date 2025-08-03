@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import UploadForm from '../UploadForm/UploadForm';
+import loadingGif from '../../assets/loading-gst.gif';
 
 function  Questionpaper() {
   const [qp,setqp] = useState([]);
@@ -11,16 +12,20 @@ function  Questionpaper() {
   const[uploadmanual,setUploadmanual]=useState(false);
   const[firstvisit,setfirstvisit]=useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect( ()=>{
       async function fetchData() {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/qps');
       const data = await response.json();
       setqp(data);
     } catch (error) {
       console.error('Error fetching qps:', error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -44,6 +49,37 @@ function  Questionpaper() {
 
     // console.log(filteredqp);
 
+  }
+
+  // Loading screen
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="flex flex-col items-center space-y-6">
+          {/* Custom loading GIF */}
+          <div className="relative">
+            <img 
+              src={loadingGif} 
+              alt="Loading..." 
+              className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40"
+            />
+          </div>
+          
+          {/* Enhanced loading text */}
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-slate-700 font-semibold text-xl">Loading Question Papers</span>
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </div>
+            <p className="text-slate-500 text-sm">Please wait while we fetch your question papers...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   
