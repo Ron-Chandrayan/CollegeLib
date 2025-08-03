@@ -12,7 +12,7 @@ function Stats() {
   //console.log(Students);
   const[info, setInfo]=useState([]);
    const[info2, setInfo2]=useState([]);
-  console.log(universalformData);
+  // console.log(universalformData);
 
   // useEffect(()=>{
   //   const getData=async ()=>{
