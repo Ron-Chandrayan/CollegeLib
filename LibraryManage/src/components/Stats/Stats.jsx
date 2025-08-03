@@ -8,7 +8,7 @@ import Barcharts from '../Barcharts/Barcharts';
 
 function Stats() {
 
-  const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData}= useOutletContext()
+  const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData,welcome}= useOutletContext()
   //console.log(Students);
   const[info, setInfo]=useState([]);
    const[info2, setInfo2]=useState([]);
@@ -83,7 +83,7 @@ function Stats() {
   },[]);
 
   return (<>
-        <p>Welcome {prn}</p>
+        <p>Welcome {welcome}</p>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
       <Barcharts data={info2}/>
