@@ -12,8 +12,8 @@ function Stats() {
   //console.log(Students);
   const[info, setInfo]=useState([]);
    const[info2, setInfo2]=useState([]);
-   const[prn,setprn]=useState("");
-   setprn(universalformData.PRN);
+   const[prn,setprn]=useState(universalformData?.PRN || '');
+   
   // console.log(universalformData);
 
   // useEffect(()=>{
