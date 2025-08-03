@@ -21,7 +21,7 @@ import {
 export default function Barcharts({data}) {
  const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
     // You can customize locale and options as needed
   };
 
