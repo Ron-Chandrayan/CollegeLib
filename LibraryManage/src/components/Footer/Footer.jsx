@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink , Link } from 'react-router-dom'
-import loadingGif from '../../assets/loading-gst.gif';
+import siesLogo from '../../assets/sies-gst.png';
 
 function Footer() {
   return (
@@ -66,11 +66,10 @@ function Footer() {
                <p className='text-slate-400 text-sm flex items-center'>
                 Made with ❤️ for 
                 <img 
-                  src={loadingGif} 
-                  alt="SIES GST Logo" 
-                  className="w-4 h-4 mx-1 inline-block"
+                  src={siesLogo} 
+                  alt="SIES Graduate School of Technology" 
+                  className="h-6 w-auto mx-2 inline-block"
                 />
-                SIES GST
               </p>
               <div className='flex space-x-6 mt-4 md:mt-0'>
                 <NavLink to="#" className='text-slate-400 hover:text-cyan-400 transition-colors duration-200 text-sm'>
