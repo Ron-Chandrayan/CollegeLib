@@ -13,7 +13,7 @@ function Home() {
     // const[totalfootfall,settotalfootfall]=useState("Loading...")
 
 
-    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData} = useOutletContext()
+    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2} = useOutletContext()
 
     const[err,seterr]= useState(false)
     const[errMessage, setErrMessage] = useState("")
@@ -57,6 +57,7 @@ function Home() {
                     setSignup(true);
                     setLogin(true);
                     setwelcome(data.name);
+                    setwelcome2(data.PRN);
                     seterr(false);
                   } else {
                     localStorage.removeItem('token');
@@ -94,6 +95,7 @@ function Home() {
                         if(element.PRN===formData.PRN){
                          // console.log(element.name);
                           setwelcome(element.name);
+                          setwelcome2(element.PRN);
                           console.log(welcome);
                           
                         }
