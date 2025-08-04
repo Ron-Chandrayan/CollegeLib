@@ -12,6 +12,7 @@ function Stats() {
   //console.log(Students);
  
    const[prn,setprn]=useState(universalformData?.PRN || '');
+   const[received,setreceived]=useState(false);
    
         useEffect(() => {
         console.log("Students changed:", Students);
@@ -50,6 +51,7 @@ function Stats() {
 
 
   return (<>
+        <p>{received?"Data received":"loading"}</p>
         <p>Welcome {welcome} {welcome2}</p>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
