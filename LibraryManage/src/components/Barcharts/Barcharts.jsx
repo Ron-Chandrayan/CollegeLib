@@ -9,6 +9,7 @@ import {
   Legend,
   Bar,
 } from "recharts";
+import { Users, Activity } from 'lucide-react'  // Add this line
 
 function Barcharts({ data }) {
   const formatDate = (timestamp) => {
