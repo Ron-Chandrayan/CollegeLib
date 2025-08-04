@@ -46,7 +46,7 @@ function Stats() {
 
 
   return (<>
-        <p>Welcome {welcome} {prn}</p>
+        <p>Welcome {welcome} {welcome2}</p>
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <Linegraph data={info} />
       <Barcharts data={info2}/>

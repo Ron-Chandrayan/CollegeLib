@@ -96,7 +96,6 @@ function Home() {
                         if(element.PRN===formData.PRN){
                          // console.log(element.name);
                           setwelcome(element.name);
-                          setwelcome2(element.PRN);
                           console.log(welcome);
                           
                         }
@@ -163,7 +162,7 @@ function Home() {
 
             // Save user name from response to welcome state
             setwelcome(data.name);
-            setwelcome2(data.PRN);
+            // setwelcome2(data.PRN);
 
             // Set signup/login state true
             setSignup(true);

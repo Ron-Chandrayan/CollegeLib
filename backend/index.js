@@ -253,7 +253,7 @@ app.get('/validate', async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = await Users.findOne({ PRN: decoded.PRN });
     if (!user) return res.status(401).json({ valid: false });
-    res.json({ valid: true, name: user.name });
+    res.json({ valid: true, name: user.name , PRN:user.PRN});
   } catch {
     res.status(401).json({ valid: false });
   }
