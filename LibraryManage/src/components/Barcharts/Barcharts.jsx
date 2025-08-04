@@ -1,3 +1,15 @@
+import React from "react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+} from "recharts";
+
 function Barcharts({ data }) {
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -61,3 +73,5 @@ function Barcharts({ data }) {
     </div>
   );
 }
+
+export default Barcharts
