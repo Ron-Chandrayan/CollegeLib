@@ -175,7 +175,7 @@ function Layout() {
             getData2()
 
             
-          },[]);
+          },[info,info2]);
 
 
 
