@@ -67,7 +67,7 @@ function Stats() {
             .then(response => response.json())
             .then(data => {
               
-              console.log(data)
+              // console.log(data)
               setInfo2(data)
                                          
             })
