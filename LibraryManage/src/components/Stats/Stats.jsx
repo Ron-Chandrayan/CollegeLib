@@ -16,11 +16,12 @@ function Stats() {
    
         useEffect(() => {
         console.log("Students changed:", Students);
+         if(Students.length!=0){
+        setreceived(true);
+        }
       }, [Students]);
 
-      if(Students.length!=0){
-        setreceived(true);
-      }
+     
    
   // console.log(universalformData);
 
