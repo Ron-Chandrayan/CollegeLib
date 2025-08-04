@@ -201,7 +201,7 @@ function Home() {
         } catch (err) {
           console.error('❌ Error:', err.message);
           seterr(true);
-          setErrMessage("Network error. Please check your connection and try again.");
+          setErrMessage("Please enter the correct valid PRN");
         } finally {
           setIsSubmitting(false);
         }
