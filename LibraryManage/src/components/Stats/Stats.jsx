@@ -1,3 +1,7 @@
+import React from 'react'
+import { useState, useEffect } from 'react'
+import { useOutletContext } from 'react-router-dom';
+
 function Stats() {
   const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData,welcome,welcome2,info2, setInfo2,info,setInfo}= useOutletContext()
   //console.log(Students);
