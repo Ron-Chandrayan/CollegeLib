@@ -22,7 +22,7 @@ function Footer() {
               <h4 className='text-white font-semibold mb-4'>Quick Links</h4>
               <ul className='space-y-2'>
                 <li>
-                  <NavLink to="/home" className='text-slate-300 hover:text-cyan-400 transition-colors duration-200 text-sm'>
+                  <NavLink to="/" className='text-slate-300 hover:text-cyan-400 transition-colors duration-200 text-sm'>
                     Home
                   </NavLink>
                 </li>
