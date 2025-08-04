@@ -8,10 +8,9 @@ import Barcharts from '../Barcharts/Barcharts';
 
 function Stats() {
 
-  const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData,welcome,welcome2}= useOutletContext()
+  const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData,welcome,welcome2,info2, setInfo2,info,setInfo}= useOutletContext()
   //console.log(Students);
-  const[info, setInfo]=useState([]);
-   const[info2, setInfo2]=useState([]);
+ 
    const[prn,setprn]=useState(universalformData?.PRN || '');
    
   // console.log(universalformData);
@@ -44,43 +43,7 @@ function Stats() {
 
 
 
-   useEffect(()=>{
-    const getData=async ()=>{
-       try{await fetch(`/api/hourlyfootfall`)
-            .then(response => response.json())
-            .then(data => {
-              
-              // console.log(data)
-              setInfo(data)
-                                         
-            })
-            }
-            catch(error){
-                //seterr(true);                
-                console.error(error);             
-            }
-    }
 
-    getData()
-    const getData2=async ()=>{
-       try{await fetch(`/api/dailyfootfall`)
-            .then(response => response.json())
-            .then(data => {
-              
-              // console.log(data)
-              setInfo2(data)
-                                         
-            })
-            }
-            catch(error){
-                //seterr(true);                
-                console.error(error);             
-            }
-    }
-    getData2()
-
-    
-  },[]);
 
   return (<>
         <p>Welcome {welcome} {prn}</p>

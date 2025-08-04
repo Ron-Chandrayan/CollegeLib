@@ -20,6 +20,8 @@ function Layout() {
           name: '',
           PRN: ''
         });
+       const[info, setInfo]=useState([]);
+       const[info2, setInfo2]=useState([]);
       
       
       
@@ -135,14 +137,52 @@ function Layout() {
            }
            fetchData();
            
-         },[])
+         },[]);
+
+                    useEffect(()=>{
+            const getData=async ()=>{
+              try{await fetch(`/api/hourlyfootfall`)
+                    .then(response => response.json())
+                    .then(data => {
+                      
+                      // console.log(data)
+                      setInfo(data)
+                                                
+                    })
+                    }
+                    catch(error){
+                        //seterr(true);                
+                        console.error(error);             
+                    }
+            }
+
+            getData()
+            const getData2=async ()=>{
+              try{await fetch(`/api/dailyfootfall`)
+                    .then(response => response.json())
+                    .then(data => {
+                      
+                      // console.log(data)
+                      setInfo2(data)
+                                                
+                    })
+                    }
+                    catch(error){
+                        //seterr(true);                
+                        console.error(error);             
+                    }
+            }
+            getData2()
+
+            
+          },[]);
 
 
 
   return (
     <div>
        <Header signup={signup} setSignup={setSignup} login={login} setLogin={setLogin}/>
-       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks,universalformData,setuniversalFormData,welcome2,setwelcome2}} />
+       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks,universalformData,setuniversalFormData,welcome2,setwelcome2,info, setInfo,info2, setInfo2}} />
        <Footer/>
     </div>
   )
