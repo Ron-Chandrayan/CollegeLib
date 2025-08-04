@@ -58,7 +58,7 @@ function Home() {
                     setSignup(true);
                     setLogin(true);
                     setwelcome(data.name);
-                    setwelcome2(data.PRN);
+                    // setwelcome2(data.PRN);
                     seterr(false);
                   } else {
                     localStorage.removeItem('token');
@@ -484,7 +484,10 @@ function Home() {
                       type="text" 
                       name="PRN" 
                       placeholder="Enter your PRN" 
-                      onChange={handleChange} 
+                      onChange={(e) => {
+                        handleChange(e);
+                        setwelcome2(e.target.value)
+                      }}
                       value={formData.PRN} 
                       required 
                       className="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
