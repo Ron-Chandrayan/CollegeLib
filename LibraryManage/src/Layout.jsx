@@ -79,32 +79,32 @@ function Layout() {
      },[]);
       
 
-      useEffect(()=>{
-          const getData=async ()=>{
-             try{await fetch(`/fetchtime`) //for stats page
-                  .then(response => response.json())
-                  .then(data => {
-                    setloading(false);
-                  // console.log(data);
-                    setStudents(data);
-                    // console.log(Students);
-                   // setName(data);
+      // useEffect(()=>{
+      //     const getData=async ()=>{
+      //        try{await fetch(`/fetchtime`) //for stats page
+      //             .then(response => response.json())
+      //             .then(data => {
+      //               setloading(false);
+      //             // console.log(data);
+      //               setStudents(data);
+      //               // console.log(Students);
+      //              // setName(data);
                     
                       
-                  })
-                  }
-                  catch(error){
-                      //seterr(true);
-                      setloading(true);
-                      console.error(error);
+      //             })
+      //             }
+      //             catch(error){
+      //                 //seterr(true);
+      //                 setloading(true);
+      //                 console.error(error);
                       
-                  }
-          }
+      //             }
+      //     }
       
-          setInterval(getData,5000);
+      //     setInterval(getData,5000);
       
           
-        },[]);
+        // },[]);
 
                  useEffect(()=>{
            const fetchData =async()=>{
