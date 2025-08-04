@@ -58,7 +58,7 @@ function Home() {
                     setSignup(true);
                     setLogin(true);
                     setwelcome(data.name);
-                    // setwelcome2(data.PRN);
+                    setwelcome2(data.PRN);
                     seterr(false);
                   } else {
                     localStorage.removeItem('token');
@@ -162,7 +162,7 @@ function Home() {
 
             // Save user name from response to welcome state
             setwelcome(data.name);
-            // setwelcome2(data.PRN);
+            setwelcome2(data.PRN);
 
             // Set signup/login state true
             setSignup(true);
@@ -486,7 +486,6 @@ function Home() {
                       placeholder="Enter your PRN" 
                       onChange={(e) => {
                         handleChange(e);
-                        setwelcome2(e.target.value)
                       }}
                       value={formData.PRN} 
                       required 

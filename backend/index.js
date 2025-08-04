@@ -233,14 +233,14 @@ app.post('/api/save', async (req, res) => {
     const user = new Users({ name, PRN, password });
     await user.save();
     const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
-    return res.json({ success: true, message: 'Signup successful', token, name });
+    return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
   } else {
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
     if (user.password !== password)
       return res.status(401).json({ success: false, message: 'Wrong password' });
     const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
-    return res.json({ success: true, message: 'Login successful', token, name: user.name });
+    return res.json({ success: true, message: 'Login successful', token, name: user.name, PRN:user.PRN });
   }
 });
 
