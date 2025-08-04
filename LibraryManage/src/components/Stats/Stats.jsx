@@ -1,9 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { data } from 'react-router-dom';
-import { useOutletContext } from 'react-router-dom';
-import Linegraph from '../Linegraph/Linegraph';
-import Barcharts from '../Barcharts/Barcharts';
+import { useOutletContext } from 'react-router-dom'
+import { Users, Activity } from 'lucide-react'  // Add this line
+import Linegraph from '../Linegraph/Linegraph'
+import Barcharts from '../Barcharts/Barcharts'
+
+
+
+
 
 function Stats() {
   const{Students,setStudents,loading,setloading,universalformData,setuniversalFormData,welcome,welcome2,info2, setInfo2,info,setInfo}= useOutletContext()
