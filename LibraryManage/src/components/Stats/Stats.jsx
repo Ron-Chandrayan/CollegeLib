@@ -12,7 +12,10 @@ function Stats() {
   //console.log(Students);
  
    const[prn,setprn]=useState(universalformData?.PRN || '');
-   console.log(Students)
+   
+        useEffect(() => {
+        console.log("Students changed:", Students);
+      }, [Students]);
    
   // console.log(universalformData);
 

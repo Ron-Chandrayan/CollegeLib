@@ -87,7 +87,7 @@ function Layout() {
                   .then(response => response.json())
                   .then(data => {
                     setloading(false);
-                  // console.log(data);
+                  //console.log(data);
                     setStudents(data);
                     // console.log(Students);
                    // setName(data);
