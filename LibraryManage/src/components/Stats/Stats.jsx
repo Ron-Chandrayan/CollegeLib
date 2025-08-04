@@ -12,6 +12,7 @@ function Stats() {
   //console.log(Students);
  
    const[prn,setprn]=useState(universalformData?.PRN || '');
+   console.log(Students)
    
   // console.log(universalformData);
 
