@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import UploadForm from '../UploadForm/UploadForm';
+import loadingGif from '../../assets/loading-gst.gif';
 
 function  Questionpaper() {
   const [qp,setqp] = useState([]);
@@ -11,16 +12,20 @@ function  Questionpaper() {
   const[uploadmanual,setUploadmanual]=useState(false);
   const[firstvisit,setfirstvisit]=useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect( ()=>{
       async function fetchData() {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/qps');
       const data = await response.json();
       setqp(data);
     } catch (error) {
       console.error('Error fetching qps:', error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -44,6 +49,37 @@ function  Questionpaper() {
 
     // console.log(filteredqp);
 
+  }
+
+  // Loading screen
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="flex flex-col items-center space-y-6">
+          {/* Custom loading GIF */}
+          <div className="relative">
+            <img 
+              src={loadingGif} 
+              alt="Loading..." 
+              className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40"
+            />
+          </div>
+          
+          {/* Enhanced loading text */}
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-slate-700 font-semibold text-xl">Loading Question Papers</span>
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </div>
+            <p className="text-slate-500 text-sm">Please wait while we fetch your question papers...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   
@@ -73,7 +109,7 @@ function  Questionpaper() {
                   Question Papers
                 </h1>
                 <p className="text-base sm:text-lg lg:text-xl text-white/90 font-medium">
-                  📚 Access previous year papers from our digital library
+                  Access previous year papers from our digital library
                 </p>
                 <p className="text-sm sm:text-base text-indigo-100 mt-1 sm:mt-2">
                   Download, study, and excel in your exams
@@ -141,15 +177,15 @@ function  Questionpaper() {
               }} 
               className="w-full px-3 sm:px-4 lg:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 text-gray-700 bg-white cursor-pointer transition-all duration-300 hover:border-indigo-300 hover:shadow-lg group-hover:shadow-xl text-sm sm:text-base"
             >         
-              <option value="" disabled hidden>🎓 Select Semester</option>         
-              <option value="sem1">📚 Semester 1</option>         
-              <option value="sem2">📖 Semester 2</option>         
-              <option value="sem3">📝 Semester 3</option>         
-              <option value="sem4">📊 Semester 4</option>         
-              <option value="sem5">🔬 Semester 5</option>         
-              <option value="sem6">⚡ Semester 6</option>         
-              <option value="sem7">🚀 Semester 7</option>         
-              <option value="sem8">🎯 Semester 8</option>       
+              <option value="" disabled hidden>Select Semester</option>         
+              <option value="sem1">Semester 1</option>         
+              <option value="sem2">Semester 2</option>         
+              <option value="sem3">Semester 3</option>         
+              <option value="sem4">Semester 4</option>         
+              <option value="sem5">Semester 5</option>         
+              <option value="sem6">Semester 6</option>         
+              <option value="sem7">Semester 7</option>         
+              <option value="sem8">Semester 8</option>       
             </select>        
           </div>
 
@@ -171,12 +207,12 @@ function  Questionpaper() {
               }} 
               className="w-full px-3 sm:px-4 lg:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 text-gray-700 bg-white cursor-pointer transition-all duration-300 hover:border-purple-300 hover:shadow-lg group-hover:shadow-xl text-sm sm:text-base"
             >         
-              <option value="" disabled hidden>📖 Select Subject</option>         
-              <option value="maths">🧮 Engineering Mathematics</option>         
-              <option value="chem">⚗️ Chemistry</option>         
-              <option value="mechanics">⚙️ Engineering Mechanics</option>         
-              <option value="physics">🔬 Applied Physics</option>         
-              <option value="bee">⚡ Basic Electrical Engineering</option>       
+              <option value="" disabled hidden>Select Subject</option>         
+              <option value="maths">Engineering Mathematics</option>         
+              <option value="chem">Chemistry</option>         
+              <option value="mechanics">Engineering Mechanics</option>         
+              <option value="physics">Applied Physics</option>         
+              <option value="bee">Basic Electrical Engineering</option>       
             </select>        
           </div>
 
@@ -198,10 +234,10 @@ function  Questionpaper() {
               }} 
               className="w-full px-3 sm:px-4 lg:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-pink-500/20 focus:border-pink-500 text-gray-700 bg-white cursor-pointer transition-all duration-300 hover:border-pink-300 hover:shadow-lg group-hover:shadow-xl text-sm sm:text-base"
             >         
-              <option value="" disabled hidden>📅 Select Year</option>         
-              <option value="2024">🔥 2024</option>         
-              <option value="2023">✨ 2023</option>         
-              <option value="2022">💫 2022</option>       
+              <option value="" disabled hidden>Select Year</option>         
+              <option value="2024">2024</option>         
+              <option value="2023">2023</option>         
+              <option value="2022">2022</option>       
             </select>        
           </div>
         </div>
@@ -215,7 +251,7 @@ function  Questionpaper() {
               <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <span>🔍 Find Papers</span>
+              <span>Find Papers</span>
               <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -231,7 +267,7 @@ function  Questionpaper() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">📋 Your Results</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">Your Results</h3>
             <p className="text-sm sm:text-base text-gray-600">Found the perfect papers for your studies</p>
           </div>       
         
@@ -245,7 +281,7 @@ function  Questionpaper() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="text-white font-bold text-lg leading-tight mb-1 group-hover:text-indigo-100 transition-colors duration-200">
-                        📄 Question Paper
+                        Question Paper
                       </h3>
                       <p className="text-indigo-100 text-sm">Academic Resource</p>
                     </div>
@@ -290,7 +326,7 @@ function  Questionpaper() {
                   <div className="flex items-center">
                     <div className="flex items-center justify-center w-8 h-8 bg-pink-100 rounded-lg mr-3">
                       <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
@@ -342,13 +378,13 @@ function  Questionpaper() {
                 </svg>
               </div>
               <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 bg-red-100 rounded-full flex items-center justify-center">
-                <span className="text-red-500 text-sm sm:text-xl">😔</span>
+                <span className="text-red-500 text-sm sm:text-xl">!</span>
               </div>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">🔍 No Papers Found</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">No Papers Found</h3>
             <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6">We couldn't find any question papers matching your criteria.</p>
             <div className="bg-blue-50 border border-blue-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 max-w-sm sm:max-w-md mx-auto">
-              <h4 className="font-semibold text-blue-800 mb-2 text-sm sm:text-base">💡 Try these tips:</h4>
+              <h4 className="font-semibold text-blue-800 mb-2 text-sm sm:text-base">Try these tips:</h4>
               <ul className="text-blue-700 text-left space-y-1 text-xs sm:text-sm">
                 <li>• Select different semester or subject</li>
                 <li>• Try a different year</li>

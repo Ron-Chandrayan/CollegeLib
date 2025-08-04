@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { getApiUrl, getApiHeaders, debugApiConfig } from '../../utils/apiConfig';
+import loadingGif from '../../assets/loading-gst.gif';
 
 import Book from '../Book/Book';
 
@@ -8,6 +9,7 @@ function Books() {
     const{books, setBooks}=useOutletContext()
     const[i,seti]=useState(1);
     const[paginatedbooks,setpaginatedbooks]=useState([])
+    const[isLoading, setIsLoading] = useState(true);
     
     
 
@@ -24,6 +26,7 @@ function Books() {
     useEffect(()=>{
                              const fetchData =async()=>{
                  try{
+                   setIsLoading(true);
                    const booksUrl = getApiUrl(`endpoint=book_all&page=${i}&limit=20`);
                    const booksHeaders = getApiHeaders();
                    
@@ -44,6 +47,8 @@ function Books() {
                    }
                  } catch(error){
                      console.error('Error fetching paginated books:', error);
+                 } finally {
+                   setIsLoading(false);
                  }
                }
               fetchData();
@@ -61,6 +66,7 @@ function Books() {
              const handleSubmit = async (e)=>{
          e.preventDefault();
          setsearchActive(true);
+         setIsLoading(true);
          
          const title = formData.title;
          const author = formData.author.trim().split(" ")[0];
@@ -85,7 +91,40 @@ function Books() {
            }
          } catch(error){
              console.error('Error searching books:', error);
+         } finally {
+           setIsLoading(false);
          }
+       }
+
+       // Loading screen
+       if (isLoading) {
+         return (
+           <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+             <div className="flex flex-col items-center space-y-6">
+               {/* Custom loading GIF */}
+               <div className="relative">
+                 <img 
+                   src={loadingGif} 
+                   alt="Loading..." 
+                   className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40"
+                 />
+               </div>
+               
+               {/* Enhanced loading text */}
+               <div className="text-center">
+                 <div className="flex items-center justify-center space-x-2 mb-2">
+                   <span className="text-slate-700 font-semibold text-xl">Loading Books</span>
+                   <div className="flex space-x-1">
+                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                     <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                     <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                   </div>
+                 </div>
+                 <p className="text-slate-500 text-sm">Please wait while we fetch your books...</p>
+               </div>
+             </div>
+           </div>
+         );
        }
 
 return(<>

@@ -4,6 +4,7 @@ import Student from '../Student/Student'
 import Searching from '../Seaching/Searching'
 import { useOutletContext } from 'react-router-dom'
 import wallpaper from '../../assets/wallpaper.jpeg';
+import loadingGif from '../../assets/loading-gst.gif';
 
 
 
@@ -233,22 +234,13 @@ function Home() {
         return (
           <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             <div className="flex flex-col items-center space-y-6">
-              {/* Enhanced spinner with multiple rings */}
+              {/* Custom loading GIF */}
               <div className="relative">
-                {/* Outer ring */}
-                <div className="w-20 h-20 border-4 border-slate-200 rounded-full animate-spin">
-                  <div className="absolute inset-0 border-4 border-transparent border-t-blue-600 rounded-full animate-spin"></div>
-                </div>
-                
-                {/* Middle ring */}
-                <div className="absolute inset-2 w-16 h-16 border-4 border-slate-100 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}>
-                  <div className="absolute inset-0 border-4 border-transparent border-t-indigo-500 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }}></div>
-                </div>
-                
-                {/* Inner pulse dot */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-4 h-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full animate-pulse shadow-lg"></div>
-                </div>
+                <img 
+                  src={loadingGif} 
+                  alt="Loading..." 
+                  className="w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40"
+                />
               </div>
               
               {/* Enhanced loading text */}
