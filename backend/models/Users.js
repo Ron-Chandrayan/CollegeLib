@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (v) {
-        return /^[0-9]{3}[A-Za-z][A-Za-z0-9][0-9]{4}$/.test(v);
+        return /^[0-9]{3}[A-Za-z][A-Za-z0-9][0-9]{3}$/.test(v);
       },
       message: props => `${props.value} is not a valid PRN!`
     }
