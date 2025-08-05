@@ -238,7 +238,7 @@ app.post('/api/save', async (req, res) => {
           const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
           return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
     }else{
-      return res.status(401).json({ success: false, message: 'Your name does not match with the college database. Please provide your name as written in the ID Card' });
+      return res.status(401).json({ success: false, message: 'Your name and PRN does not match with the college database. Please provide your correct name and corresponding PRN as written in the ID Card' });
     }
 
   } else {
