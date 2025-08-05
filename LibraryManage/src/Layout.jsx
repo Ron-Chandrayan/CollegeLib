@@ -139,43 +139,7 @@ function Layout() {
            
          },[]);
 
-                    useEffect(()=>{
-            const getData=async ()=>{
-              try{await fetch(`/api/hourlyfootfall`)
-                    .then(response => response.json())
-                    .then(data => {
-                      
-                      // console.log(data)
-                      setInfo(data)
-                                                
-                    })
-                    }
-                    catch(error){
-                        //seterr(true);                
-                        console.error(error);             
-                    }
-            }
 
-            getData()
-            const getData2=async ()=>{
-              try{await fetch(`/api/dailyfootfall`)
-                    .then(response => response.json())
-                    .then(data => {
-                      
-                      // console.log(data)
-                      setInfo2(data)
-                                                
-                    })
-                    }
-                    catch(error){
-                        //seterr(true);                
-                        console.error(error);             
-                    }
-            }
-            getData2()
-
-            
-          },[]);
 
 
 
