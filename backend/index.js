@@ -30,6 +30,7 @@ const hourlyfootfall = require('./models/hourlyfootfall');
 const members = require('./models/members');
 const lifetime = require('./models/lifetime');
 const Users = require('./models/Users');
+const festudents = require('./models/FeStudent');
 
 const app = express();
 app.use(cors());
@@ -230,10 +231,16 @@ app.post('/api/save', async (req, res) => {
   if (name) {
     if (await Users.findOne({ PRN }))
       return res.status(401).json({ success: false, message: 'User exists' });
-    const user = new Users({ name, PRN, password });
-    await user.save();
-    const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
-    return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
+    const checkname = await festudents.findOne({PRN})
+    if(checkname && checkname.name.trim().toLowerCase() === name.trim().toLowerCase()){
+          const user = new Users({ name, PRN, password });
+          await user.save();
+          const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
+          return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
+    }else{
+      return res.status(401).json({ success: false, message: 'Your name does not match with the college database. Please provide your name as written in the ID Card' });
+    }
+
   } else {
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
