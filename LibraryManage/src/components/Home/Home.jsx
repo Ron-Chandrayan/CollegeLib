@@ -516,14 +516,15 @@ function Home() {
                   </div>
                 </div>
 
-                    <div>
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => setIsChecked(e.target.checked)}
-                      /> 
-                      <p className='text-black mx-3'>Show password</p>
-                      </div>           
+                    <div className="flex">
+                                  <input
+                                    type="checkbox"
+                                    checked={isChecked}
+                                    onChange={(e) => setIsChecked(e.target.checked)}
+                                  />
+                                  <p className="text-black mx-3">Show password</p>
+                                </div>
+       
 
                 <button 
                   type="submit"
