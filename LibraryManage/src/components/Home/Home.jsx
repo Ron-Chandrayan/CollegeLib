@@ -505,7 +505,7 @@ function Home() {
                   </label>
                   <div className="relative">
                     <input 
-                      type="password" 
+                      type={isChecked?"text":"password" }
                       name="password" 
                       placeholder="Enter your password" 
                       onChange={handleChange} 
@@ -520,7 +520,7 @@ function Home() {
                         type="checkbox"
                         checked={isChecked}
                         onChange={(e) => setIsChecked(e.target.checked)}
-                      />
+                      /> <p className='text-black'>Show password</p>
 
                 <button 
                   type="submit"
