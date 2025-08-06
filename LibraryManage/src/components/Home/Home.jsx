@@ -23,6 +23,8 @@ function Home() {
     const [isClosed, setIsClosed] = useState(false);
     const [isAuthLoading, setIsAuthLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+
 
     
 
@@ -522,7 +524,12 @@ function Home() {
                       ? 'bg-gray-400 cursor-not-allowed' 
                       : 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white hover:from-blue-700 hover:via-indigo-700 hover:to-blue-800 transform hover:scale-105 hover:shadow-2xl'
                   }`}
-                >
+                              >
+                              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
+              />
                   <span className="relative z-10">
                     {isSubmitting ? (
                       <div className="flex items-center justify-center space-x-2">
