@@ -31,6 +31,7 @@ const members = require('./models/members');
 const lifetime = require('./models/lifetime');
 const Users = require('./models/Users');
 const festudents = require('./models/FeStudent');
+const timetable=require('./models/timetable');
 
 const app = express();
 app.use(cors());
@@ -347,6 +348,15 @@ app.get('/api/dailyfootfall', async (req, res) => {
   }
 });
 
+app.get('/timetable', async(req,res)=>{
+  try {
+    const data  = await timetable.find();
+    res.json(data);
+    
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching footfall data' });
+  }
+})
 
 
 // static React build for client-side routing
