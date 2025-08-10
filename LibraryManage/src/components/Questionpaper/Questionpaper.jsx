@@ -20,14 +20,16 @@ function  Questionpaper() {
     { value: "chem", label: "Chemistry" },
     { value: "mechanics", label: "Engineering Mechanics" },
     { value: "physics", label: "Applied Physics" },
-    { value: "bee", label: "Basic Electrical Engineering" }
+    { value: "bee", label: "Basic Electrical Engineering" },
+    { value: "c", label: "Introduction to C" }
   ],
   sem2: [
     { value: "maths", label: "Engineering Mathematics" },
-    { value: "coa", label: "Computer Organization and Architecture" },
-    { value: "ds", label: "Data Structures" },
-    { value: "dbms", label: "Database Management Systems" },
-    { value: "dsgt", label: "Discrete Structures and Graph Theory" }
+    {  value: "chem", label: "Chemistry" },
+    { value: "ed", label: "Engineering Drawing" },
+    { value: "pct", label: "Proffessional Communication Techniques" },
+    { value: "physics", label: "Applied Physics" },
+    { value: "dsd", label: "Digital System and Design" }
   ]
 };
 
