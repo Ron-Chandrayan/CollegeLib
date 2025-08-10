@@ -14,6 +14,24 @@ function  Questionpaper() {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const subjects = {
+  sem1: [
+    { value: "maths", label: "Engineering Mathematics" },
+    { value: "chem", label: "Chemistry" },
+    { value: "mechanics", label: "Engineering Mechanics" },
+    { value: "physics", label: "Applied Physics" },
+    { value: "bee", label: "Basic Electrical Engineering" }
+  ],
+  sem2: [
+    { value: "maths", label: "Engineering Mathematics" },
+    { value: "coa", label: "Computer Organization and Architecture" },
+    { value: "ds", label: "Data Structures" },
+    { value: "dbms", label: "Database Management Systems" },
+    { value: "dsgt", label: "Discrete Structures and Graph Theory" }
+  ]
+};
+
+
 
   useEffect( ()=>{
       async function fetchData() {
@@ -207,12 +225,12 @@ function  Questionpaper() {
               }} 
               className="w-full px-3 sm:px-4 lg:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 text-gray-700 bg-white cursor-pointer transition-all duration-300 hover:border-purple-300 hover:shadow-lg group-hover:shadow-xl text-sm sm:text-base"
             >         
-              <option value="" disabled hidden>Select Subject</option>         
-              <option value="maths">Engineering Mathematics</option>         
-              <option value={sem === "sem1" ? "chem" : "coa"}>{sem=="sem1"?"Chemistry":"Computer Organization and Architecture"}</option>         
-              <option value={sem === "sem1" ? "mechanics" : "ds"}>{sem==="sem1"?"Engineering Mechanics":"Data Structures"}</option>         
-              <option value={sem === "sem1" ? "physics" : "dbms"}>{sem==="sem1"?"Applied Physics":"Database Management Systems"}</option>         
-              <option value={sem === "sem1" ? "bee" : "dsgt"}>{sem==="sem1"?"Basic Electrical Engineeing":"Discrete Structures and Graph Theory"}</option>       
+              <option value="" disabled hidden>Select Subject</option>
+                          {subjects[sem]?.map((subj) => (
+                            <option key={subj.value} value={subj.value}>
+                              {subj.label}
+                            </option>
+                          ))}       
             </select>        
           </div>
 
