@@ -209,10 +209,10 @@ function  Questionpaper() {
             >         
               <option value="" disabled hidden>Select Subject</option>         
               <option value="maths">Engineering Mathematics</option>         
-              <option value="chem">Chemistry</option>         
-              <option value="mechanics">Engineering Mechanics</option>         
-              <option value="physics">Applied Physics</option>         
-              <option value="bee">Basic Electrical Engineering</option>       
+              <option value={sem === "sem1" ? "chem" : "coa"}>{sem=="sem1"?"Chemistry":"Computer Organization and Architecture"}</option>         
+              <option value={sem === "sem1" ? "mechanics" : "ds"}>{sem==="sem1"?"Engineering Mechanics":"Data Structures"}</option>         
+              <option value={sem === "sem1" ? "physics" : "dbms"}>{sem==="sem1"?"Applied Physics":"Database Management Systems"}</option>         
+              <option value={sem === "sem1" ? "bee" : "dsgt"}>{sem==="sem1"?"Basic Electrical Engineeing":"Discrete Structures and Graph Theory"}</option>       
             </select>        
           </div>
 
