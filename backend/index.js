@@ -32,6 +32,7 @@ const lifetime = require('./models/lifetime');
 const Users = require('./models/Users');
 const festudents = require('./models/FeStudent');
 const timetable=require('./models/timetable');
+const livefeed=require('./models/livefeed');
 
 const app = express();
 app.use(cors());
@@ -199,14 +200,26 @@ try {
 })
 
 // data routes
-app.get('/fetch', async (req, res) => {
+// app.get('/fetch', async (req, res) => {
+//   try {
+//     const all = await members.find().sort({ createdAt: 1 });
+//     res.json(all);
+//   } catch (err) {
+//     res.status(500).json({ error: 'student data not found' });
+//   }
+// });
+
+app.get('/fetch',async(req,res)=>{
   try {
-    const all = await members.find().sort({ createdAt: 1 });
-    res.json(all);
-  } catch (err) {
-    res.status(500).json({ error: 'student data not found' });
+    const readers = await livefeed.find().sort({ _id: -1 });
+;
+    res.json(readers);
+  } catch (error) {
+    res.json({success: false, message: "data cant be fetched"});
   }
-});
+  
+})
+
 
 app.get('/fetchtime', async (req, res) => {
   try {

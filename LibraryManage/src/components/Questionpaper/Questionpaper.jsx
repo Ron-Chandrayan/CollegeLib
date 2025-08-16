@@ -25,11 +25,24 @@ function  Questionpaper() {
   ],
   sem2: [
     { value: "maths", label: "Engineering Mathematics" },
-    {  value: "chem", label: "Chemistry" },
+    {  value: "chem", label: "Applied Chemistry" },
     { value: "ed", label: "Engineering Drawing" },
     { value: "pct", label: "Proffessional Communication Techniques" },
     { value: "physics", label: "Applied Physics" },
     { value: "dsd", label: "Digital System and Design" }
+  ],
+  sem3: [
+    { value: "maths", label: "Engineering Mathematics" },
+    {  value: "ds", label: "Data Structures" },
+    { value: "dsgt", label: "Discrete Structures and Graph Theory" },
+    { value: "coa", label: "Computer Organization and Architecture" },
+    { value: "dbms", label: "Database Management System" },
+    { value: "edc", label: "Electronic Devices and Circuits" },
+    { value: "mpmc", label: "Microprocessor and Microcontrollers" },
+    { value: "nt", label: "Network Theory" },
+    { value: "ss", label: "Signal Systems" },
+    { value: "at", label: "Automata Theory" },
+     { value: "dsa", label: "Data Structure and Analysis" }
   ]
 };
 

@@ -52,6 +52,8 @@ const UploadForm = ({ onClose }) => {
           <option value="sem4">Semester 4</option>
           <option value="sem5">Semester 5</option>
           <option value="sem6">Semester 6</option>
+          <option value="sem7">Semester 7</option>
+          <option value="sem8">Semester 8</option>
         </select>
 
         {/* Subject dropdown */}
