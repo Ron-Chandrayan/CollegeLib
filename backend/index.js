@@ -366,9 +366,13 @@ app.get('/api/hourlyfootfall', async (req, res) => {
     const end = new Date(start);
     end.setDate(start.getDate() + 1); // tomorrow at midnight
 
-    const data = await hourlyfootfall.find({
-      timestamp: { $gte: start, $lt: end }
-    }).sort({ timestamp: 1 });
+    // const data = await lifetime.find({
+    //   createdAt: { $gte: start, $lt: end }
+    // }).sort({ createdAt: 1 });
+
+     const data = await lifetime.countDocuments({
+      createdAt: { $gte: start, $lt: end }
+    }).sort({ createdAt: 1 });
 
     res.json(data);
   } catch (error) {

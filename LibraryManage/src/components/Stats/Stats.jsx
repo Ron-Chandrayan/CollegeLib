@@ -37,7 +37,7 @@ function Stats() {
                     .then(data => {
                       
                       // console.log(data)
-                      setInfo(data)
+                      //setInfo(data)
                                                 
                     })
                     }
@@ -54,7 +54,7 @@ function Stats() {
                     .then(data => {
                       
                       // console.log(data)
-                      setInfo2(data)
+                      //setInfo2(data)
                                                 
                     })
                     }
