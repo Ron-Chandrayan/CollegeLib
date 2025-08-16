@@ -374,7 +374,7 @@ app.get('/api/hourlyfootfall', async (req, res) => {
       createdAt: { $gte: start, $lt: end }
     }).sort({ createdAt: 1 });
 
-    res.json(data);
+    res.json({footfall:data});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error fetching footfall data' });
