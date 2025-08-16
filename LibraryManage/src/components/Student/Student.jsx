@@ -3,31 +3,31 @@ import React from 'react';
 function Student({ name, Students }) { // Students prop kept, but unused
 
   // Optional: Remove logic (currently not used in UI)
-  function remove({ prnno, name }) {
-    const apiUrl = '/api/?endpoint=in_out';
-    const apiKey = 'ahambrahmasmi';
+  // function remove({ prnno, name }) {
+  //   const apiUrl = '/api/?endpoint=in_out';
+  //   const apiKey = 'ahambrahmasmi';
 
-    const payload = {
-      cardNumber: prnno,
-      purpose: name
-    };
+  //   const payload = {
+  //     cardNumber: prnno,
+  //     purpose: name
+  //   };
 
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': apiKey
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log('Success:', data);
-    })
-    .catch(err => {
-      console.error('Error:', err);
-    });
-  }
+  //   fetch(apiUrl, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'X-API-KEY': apiKey
+  //     },
+  //     body: JSON.stringify(payload)
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     console.log('Success:', data);
+  //   })
+  //   .catch(err => {
+  //     console.error('Error:', err);
+  //   });
+  // }
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200">
