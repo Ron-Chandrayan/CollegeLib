@@ -38,6 +38,32 @@ function Layout() {
           } catch (error) {
             console.log(error.message);
           }
+
+           fetch(getLibraryApiUrl('todays_footfall'), {
+                   headers: getLibraryApiHeaders()
+               })
+               .then(response => response.json())
+                               .then(data => {
+                  const curfootfall = Number(data.todays_footfall);
+                  settodayfootfall(curfootfall);
+                })
+               .catch(error => {
+                   console.error('Error fetching today\'s footfall:', error);
+               });
+
+             fetch(getLibraryApiUrl('total_footfall'), {
+                   headers: getLibraryApiHeaders()
+               })
+               .then(response => response.json())
+                               .then(data => {
+                  const totfootfall = Number(data.total_footfall);
+                  settotalfootfall(totfootfall);
+                })
+               .catch(error => {
+                   console.error('Error fetching total footfall:', error);
+               });
+
+
            }
            fetchData()
    
