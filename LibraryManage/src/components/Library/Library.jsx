@@ -4,7 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import Student from '../Student/Student';
 import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
-import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from './utils/apiConfig';
+import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 function Library() {
 //  const { student, setStudent, flag, setflag } = useOutletContext();
