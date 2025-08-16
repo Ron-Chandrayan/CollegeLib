@@ -46,6 +46,26 @@ mongoose.connect(process.env.MONGO_URI, {
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 
+ async function footfall(){
+    
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);  // today at midnight
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1); // tomorrow at midnight
+
+    // const data = await lifetime.find({
+    //   createdAt: { $gte: start, $lt: end }
+    // }).sort({ createdAt: 1 });
+
+     const data = await lifetime.countDocuments({
+      createdAt: { $gte: start, $lt: end }
+    }).sort({ createdAt: 1 });
+
+    return data;
+  
+ }
+
 cron.schedule(("30 15 * * *"),async ()=>{
   try {
       const response = await axios.get(process.env.API_URL, { //daily footfall
@@ -359,24 +379,31 @@ app.get('/download/:sem/:subject/:year/:filename', async (req, res) => {
 });
 
 app.get('/api/hourlyfootfall', async (req, res) => {
+  // try {
+  //   const start = new Date();
+  //   start.setHours(0, 0, 0, 0);  // today at midnight
+
+  //   const end = new Date(start);
+  //   end.setDate(start.getDate() + 1); // tomorrow at midnight
+
+  //   // const data = await lifetime.find({
+  //   //   createdAt: { $gte: start, $lt: end }
+  //   // }).sort({ createdAt: 1 });
+
+  //    const data = await lifetime.countDocuments({
+  //     createdAt: { $gte: start, $lt: end }
+  //   }).sort({ createdAt: 1 });
+
+  //   res.json({footfall:data});
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ message: 'Error fetching footfall data' });
+  // }
+  
   try {
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);  // today at midnight
-
-    const end = new Date(start);
-    end.setDate(start.getDate() + 1); // tomorrow at midnight
-
-    // const data = await lifetime.find({
-    //   createdAt: { $gte: start, $lt: end }
-    // }).sort({ createdAt: 1 });
-
-     const data = await lifetime.countDocuments({
-      createdAt: { $gte: start, $lt: end }
-    }).sort({ createdAt: 1 });
-
-    res.json({footfall:data});
+    const data = footfall();
+    res.json({footfall:data})
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'Error fetching footfall data' });
   }
 });
