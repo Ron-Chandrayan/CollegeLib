@@ -89,115 +89,115 @@ cron.schedule(('0 1-13 * * *'),async ()=>{
 
 let isRunning = false
 
-cron.schedule('*/10 * * * * *',async ()=>{
+// cron.schedule('*/10 * * * * *',async ()=>{
 
- if (isRunning) {
-  console.log("Previous job still running, skipping this run.");
-  return;
-}
-isRunning = true;
+//  if (isRunning) {
+//   console.log("Previous job still running, skipping this run.");
+//   return;
+// }
+// isRunning = true;
 
-try {
-      const response = await axios.get(process.env.API_URLZ, { 
-    headers: {
-      'XApiKey': process.env.API_KEY
-    }
-  })
- // console.log(response.data.students);
-  const students = response.data.students || [];
+// try {
+//       const response = await axios.get(process.env.API_URLZ, { 
+//     headers: {
+//       'XApiKey': process.env.API_KEY
+//     }
+//   })
+//  // console.log(response.data.students);
+//   const students = response.data.students || [];
 
- const latest  = await members.find();
+//  const latest  = await members.find();
 
- // console.log(latest);
-//  console.log(latest.length);
-//  console.log(students.length);
+//  // console.log(latest);
+// //  console.log(latest.length);
+// //  console.log(students.length);
 
  
 
-  //members.insertMany(students).then(()=>console.log("student inserted")).catch((err)=>console.log("error"))
+//   //members.insertMany(students).then(()=>console.log("student inserted")).catch((err)=>console.log("error"))
 
-  // const PRN = response.data.data.rollNo;
-  // const fullname  = response.data.data.name;
-  // const purpose = response.data.data.purpose;
+//   // const PRN = response.data.data.rollNo;
+//   // const fullname  = response.data.data.name;
+//   // const purpose = response.data.data.purpose;
 
-          if (latest.length === 0) {
-        console.log("Initial population — inserting all students.");
-        await members.insertMany(students);
-        await lifetime.insertMany(students); // createdAt will be auto-generated
-        return;
-      }
+//           if (latest.length === 0) {
+//         console.log("Initial population — inserting all students.");
+//         await members.insertMany(students);
+//         await lifetime.insertMany(students); // createdAt will be auto-generated
+//         return;
+//       }
 
-      const normalizePRN = prn => String(prn).trim();
+//       const normalizePRN = prn => String(prn).trim();
 
-      const oldPRNs = new Set(latest.map(user => normalizePRN(user.PRN)));
-      const newPRNs = new Set(students.map(user => normalizePRN(user.PRN)));
+//       const oldPRNs = new Set(latest.map(user => normalizePRN(user.PRN)));
+//       const newPRNs = new Set(students.map(user => normalizePRN(user.PRN)));
 
-      const came = students.filter(user => !oldPRNs.has(normalizePRN(user.PRN)));
-      const left = latest.filter(user => !newPRNs.has(normalizePRN(user.PRN)));
+//       const came = students.filter(user => !oldPRNs.has(normalizePRN(user.PRN)));
+//       const left = latest.filter(user => !newPRNs.has(normalizePRN(user.PRN)));
 
-      // ✅ Debounce: skip logging same student if they came within last 30s
-      const filteredCame = [];
+//       // ✅ Debounce: skip logging same student if they came within last 30s
+//       const filteredCame = [];
 
-      for (const s of came) {
-        const lastVisit = await lifetime.findOne(
-          { PRN: s.PRN },
-          {},
-          { sort: { createdAt: -1 } }
-        );
+//       for (const s of came) {
+//         const lastVisit = await lifetime.findOne(
+//           { PRN: s.PRN },
+//           {},
+//           { sort: { createdAt: -1 } }
+//         );
 
-        const now = Date.now();
-        const lastTime = lastVisit ? new Date(lastVisit.createdAt).getTime() : 0;
+//         const now = Date.now();
+//         const lastTime = lastVisit ? new Date(lastVisit.createdAt).getTime() : 0;
 
-        if (!lastVisit || now - lastTime >= 60000) {
-          filteredCame.push(s); // Don't need to add createdAt manually
-        } else {
-          console.log(`⏱️ Skipped duplicate visit by ${s.name} within 30s`);
-        }
-      }
+//         if (!lastVisit || now - lastTime >= 60000) {
+//           filteredCame.push(s); // Don't need to add createdAt manually
+//         } else {
+//           console.log(`⏱️ Skipped duplicate visit by ${s.name} within 30s`);
+//         }
+//       }
 
-      if (came.length === 0 && left.length === 0) {
-        console.log("✅ working good — no change");
-      } else {
-        if (filteredCame.length > 0) {
-          console.log(
-            `➕ ${filteredCame.length} student(s) came:`,
-            filteredCame.map(s => s.name)
-          );
-          await lifetime.insertMany(filteredCame);
-        }
-        if (left.length > 0) {
-          console.log(`➖ ${left.length} student(s) left:`, left.map(s => s.name));
-        }
-      }
+//       if (came.length === 0 && left.length === 0) {
+//         console.log("✅ working good — no change");
+//       } else {
+//         if (filteredCame.length > 0) {
+//           console.log(
+//             `➕ ${filteredCame.length} student(s) came:`,
+//             filteredCame.map(s => s.name)
+//           );
+//           await lifetime.insertMany(filteredCame);
+//         }
+//         if (left.length > 0) {
+//           console.log(`➖ ${left.length} student(s) left:`, left.map(s => s.name));
+//         }
+//       }
 
-      // ✅ Upsert current members
-      await Promise.all(
-        students.map(s =>
-          members.updateOne(
-            { PRN: s.PRN },
-            { $set: s },
-            { upsert: true }
-          )
-        )
-      );
+//       // ✅ Upsert current members
+//       await Promise.all(
+//         students.map(s =>
+//           members.updateOne(
+//             { PRN: s.PRN },
+//             { $set: s },
+//             { upsert: true }
+//           )
+//         )
+//       );
 
-      // ✅ Remove students no longer present
-      await members.deleteMany({
-        PRN: { $nin: students.map(s => s.PRN) }
-      });
-
-
-
-}catch(error){
-  console.log("no data found");
-}finally {
-  isRunning = false;
-}
+//       // ✅ Remove students no longer present
+//       await members.deleteMany({
+//         PRN: { $nin: students.map(s => s.PRN) }
+//       });
 
 
 
+// }catch(error){
+//   console.log("no data found");
+// }finally {
+//   isRunning = false;
+// }
 
-})
+
+
+
+// })
 
 // data routes
 // app.get('/fetch', async (req, res) => {
@@ -234,6 +234,9 @@ app.post('/submit',async (req,res)=>{
       console.log(name);
        const student=new livefeed({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
        await student.save();
+        const parth=new lifetime({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
+        await parth.save();
+       
     //console.log("data saved");
     res.json({ success: true, message: "Student inserted" });
       }else{
