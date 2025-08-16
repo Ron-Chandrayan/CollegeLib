@@ -74,6 +74,7 @@ cron.schedule(("30 15 * * *"),async ()=>{
     }
   });
 
+
   const count = response.data.todays_footfall;
 
   const entry = new dailyfootfall({ count }); //creating the document to be stored according to the footfall scema
@@ -88,15 +89,17 @@ cron.schedule(("30 15 * * *"),async ()=>{
 
 cron.schedule(('0 1-13 * * *'),async ()=>{
   try {
-      const response = await axios.get(process.env.API_URL, { //hourly footfall
-    headers: {
-      'XApiKey': process.env.API_KEY
-    }
-  });
+  //     const response = await axios.get(process.env.API_URL, { //hourly footfall
+  //   headers: {
+  //     'XApiKey': process.env.API_KEY
+  //   }
+  // });
 
-  const count = response.data.todays_footfall;
+  // const count = response.data.todays_footfall;
 
-  const entry = new hourlyfootfall({ count }); //creating the document to be stored according to the footfall scema
+  const data =await footfall();
+
+  const entry = new hourlyfootfall({ data }); //creating the document to be stored according to the footfall scema
   await entry.save();// adding the documents to the db
   console.log("data saved");
    
