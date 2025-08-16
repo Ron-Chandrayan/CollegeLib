@@ -60,7 +60,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
      const data = await lifetime.countDocuments({
       createdAt: { $gte: start, $lt: end }
-    }).sort({ createdAt: 1 });
+    });
 
     return data;
   
