@@ -221,6 +221,30 @@ app.get('/fetch',async(req,res)=>{
 })
 
 
+app.post('/submit',async (req,res)=>{
+    console.log(req.body);
+    const readers =await livefeed.find({PRN: { $regex: `^${req.body.PRN}$`, $options: "i" }});
+    if (readers.length>0){
+      await livefeed.deleteOne({ PRN: { $regex: `^${req.body.PRN}$`, $options: "i" } });
+       res.json({ success: true, message: "Student removed!" });
+    }else{
+      const fetchname = await festudents.find({PRN:(req.body.PRN).toUpperCase()});
+      if(fetchname.length>0){
+        const name = fetchname[0].name;
+      console.log(name);
+       const student=new livefeed({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
+       await student.save();
+    //console.log("data saved");
+    res.json({ success: true, message: "Student inserted" });
+      }else{
+         res.json({ success: false, message: "PRN is invalid" });
+      }
+      
+    }
+   
+})
+
+
 app.get('/fetchtime', async (req, res) => {
   try {
     const times = await lifetime.find().sort({ createdAt: -1 });
