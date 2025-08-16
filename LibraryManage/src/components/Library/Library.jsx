@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import StudentGrid from '../StudentGrid/StudentGrid';
+// import StudentGrid from '../StudentGrid/StudentGrid';
+import Student from '../Student/Student';
 import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 
 function Library() {
-  const { student, setStudent, flag, setflag } = useOutletContext();
+//  const { student, setStudent, flag, setflag } = useOutletContext();
+  const[student, setStudent]=useState()
+  const[flag,setflag]=useState();
   const [formData, setformData] = useState({
     PRN: '',
     purpose: 'Study'
@@ -21,7 +24,7 @@ function Library() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/submit", {
+      const res = await fetch('/submit', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -42,14 +45,20 @@ function Library() {
         purpose:formData.purpose
       }
 
-          const resp = await fetch("https://libman.ethiccode.in.net/api/in_out", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "XApiKey": "4rnWNLFd3I5sh4jMiP3BKnhOnxtPJ2sPcQRT4tplQK0",  
-      },
-      body: JSON.stringify(payload),
-    });
+    //       const resp = await fetch("https://libman.ethiccode.in.net/api/in_out", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "XApiKey": "4rnWNLFd3I5sh4jMiP3BKnhOnxtPJ2sPcQRT4tplQK0",  
+    //   },
+    //   body: JSON.stringify(payload),
+    // });
+
+    const resp = await fetch(getLibraryApiUrl('in_out'), {
+        method: 'POST',
+        headers: getLibraryApiHeaders(),
+        body: JSON.stringify(payload),
+      });
 
     const data2=await resp.json();
     console.log(data2);
@@ -113,7 +122,7 @@ function Library() {
 
       <div className="mt-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">All Students</h2>
-        <StudentGrid students={student} />
+        <Student name={student} />
       </div>
     </>
   );
