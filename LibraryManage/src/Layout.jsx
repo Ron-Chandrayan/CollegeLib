@@ -39,17 +39,28 @@ function Layout() {
             console.log(error.message);
           }
 
-           fetch(getLibraryApiUrl('todays_footfall'), {
-                   headers: getLibraryApiHeaders()
-               })
-               .then(response => response.json())
-                               .then(data => {
-                  const curfootfall = Number(data.todays_footfall);
-                  settodayfootfall(curfootfall);
-                })
-               .catch(error => {
-                   console.error('Error fetching today\'s footfall:', error);
-               });
+          //  fetch(getLibraryApiUrl('todays_footfall'), {
+          //          headers: getLibraryApiHeaders()
+          //      })
+          //      .then(response => response.json())
+          //                      .then(data => {
+          //         const curfootfall = Number(data.todays_footfall);
+          //         settodayfootfall(curfootfall);
+          //       })
+          //      .catch(error => {
+          //          console.error('Error fetching today\'s footfall:', error);
+          //      });
+
+          try {
+            const response = await fetch('/api/hourlyfootfall');
+            const data = await response.json();
+            // setName(data);
+            settodayfootfall(data.footfall);
+          } catch (error) {
+            console.log(error.message);
+          }
+
+
 
              fetch(getLibraryApiUrl('total_footfall'), {
                    headers: getLibraryApiHeaders()
