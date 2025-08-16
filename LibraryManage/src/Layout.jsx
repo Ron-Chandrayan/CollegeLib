@@ -30,51 +30,18 @@ function Layout() {
 
       useEffect(()=>{
       
-           const  fetchData=()=>{   
-             try{
-               fetch(getLibraryApiUrl('list_all'), {
-                   headers: getLibraryApiHeaders()
-               })
-               .then(response => response.json())
-                               .then(data => {
-                    const info = data.students
-                    setName(info);
-                })
-               .catch(error => {
-                   console.error('Error fetching students:', error);
-               });
-       
-               fetch(getLibraryApiUrl('todays_footfall'), {
-                   headers: getLibraryApiHeaders()
-               })
-               .then(response => response.json())
-                               .then(data => {
-                  const curfootfall = Number(data.todays_footfall);
-                  settodayfootfall(curfootfall);
-                })
-               .catch(error => {
-                   console.error('Error fetching today\'s footfall:', error);
-               });
-               
-               fetch(getLibraryApiUrl('total_footfall'), {
-                   headers: getLibraryApiHeaders()
-               })
-               .then(response => response.json())
-                               .then(data => {
-                  const totfootfall = Number(data.total_footfall);
-                  settotalfootfall(totfootfall);
-                })
-               .catch(error => {
-                   console.error('Error fetching total footfall:', error);
-               });
-
-             } catch(error){
-                 console.error('Error in fetchData:', error);
-             }
+           const  fetchData=async ()=>{   
+             try {
+            const response = await fetch('/fetch');
+            const data = await response.json();
+            setName(data);
+          } catch (error) {
+            console.log(error.message);
+          }
            }
            fetchData()
    
-        const interval= setInterval( fetchData , 3000);
+        const interval= setInterval( fetchData , 1000);
    
          return () => clearInterval(interval);
    

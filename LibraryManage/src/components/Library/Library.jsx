@@ -34,7 +34,7 @@ function Library() {
       const data = await res.json();
 
       if (data.success===true) {
-        toast.success(data.message || "Book issued successfully!");
+        toast.success(data.message || "Student inserted!");
       } else {
         toast.error(data.message || "Something went wrong");
       }
@@ -61,8 +61,8 @@ function Library() {
         body: JSON.stringify(payload),
       });
 
-    const data2=await resp.json();
-    console.log(data2);
+    // const data2=await resp.json();
+    // console.log(data2);
 
     } catch (error) {
       toast.error("Network error");
