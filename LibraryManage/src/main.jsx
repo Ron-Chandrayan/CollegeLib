@@ -14,6 +14,7 @@ import BooksWrapper from './components/BooksWrapper/BooksWrapper.jsx'
 import QuestionWrapper from './components/QuestionWrapper/QuestionWrapper.jsx'
 import OthersWrapper from './components/OthersWrapper/OthersWrapper.jsx'
 import Library from './components/Library/Library.jsx'
+import { ToastContainer } from "react-toastify";
 
 
 
@@ -53,5 +54,6 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <ToastContainer position="top-right" autoClose={3000} />
   </StrictMode>,
 )
