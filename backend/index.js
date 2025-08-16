@@ -228,9 +228,9 @@ app.post('/submit',async (req,res)=>{
       await livefeed.deleteOne({ PRN: { $regex: `^${req.body.PRN}$`, $options: "i" } });
        res.json({ success: true, message: "Student removed!" });
     }else{
-      const fetchname = await festudents.find({PRN:(req.body.PRN).toUpperCase()});
-      if(fetchname.length>0){
-        const name = fetchname[0].name;
+      const fetchname = await festudents.findOne({PRN:(req.body.PRN).toUpperCase()});
+      if(fetchname){
+        const name = fetchname.name;
       console.log(name);
        const student=new livefeed({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
        await student.save();
