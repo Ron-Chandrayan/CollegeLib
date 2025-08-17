@@ -129,7 +129,10 @@ function Home() {
       const handleSubmit = async (e) => {
         e.preventDefault(); // stop form reload
 
-
+                setFormData(prev => ({
+          ...prev,
+          islibrary: true   // just set it to true, no function call
+        }));
 
         // Reset error state
         seterr(false);
@@ -158,7 +161,8 @@ function Home() {
             setFormData({
                name: '',
                 PRN: '',
-              password: ''
+              password: '',
+              islibrary:false
             })
 
             // Save JWT token to localStorage

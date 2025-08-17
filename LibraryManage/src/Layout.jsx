@@ -27,6 +27,7 @@ function Layout() {
            name: '',
            PRN: '',
            password: '',
+           isLibrary:false
          });
       
       
