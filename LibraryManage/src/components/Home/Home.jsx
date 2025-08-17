@@ -56,7 +56,9 @@ function Home() {
               })
                 .then(res => res.json())
                 .then(data => {
+                  console.log(data.type);
                   if (data.valid) {
+                    
                     setSignup(true);
                     setLogin(true);
                     setwelcome(data.name);
