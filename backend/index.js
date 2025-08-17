@@ -511,7 +511,7 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
 
 
      const data = await hourlyfootfall.find({
-      createdAt: { $gte: start, $lt: end }
+      timestamp: { $gte: start, $lt: end }
     });
     res.json(data);
   } catch (error) {
