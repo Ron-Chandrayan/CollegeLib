@@ -14,6 +14,7 @@ import BooksWrapper from './components/BooksWrapper/BooksWrapper.jsx'
 import QuestionWrapper from './components/QuestionWrapper/QuestionWrapper.jsx'
 import OthersWrapper from './components/OthersWrapper/OthersWrapper.jsx'
 import Library from './components/Library/Library.jsx'
+import LibraryWrapper from './components/LibraryWrapper/LibraryWrapper.jsx'
 import { ToastContainer } from "react-toastify";
 
 
