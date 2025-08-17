@@ -106,6 +106,15 @@ cron.schedule(('0 1-13 * * *'),async ()=>{
   }
 })
 
+cron.schedule(('0 0 1 * *'),async()=>{
+  try {
+    await dailyfootfall.deleteMany();
+  } catch (error) {
+    console.error(error.message);
+  }
+  
+})
+
 
 let isRunning = false
 
