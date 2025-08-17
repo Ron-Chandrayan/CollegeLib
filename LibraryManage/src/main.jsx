@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <QuestionWrapper /> // only this is protected
       },{
         path: 'library',
-        element: <Library />
+        element: <LibraryWrapper /> // this is protected
       },{
         path: 'others',
         element: <OthersWrapper /> //this is protected

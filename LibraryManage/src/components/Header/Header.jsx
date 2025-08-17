@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 //import { useOutletContext } from 'react-router-dom'; // only needed if you use context
 
-function Header({ signup, setSignup , login,setLogin}) {
+function Header({ signup, setSignup , login,setLogin,library}) {
   // Option 1: If you want dynamic signup context
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
