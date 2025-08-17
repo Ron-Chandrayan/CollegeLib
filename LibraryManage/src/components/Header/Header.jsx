@@ -87,6 +87,7 @@ const toggleMobileMenu = () => {
                       Stats
                     </NavLink>
                   </div>
+
                   {library?<div>
                     <NavLink
                       to="/library"
@@ -100,6 +101,7 @@ const toggleMobileMenu = () => {
                       Library
                     </NavLink>
                   </div>:null}
+                  
                   
                    <div>
                     <NavLink

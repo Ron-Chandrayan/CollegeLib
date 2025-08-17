@@ -58,7 +58,9 @@ function Home() {
                 .then(data => {
                   console.log(data.type);
                   if (data.valid) {
-                    
+                    if(data.type==="library"){
+                      setlibrary(true);
+                    }
                     setSignup(true);
                     setLogin(true);
                     setwelcome(data.name);
@@ -120,6 +122,8 @@ function Home() {
           getData();
             },[login , signup ,welcome ])
 
+    
+
 
         const handleChange = (e) => {
         setFormData(prev => ({
@@ -134,10 +138,10 @@ function Home() {
         let formToSend;
         if(formData.PRN==='124A1017'){
            formToSend = { ...formData, islibrary: true };
-           setlibrary(true);
+          //  setlibrary(true);
         }else{
            formToSend = { ...formData, islibrary: false };
-           setlibrary(false);
+          //  setlibrary(false);
         }
 
           //const formToSend = { ...formData, islibrary: true };
