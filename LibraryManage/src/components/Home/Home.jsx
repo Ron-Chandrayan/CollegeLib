@@ -56,7 +56,7 @@ function Home() {
               })
                 .then(res => res.json())
                 .then(data => {
-                  console.log(data.type);
+                  //console.log(data.type);
                   if (data.valid) {
                     if(data.type==="library"){
                       setlibrary(true);
@@ -95,7 +95,7 @@ function Home() {
                    
                     //console.log(data);
                     if(signup===false && login===false){
-                      console.log("not logged in ")
+                      
                     }else{
                       //console.log(data);
                       data.forEach(element => {
