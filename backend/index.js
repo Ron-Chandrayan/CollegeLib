@@ -290,43 +290,124 @@ app.get('/fetchusers', async (req, res) => {
 });
 
 // auth: signup/login
+// app.post('/api/save', async (req, res) => {
+//   const { name, PRN, password,islibrary } = req.body;
+//   console.log(islibrary);
+//   if (name) {
+//     if (await Users.findOne({ PRN }))
+//       return res.status(401).json({ success: false, message: 'User exists' });
+//     const checkname = await festudents.findOne({PRN})
+//     if(checkname && checkname.name.trim().toLowerCase() === name.trim().toLowerCase()){
+//           const user = new Users({ name, PRN, password });
+//           await user.save();
+//           const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
+//           return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
+//     }else{
+//       return res.status(401).json({ success: false, message: 'Your name and PRN does not match with the college database. Please provide your correct name and corresponding PRN as written in the ID Card' });
+//     }
+
+//   } else {
+//     const user = await Users.findOne({ PRN });
+//     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
+//     if (user.password !== password)
+//       return res.status(401).json({ success: false, message: 'Wrong password' });
+//     const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
+//     return res.json({ success: true, message: 'Login successful', token, name: user.name, PRN:user.PRN });
+//   }
+// });
+
 app.post('/api/save', async (req, res) => {
-  const { name, PRN, password,islibrary } = req.body;
-  console.log(islibrary);
+  const { name, PRN, password, islibrary } = req.body; // use islibrary flag
+
+  // Signup flow
   if (name) {
     if (await Users.findOne({ PRN }))
       return res.status(401).json({ success: false, message: 'User exists' });
-    const checkname = await festudents.findOne({PRN})
-    if(checkname && checkname.name.trim().toLowerCase() === name.trim().toLowerCase()){
-          const user = new Users({ name, PRN, password });
-          await user.save();
-          const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
-          return res.json({ success: true, message: 'Signup successful', token, name ,PRN });
-    }else{
-      return res.status(401).json({ success: false, message: 'Your name and PRN does not match with the college database. Please provide your correct name and corresponding PRN as written in the ID Card' });
-    }
 
-  } else {
+    const checkname = await festudents.findOne({ PRN });
+    if (checkname && checkname.name.trim().toLowerCase() === name.trim().toLowerCase()) {
+      const user = new Users({ name, PRN, password });
+      await user.save();
+
+      // Token expiry based on usage
+      const token = jwt.sign(
+        { PRN, type: islibrary ? 'library' : 'normal' },
+        JWT_SECRET,
+        { expiresIn: islibrary ? '12h' : '1h' }
+      );
+
+      return res.json({
+        success: true,
+        message: 'Signup successful',
+        token,
+        name,
+        PRN
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Your name and PRN does not match with the college database. Please provide your correct name and corresponding PRN as written in the ID Card'
+      });
+    }
+  } 
+  // Login flow
+  else {
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
     if (user.password !== password)
       return res.status(401).json({ success: false, message: 'Wrong password' });
-    const token = jwt.sign({ PRN }, JWT_SECRET, { expiresIn: '1h' });
-    return res.json({ success: true, message: 'Login successful', token, name: user.name, PRN:user.PRN });
+
+    const token = jwt.sign(
+      { PRN, type: islibrary ? 'library' : 'normal' },
+      JWT_SECRET,
+      { expiresIn: islibrary ? '12h' : '1h' }
+    );
+
+    return res.json({
+      success: true,
+      message: 'Login successful',
+      token,
+      name: user.name,
+      PRN: user.PRN
+    });
   }
 });
 
+
+
 // token validation
+// app.get('/validate', async (req, res) => {
+//   const h = req.headers.authorization;
+//   if (!h) return res.status(401).json({ valid: false });
+//   const token = h.split(' ')[1];
+//   try {
+//     const decoded = jwt.verify(token, JWT_SECRET);
+//     const user = await Users.findOne({ PRN: decoded.PRN });
+//     if (!user) return res.status(401).json({ valid: false });
+//     res.json({ valid: true, name: user.name , PRN:user.PRN});
+//   } catch {
+//     res.status(401).json({ valid: false });
+//   }
+// });
+
+
 app.get('/validate', async (req, res) => {
-  const h = req.headers.authorization;
-  if (!h) return res.status(401).json({ valid: false });
-  const token = h.split(' ')[1];
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ valid: false });
+
+  const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     const user = await Users.findOne({ PRN: decoded.PRN });
     if (!user) return res.status(401).json({ valid: false });
-    res.json({ valid: true, name: user.name , PRN:user.PRN});
-  } catch {
+
+    res.json({
+      valid: true,
+      name: user.name,
+      PRN: user.PRN,
+      type: decoded.type // 'library' or 'normal'
+    });
+  } catch (err) {
     res.status(401).json({ valid: false });
   }
 });
