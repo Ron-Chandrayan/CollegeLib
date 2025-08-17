@@ -14,7 +14,7 @@ function Home() {
     // const[totalfootfall,settotalfootfall]=useState("Loading...")
 
 
-    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2} = useOutletContext()
+    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData} = useOutletContext()
 
     const[err,seterr]= useState(false)
     const[errMessage, setErrMessage] = useState("")
@@ -28,11 +28,11 @@ function Home() {
 
     
 
-     const [formData, setFormData] = useState({
-    name: '',
-    PRN: '',
-    password: ''
-  });
+  //    const [formData, setFormData] = useState({
+  //   name: '',
+  //   PRN: '',
+  //   password: '',
+  // });
           const crowdClass = 
           name.length >= 120 ? 'text-red-600' :
           name.length >= 90 ? 'text-orange-600' :
@@ -128,7 +128,9 @@ function Home() {
 
       const handleSubmit = async (e) => {
         e.preventDefault(); // stop form reload
-        
+
+
+
         // Reset error state
         seterr(false);
         setErrMessage("");
