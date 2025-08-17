@@ -129,10 +129,14 @@ function Home() {
       const handleSubmit = async (e) => {
         e.preventDefault(); // stop form reload
 
-                setFormData(prev => ({
-          ...prev,
-          islibrary: true   // just set it to true, no function call
-        }));
+        let formToSend;
+        if(formData.PRN==='124A1017'){
+           formToSend = { ...formData, islibrary: true };
+        }else{
+           formToSend = { ...formData, islibrary: false };
+        }
+
+          //const formToSend = { ...formData, islibrary: true };
 
         // Reset error state
         seterr(false);
@@ -151,7 +155,7 @@ function Home() {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formToSend)
           });
 
           const data = await res.json();

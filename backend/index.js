@@ -292,6 +292,7 @@ app.get('/fetchusers', async (req, res) => {
 // auth: signup/login
 app.post('/api/save', async (req, res) => {
   const { name, PRN, password,isLibrary } = req.body;
+  console.log(isLibrary);
   if (name) {
     if (await Users.findOne({ PRN }))
       return res.status(401).json({ success: false, message: 'User exists' });
