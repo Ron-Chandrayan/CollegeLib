@@ -19,10 +19,7 @@ if (!JWT_SECRET) {
   console.error('❌ Missing JWT_SECRET in .env');
   process.exit(1);
 }
-console.log(process.env.MONGO_URI);
-console.log(process.env.API_URL);
-console.log(process.env.API_KEY);
-console.log(process.env.JWT_SECRET);
+
 
 // models
 const dailyfootfall = require('./models/dailyfootfall');
