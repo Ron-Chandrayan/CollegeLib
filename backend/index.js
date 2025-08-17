@@ -501,6 +501,26 @@ app.get('/api/dailyfootfall', async (req, res) => {
   }
 });
 
+app.get('/api/hourlyfootfalls', async (req, res) => {
+  try {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);  // today at midnight
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1); // tomorrow at midnight
+
+
+     const data = await hourlyfootfall.find({
+      createdAt: { $gte: start, $lt: end }
+    });
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching footfall data' });
+  }
+});
+
+
 app.get('/timetable', async(req,res)=>{
   try {
     const data  = await timetable.find();
