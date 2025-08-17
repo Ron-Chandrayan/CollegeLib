@@ -1,8 +1,8 @@
 const AWS = require('aws-sdk');
 
 const s3Config = {
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'AKIAUWUJKHWGNJGON3YJ',
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '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',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
   region: process.env.AWS_REGION || 'ap-south-1',
   bucketName: process.env.AWS_BUCKET_NAME || 'audacty-backend'
 };
