@@ -32,12 +32,12 @@ function Stats() {
 
                       useEffect(()=>{
             const getData=async ()=>{
-              try{await fetch(`/api/hourlyfootfall`)
+              try{await fetch(`/api/hourlyfootfalls`)
                     .then(response => response.json())
                     .then(data => {
                       
-                      // console.log(data)
-                      //setInfo(data)
+                      console.log(data)
+                      setInfo(data)
                                                 
                     })
                     }
