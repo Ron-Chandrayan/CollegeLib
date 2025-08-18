@@ -250,31 +250,64 @@ app.get('/fetch',async(req,res)=>{
 })
 
 
-app.post('/submit',async (req,res)=>{
-    console.log(req.body);
-    const readers =await livefeed.find({PRN: { $regex: `^${req.body.PRN}$`, $options: "i" }});
-    if (readers.length>0){
-      await livefeed.deleteOne({ PRN: { $regex: `^${req.body.PRN}$`, $options: "i" } });
-       res.json({ success: true, message: "Student removed!" });
-    }else{
-      const fetchname = await festudents.findOne({PRN:(req.body.PRN).toUpperCase()});
-      if(fetchname){
-        const name = fetchname.name;
-      console.log(name);
-       const student=new livefeed({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
-       await student.save();
-        const parth=new lifetime({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
-        await parth.save();
+// app.post('/submit',async (req,res)=>{
+//     console.log(req.body);
+//     const readers =await livefeed.findOne({PRN: { $regex: `^${req.body.PRN}$`, $options: "i" }});
+//     if (readers.length>0){
+//       await livefeed.deleteOne({ PRN: { $regex: `^${req.body.PRN}$`, $options: "i" } });
+//        res.json({ success: true, message: "Student removed!" });
+//     }else{
+//       const fetchname = await festudents.findOne({PRN:(req.body.PRN).toUpperCase()});
+//       if(fetchname){
+//         const name = fetchname.name;
+//       console.log(name);
+//        const student=new livefeed({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
+//        await student.save();
+//         const parth=new lifetime({PRN:req.body.PRN, name:name ,purpose:req.body.purpose});
+//         await parth.save();
        
-    //console.log("data saved");
-    res.json({ success: true, message: "Student inserted" });
-      }else{
-         res.json({ success: false, message: "PRN is invalid" });
-      }
+//     //console.log("data saved");
+//     res.json({ success: true, message: "Student inserted" });
+//       }else{
+//          res.json({ success: false, message: "PRN is invalid" });
+//       }
       
-    }
+//     }
    
-})
+// })
+
+app.post('/submit', async (req, res) => {
+  try {
+    const prn = req.body.PRN.toUpperCase(); // normalize PRN once
+    const purpose = req.body.purpose;
+
+    // Try to remove student from livefeed in one go
+    const removed = await livefeed.findOneAndDelete({ PRN: prn });
+
+    if (removed) {
+      return res.json({ success: true, message: "Student removed!" });
+    }
+
+    // If not in livefeed, check in festudents
+    const fetchname = await festudents.findOne({ PRN: prn }, { name: 1 });
+    if (!fetchname) {
+      return res.json({ success: false, message: "PRN is invalid" });
+    }
+
+    // Insert into livefeed + lifetime
+    const studentData = { PRN: prn, name: fetchname.name, purpose };
+    await Promise.all([
+      new livefeed(studentData).save(),
+      new lifetime(studentData).save()
+    ]);
+
+    res.json({ success: true, message: "Student inserted" });
+
+  } catch (err) {
+    console.error("Error in /submit:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 
 app.get('/fetchtime', async (req, res) => {
