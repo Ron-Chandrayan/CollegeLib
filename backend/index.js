@@ -94,9 +94,9 @@ cron.schedule(('0 1-13 * * *'),async ()=>{
 
   // const count = response.data.todays_footfall;
 
-  const data =await footfall();
+  const count =await footfall();
 
-  const entry = new hourlyfootfall({ data }); //creating the document to be stored according to the footfall scema
+  const entry = new hourlyfootfall({ count }); //creating the document to be stored according to the footfall scema
   await entry.save();// adding the documents to the db
   console.log("data saved");
    
@@ -104,6 +104,15 @@ cron.schedule(('0 1-13 * * *'),async ()=>{
        console.error('CRON-error', error.message);
       
   }
+})
+
+cron.schedule(('0 0 1 * *'),async()=>{
+  try {
+    await dailyfootfall.deleteMany();
+  } catch (error) {
+    console.error(error.message);
+  }
+  
 })
 
 
@@ -500,6 +509,26 @@ app.get('/api/dailyfootfall', async (req, res) => {
     res.status(500).json({ message: 'Error fetching footfall data' });
   }
 });
+
+app.get('/api/hourlyfootfalls', async (req, res) => {
+  try {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);  // today at midnight
+
+    const end = new Date(start);
+    end.setDate(start.getDate() + 1); // tomorrow at midnight
+
+
+     const data = await hourlyfootfall.find({
+      timestamp: { $gte: start, $lt: end }
+    });
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching footfall data' });
+  }
+});
+
 
 app.get('/timetable', async(req,res)=>{
   try {

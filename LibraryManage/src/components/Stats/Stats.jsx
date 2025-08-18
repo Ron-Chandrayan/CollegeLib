@@ -18,55 +18,44 @@ function Stats() {
    const[received,setreceived]=useState(false);
    const [count,setcount]=useState(0);
    
-  useEffect(() => {
-    console.log("Students changed:", Students);
-    if(Students.length!=0){
-      setreceived(true);
-      const FStudents=Students.filter((element)=>{
-        return (element.PRN===welcome2);
-      });
-      setcount(FStudents.length);
-      console.log(count);
-    }
-  }, [Students]);
+                useEffect(() => {
+                  console.log("Students changed:", Students);
+                  if(Students.length!=0){
+                    setreceived(true);
+                    const FStudents=Students.filter((element)=>{
+                      return (element.PRN===welcome2);
+                    });
+                    const newCount = FStudents.length;
+                    setcount(newCount);
+                    //console.log(count);
+                  }
+                }, [Students, welcome2]);
 
-                      useEffect(()=>{
-            const getData=async ()=>{
-              try{await fetch(`/api/hourlyfootfall`)
-                    .then(response => response.json())
-                    .then(data => {
-                      
-                      // console.log(data)
-                      //setInfo(data)
-                                                
-                    })
-                    }
-                    catch(error){
-                        //seterr(true);                
-                        console.error(error);             
-                    }
-            }
+                          useEffect(() => {
+                const getData = async () => {
+                  try {
+                    const res = await fetch(`/api/hourlyfootfalls`);
+                    const data = await res.json();
+                    setInfo(data);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                };
 
-            getData()
-            const getData2=async ()=>{
-              try{await fetch(`/api/dailyfootfall`)
-                    .then(response => response.json())
-                    .then(data => {
-                      
-                      // console.log(data)
-                      setInfo2(data)
-                                                
-                    })
-                    }
-                    catch(error){
-                        //seterr(true);                
-                        console.error(error);             
-                    }
-            }
-            getData2()
+                const getData2 = async () => {
+                  try {
+                    const res = await fetch(`/api/dailyfootfall`);
+                    const data = await res.json();
+                    setInfo2(data);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                };
 
-            
-          },[]);
+                getData();
+                getData2();
+              }, []); 
+
 
   // console.log(universalformData);
 
