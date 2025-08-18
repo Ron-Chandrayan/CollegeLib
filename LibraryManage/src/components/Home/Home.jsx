@@ -136,7 +136,8 @@ function Home() {
         e.preventDefault(); // stop form reload
 
         let formToSend;
-        if((((formData.PRN).toUpperCase()).trim())==='124A1017'){
+        formData.PRN=(((formData.PRN).toUpperCase()).trim());
+        if(formData.PRN==='124A1017'){
            formToSend = { ...formData, islibrary: true };
             setlibrary(true);
         }else{
