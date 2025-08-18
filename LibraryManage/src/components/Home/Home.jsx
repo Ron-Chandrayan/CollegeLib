@@ -136,13 +136,12 @@ function Home() {
         e.preventDefault(); // stop form reload
 
         let formToSend;
-        formData.PRN=(((formData.PRN).toUpperCase()).trim());
         if(formData.PRN==='124A1017'){
            formToSend = { ...formData, islibrary: true };
             setlibrary(true);
         }else{
            formToSend = { ...formData, islibrary: false };
-           setlibrary(false);
+          setlibrary(false);
         }
 
           //const formToSend = { ...formData, islibrary: true };

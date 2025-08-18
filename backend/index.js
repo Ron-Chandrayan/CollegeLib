@@ -391,7 +391,7 @@ app.post('/api/save', async (req, res) => {
   } 
   // Login flow
   else {
-    PRN = (PRN.toUpperCase()).trim();
+    // PRN = (PRN.toUpperCase()).trim();
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
     if (user.password !== password)
