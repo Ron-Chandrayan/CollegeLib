@@ -18,6 +18,8 @@ const { sendPasswordResetEmail, sendPasswordResetConfirmation, testEmailService,
 // load environment vars
 require('dotenv').config();
 
+let gPRN='';
+
 // ensure JWT secret is set
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -367,6 +369,7 @@ app.get('/fetchusers', async (req, res) => {
 
 app.post('/api/save', async (req, res) => {
   const { name, PRN, password, islibrary } = req.body; // use islibrary flag
+  gPRN=PRN;
 
   // Signup flow
   if (name) {
@@ -403,6 +406,7 @@ app.post('/api/save', async (req, res) => {
   // Login flow
   else {
     // PRN = (PRN.toUpperCase()).trim();
+    gPRN=PRN;
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
     
@@ -576,6 +580,20 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
     res.status(500).json({ message: 'Error fetching footfall data' });
   }
 });
+
+app.get('/gettime', async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'No token' });
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    res.json({ prn: decoded.PRN });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
 
 
 app.get('/timetable', async(req,res)=>{

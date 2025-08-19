@@ -19,7 +19,7 @@ function Stats() {
    const [count,setcount]=useState(0);
    
                 useEffect(() => {
-                  console.log("Students changed:", Students);
+                  // console.log("Students changed:", Students);
                   if(Students.length!=0){
                     setreceived(true);
                     const FStudents=Students.filter((element)=>{
