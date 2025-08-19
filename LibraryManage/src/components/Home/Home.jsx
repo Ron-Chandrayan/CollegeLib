@@ -271,6 +271,11 @@ function Home() {
                     </div>
 
                     {/* Enhanced Search Section */}
+                    
+
+                    {/* Students Section */} 
+                    {library?<>
+
                     <div className='mb-8'>
                         <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/40">
                             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -300,8 +305,7 @@ function Home() {
                         </div>
                     </div>
 
-                    {/* Students Section */} 
-                    {library?<><Searching search={search} filter={filter} name={name} Students={Students} /></>:null}
+                    <Searching search={search} filter={filter} name={name} Students={Students} /></>:null}
 
                     {/* <Searching search={search} filter={filter} name={name} Students={Students} /> */}
                 </div>
