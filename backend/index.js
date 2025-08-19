@@ -775,7 +775,7 @@ app.post('/reset-password', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Password reset successful! You can now log in with your new password.'
+      message: 'Password reset successful! You can now log in with your new password. (v3)'
     });
 
   } catch (error) {
