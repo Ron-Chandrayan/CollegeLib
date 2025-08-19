@@ -764,7 +764,7 @@ app.post('/reset-password', async (req, res) => {
     }
 
     // Hash the new password
-    const saltRounds = 10;
+    const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
     // Update password
