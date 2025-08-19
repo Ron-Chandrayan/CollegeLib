@@ -332,6 +332,7 @@ app.post('/api/save', async (req, res) => {
 
     const checkname = await festudents.findOne({ PRN });
     if (checkname && checkname.name.trim().toLowerCase() === name.trim().toLowerCase()) {
+      //Hashing: Create user with plain password - pre-save middleware will hash it automatically
       const user = new Users({ name, PRN, password });
       await user.save();
 
@@ -360,7 +361,10 @@ app.post('/api/save', async (req, res) => {
   else {
     const user = await Users.findOne({ PRN });
     if (!user) return res.status(401).json({ success: false, message: 'User not found' });
-    if (user.password !== password)
+    
+    //Hashing: Use bcrypt to compare password instead of plain text comparison
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid)
       return res.status(401).json({ success: false, message: 'Wrong password' });
 
     const token = jwt.sign(

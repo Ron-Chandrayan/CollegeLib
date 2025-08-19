@@ -3,4 +3,6 @@
 
 # Ignore dependencies
 node_modules/
+migrate_passwords.js
+MIGRATION_INSTRUCTIONS.md
 update_emails.py
