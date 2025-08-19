@@ -15,9 +15,9 @@ import QuestionWrapper from './components/QuestionWrapper/QuestionWrapper.jsx'
 import OthersWrapper from './components/OthersWrapper/OthersWrapper.jsx'
 import Library from './components/Library/Library.jsx'
 import LibraryWrapper from './components/LibraryWrapper/LibraryWrapper.jsx'
-import ForgotPassword from './components/PasswordReset/ForgotPassword.jsx'
-import ResetPassword from './components/PasswordReset/ResetPassword.jsx'
-import TestPasswordReset from './components/PasswordReset/TestPasswordReset.jsx'
+// import ForgotPassword from './components/PasswordReset/ForgotPassword.jsx'
+// import ResetPassword from './components/PasswordReset/ResetPassword.jsx'
+// import TestPasswordReset from './components/PasswordReset/TestPasswordReset.jsx'
 import { ToastContainer } from "react-toastify";
 
 
