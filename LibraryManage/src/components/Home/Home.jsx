@@ -67,6 +67,19 @@ function Home() {
           .finally(() => {
             setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
           });
+
+                fetch('/gettime', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("PRN from /gettime:", data.prn);
+                })
+                .catch(err => console.error(err));
+
     }, []);
 
     useEffect(()=>{
