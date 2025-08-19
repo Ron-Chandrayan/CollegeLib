@@ -14,7 +14,27 @@ const UserSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid PRN!`
     }
   },
-  password: String
+  password: String,
+  email: {
+    type: String,
+    required: false,
+    validate: {
+      validator: function(v) {
+        return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      },
+      message: 'Please enter a valid email address'
+    }
+  },
+  resetPasswordToken: {
+    type: String,
+    default: null
+  },
+  resetPasswordExpires: {
+    type: Date,
+    default: null
+  }
+}, {
+  timestamps: true
 });
 
 //Hashing: Pre-save middleware to hash password before saving to database

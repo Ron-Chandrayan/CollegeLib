@@ -534,14 +534,25 @@ function Home() {
                   </div>
                 </div>
 
-                    <div className="flex">
-                                  <input
-                                    type="checkbox"
-                                    checked={isChecked}
-                                    onChange={(e) => setIsChecked(e.target.checked)}
-                                  />
-                                  <p className="text-black mx-3">Show password</p>
-                                </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => setIsChecked(e.target.checked)}
+                        />
+                        <p className="text-black mx-3">Show password</p>
+                      </div>
+                      {login && (
+                        <button
+                          type="button"
+                          onClick={() => window.location.href = '/forgot-password'}
+                          className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-200"
+                        >
+                          Forgot Password?
+                        </button>
+                      )}
+                    </div>
        
 
                 <button 

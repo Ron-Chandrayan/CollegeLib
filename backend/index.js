@@ -10,6 +10,9 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
+// Import password reset routes
+const passwordResetRoutes = require('./routes/passwordReset');
+
 // load environment vars
 require('dotenv').config();
 
@@ -34,6 +37,9 @@ const livefeed=require('./models/livefeed');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Password reset routes
+app.use('/api/auth', passwordResetRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
