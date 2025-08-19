@@ -112,7 +112,7 @@ const ForgotPassword = () => {
                     {formData.email || (usePRN ? `Email associated with PRN ${formData.PRN}` : '')}
                   </p>
                   <p className="text-sm text-slate-500">
-                    The link will expire in 60 minutes
+                    The link will expire in 10 minutes
                   </p>
                 </div>
                 <div className="pt-4">

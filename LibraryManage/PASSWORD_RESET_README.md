@@ -20,7 +20,7 @@ A complete password reset system for the Library Management application that mat
 - **Security Features**
   - Secure token generation (32 bytes)
   - Token hashing with SHA-256
-  - Token expiration (1 hour)
+  - Token expiration (10 minutes)
   - Password hashing with bcrypt (12 salt rounds)
   - Single-hash password storage (fixed double-hash issue)
   - Email-based reset link delivery

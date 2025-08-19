@@ -70,6 +70,7 @@ The system includes two email templates:
 1. **Password Reset Request**:
    - Sent when a user requests a password reset
    - Contains a link with the reset token
+   - Token expires after 10 minutes
 
 2. **Password Reset Confirmation**:
    - Sent after a user successfully resets their password

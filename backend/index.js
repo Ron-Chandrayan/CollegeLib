@@ -13,7 +13,7 @@ const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Uti
 // Password reset functionality
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const { sendPasswordResetEmail, sendPasswordResetConfirmation, testEmailService } = require('./services/emailService');
+const { sendPasswordResetEmail, sendPasswordResetConfirmation, testEmailService, sendSignupOTP, sendWelcomeEmail } = require('./services/emailService');
 
 // load environment vars
 require('dotenv').config();
@@ -41,6 +41,9 @@ app.use(cors());
 app.use(express.json());
 
 // Password reset routes (integrated directly)
+
+// OTP storage for signup verification
+const otpStore = new Map(); // In production, use Redis or database
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -658,7 +661,7 @@ app.post('/forgot-password', async (req, res) => {
 
     // Save hashed token and expiry to user
     user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
+    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
     await user.save();
 
     // Create the reset URL
@@ -845,6 +848,228 @@ app.post('/reset-password', async (req, res) => {
   }
 });
 
+// Authentication endpoints for new animated flow
+
+// Check if user exists in Users collection
+app.post('/api/check-user', async (req, res) => {
+  try {
+    const { PRN } = req.body;
+    
+    if (!PRN) {
+      return res.status(400).json({ success: false, message: 'PRN is required' });
+    }
+
+    const user = await Users.findOne({ PRN });
+    
+    res.json({
+      success: true,
+      exists: !!user
+    });
+  } catch (error) {
+    console.error('Check user error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Check if PRN exists in FeStudent collection
+app.post('/api/check-student', async (req, res) => {
+  try {
+    const { PRN } = req.body;
+    
+    if (!PRN) {
+      return res.status(400).json({ success: false, message: 'PRN is required' });
+    }
+
+    const student = await festudents.findOne({ PRN });
+    
+    if (student) {
+      res.json({
+        success: true,
+        exists: true,
+        student: {
+          name: student.name,
+          email: student.email,
+          PRN: student.PRN
+        }
+      });
+    } else {
+      res.json({
+        success: true,
+        exists: false
+      });
+    }
+  } catch (error) {
+    console.error('Check student error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+  try {
+    const { PRN, password } = req.body;
+    
+    if (!PRN || !password) {
+      return res.status(400).json({ success: false, message: 'PRN and password are required' });
+    }
+
+    const user = await Users.findOne({ PRN });
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'User not found' });
+    }
+
+    const isPasswordValid = await user.comparePassword(password);
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({ success: false, message: 'Invalid password' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id, 
+        PRN: user.PRN, 
+        name: user.name,
+        type: user.PRN === '124A1017' ? 'library' : 'student'
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      token,
+      name: user.name,
+      PRN: user.PRN,
+      type: user.PRN === '124A1017' ? 'library' : 'student'
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Send OTP for signup
+app.post('/api/send-signup-otp', async (req, res) => {
+  try {
+    const { PRN, email, name } = req.body;
+    
+    if (!PRN || !email || !name) {
+      return res.status(400).json({ success: false, message: 'PRN, email, and name are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await Users.findOne({ PRN });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store OTP with expiration (10 minutes)
+    otpStore.set(PRN, {
+      otp,
+      email,
+      name,
+      expiresAt: Date.now() + 10 * 60 * 1000 // 10 minutes
+    });
+
+    // Send OTP email
+    try {
+      await sendSignupOTP(email, name, otp);
+      res.json({
+        success: true,
+        message: 'OTP sent successfully'
+      });
+    } catch (emailError) {
+      console.error('Email sending error:', emailError);
+      res.status(500).json({ success: false, message: 'Failed to send OTP email' });
+    }
+  } catch (error) {
+    console.error('Send OTP error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Verify OTP and create account
+app.post('/api/verify-signup-otp', async (req, res) => {
+  try {
+    const { PRN, email, name, password, otp } = req.body;
+    
+    if (!PRN || !email || !name || !password || !otp) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await Users.findOne({ PRN });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'User already exists' });
+    }
+
+    // Verify OTP
+    const storedOTPData = otpStore.get(PRN);
+    if (!storedOTPData) {
+      return res.status(400).json({ success: false, message: 'OTP not found or expired' });
+    }
+
+    if (storedOTPData.expiresAt < Date.now()) {
+      otpStore.delete(PRN);
+      return res.status(400).json({ success: false, message: 'OTP has expired' });
+    }
+
+    if (storedOTPData.otp !== otp) {
+      return res.status(400).json({ success: false, message: 'Invalid OTP' });
+    }
+
+    // Create new user
+    const newUser = new Users({
+      PRN,
+      name,
+      email,
+      password
+    });
+
+    await newUser.save();
+
+    // Clear OTP
+    otpStore.delete(PRN);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: newUser._id, 
+        PRN: newUser.PRN, 
+        name: newUser.name,
+        type: 'student'
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(email, name);
+    } catch (emailError) {
+      console.error('Welcome email error:', emailError);
+      // Don't fail the signup if welcome email fails
+    }
+
+    res.json({
+      success: true,
+      message: 'Account created successfully',
+      token,
+      name: newUser.name,
+      PRN: newUser.PRN,
+      type: 'student'
+    });
+  } catch (error) {
+    console.error('Verify OTP error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
 
 // static React build for client-side routing
 const staticPath = path.join(__dirname, '../LibraryManage/dist');
