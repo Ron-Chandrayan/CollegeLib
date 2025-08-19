@@ -581,10 +581,19 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
   }
 });
 
-app.get('/gettime',async(req,res)=>{
-  console.log(gPRN);
-  res.json({prn:gPRN});
-})
+app.get('/gettime', async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'No token' });
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    res.json({ prn: decoded.PRN });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
+
 
 
 app.get('/timetable', async(req,res)=>{
