@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import wallpaper from '../../assets/wallpaper.jpeg';
@@ -18,6 +18,8 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
   const [studentData, setStudentData] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
+  const [showEmailReminder, setShowEmailReminder] = useState(false);
+  const timerRef = useRef(null);
 
   const handlePRNSubmit = async (e) => {
     e.preventDefault();
@@ -123,7 +125,17 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
 
       if (otpData.success) {
         setStep('otp');
-        toast.success('OTP sent to your email!');
+        toast.success('OTP sent to your personal email! Please check spam folder if not found in inbox.');
+        
+        // Clear any existing timer
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+        
+        // Set timer for 25 seconds to show additional reminder
+        timerRef.current = setTimeout(() => {
+          setShowEmailReminder(true);
+        }, 25000);
       } else {
         toast.error(otpData.message || 'Failed to send OTP');
       }
@@ -188,8 +200,22 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
     } else if (step === 'otp') {
       setStep('signup');
       setFormData(prev => ({ ...prev, otp: '' }));
+      // Clear timer when going back from OTP step
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        setShowEmailReminder(false);
+      }
     }
   };
+  
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-cover bg-center flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundImage: `url(${wallpaper})` }}>
@@ -430,8 +456,30 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
             <form onSubmit={handleOTPSubmit} className="space-y-6">
               <div className="text-center mb-4">
                 <p className="text-slate-600 text-sm">
-                  We've sent a verification code to your email
+                  We've sent a verification code to your <strong>personal email</strong>
                 </p>
+                <p className="text-amber-600 text-xs mt-1">
+                  <svg className="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  If you don't see the email, please check your spam/junk folder
+                </p>
+                <p className="text-slate-500 text-xs mt-1">
+                  <svg className="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  We sent the OTP to your personal email, not your GST email
+                </p>
+                {showEmailReminder && (
+                  <div className="mt-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
+                    <p className="text-blue-800 text-xs font-medium">
+                      <svg className="w-4 h-4 inline-block mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Still waiting? Please check your personal email account, including spam/junk folders. The OTP email was sent to {formData.email}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
