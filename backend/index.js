@@ -767,11 +767,17 @@ app.post('/reset-password', async (req, res) => {
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
-    // Update password
-    user.password = hashedPassword;
-    user.resetPasswordToken = null;
-    user.resetPasswordExpires = null;
-    await user.save();
+    // Update password directly to avoid double hashing from pre-save middleware
+    await Users.updateOne(
+      { _id: user._id },
+      { 
+        $set: { 
+          password: hashedPassword,
+          resetPasswordToken: null,
+          resetPasswordExpires: null
+        } 
+      }
+    );
 
     res.status(200).json({
       success: true,
