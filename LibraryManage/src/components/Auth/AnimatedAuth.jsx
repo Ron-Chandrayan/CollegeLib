@@ -379,14 +379,14 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
                 <input 
                   type="text" 
                   name="name" 
-                  placeholder="Enter your full name" 
+                  placeholder="Enter your full name as per ID Card" 
                   onChange={handleChange}
-                  value={formData.name} 
+                  //value={formData.name} 
                   required 
                   className="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
                 />
               </div>
-
+/*
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                   <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -403,7 +403,7 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
                   required 
                   className="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
                 />
-              </div>
+              </div>*/
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
