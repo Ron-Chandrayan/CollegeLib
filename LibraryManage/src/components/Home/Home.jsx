@@ -300,8 +300,10 @@ function Home() {
                         </div>
                     </div>
 
-                    {/* Students Section */}
-                    <Searching search={search} filter={filter} name={name} Students={Students} />
+                    {/* Students Section */} 
+                    {setlibrary?<><Searching search={search} filter={filter} name={name} Students={Students} /></>:null}
+                    
+                    {/* <Searching search={search} filter={filter} name={name} Students={Students} /> */}
                 </div>
             </div>
         )
