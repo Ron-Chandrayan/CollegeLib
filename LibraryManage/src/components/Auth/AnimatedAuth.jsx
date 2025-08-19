@@ -470,7 +470,7 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
             <form onSubmit={handleOTPSubmit} className="space-y-6">
               <div className="text-center mb-4">
                 <p className="text-slate-600 text-sm">
-                  We've sent a verification code to <span className="font-semibold text-blue-600">{formData.email}</span>
+                  We've sent a verification code to your email
                 </p>
               </div>
 
