@@ -147,6 +147,20 @@ function Home() {
         return (
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4 sm:p-6">
                 <div className="max-w-6xl mx-auto">
+
+                     <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-16 rounded-r-lg">
+                        <div className="flex items-center mb-3">
+                            <Clock className="h-6 w-6 text-amber-600 mr-2" />
+                            <h3 className="text-lg font-semibold text-amber-800">Development Phase</h3>
+                        </div>
+                        <p className="text-amber-700">
+                            This system is currently in active development. We're continuously working to enhance 
+                            functionality and add new features based on user feedback and library requirements.
+                            We are in the process of updating our PYQ page. All the PYQ question papers are getting uploaded and will take a few business days.
+                            We are currently awaiting validation from our librarian to implement it in our library. Once it's implemented entry/exit will become more feasible and there will be a dedicated site for our own library.  In the meantime feel free to check out it's features and don't forget to tell your friends about it!
+                        </p>
+                    </div>
+
                     {/* Enhanced Header */}
                     <div className="bg-gradient-to-br from-white/80 via-blue-50/80 to-indigo-100/80 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-8 border border-white/50 backdrop-blur-xl">
                         <div className="flex flex-col lg:flex-row lg:items-start justify-between mb-6">
