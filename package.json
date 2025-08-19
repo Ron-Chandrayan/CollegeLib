@@ -19,7 +19,8 @@
         "mongoose": "^8.16.2",
         "multer": "^2.0.2",
         "node-cron": "^4.2.0",
-        "nodemon": "^3.1.10"
+        "nodemon": "^3.1.10",
+        "bcryptjs": "^2.4.3"
     },
     "devDependencies": {
         "@eslint/js": "^9.30.1",
