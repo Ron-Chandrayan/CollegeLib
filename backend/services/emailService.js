@@ -189,8 +189,13 @@ const testEmailService = async (testEmail) => {
 // Send OTP for signup verification
 const sendSignupOTP = async (to, name, otp) => {
   try {
+    const transporter = createTransporter();
+    if (!transporter) {
+      console.error('❌ Failed to create email transporter');
+      throw new Error('Email transporter not configured');
+    }
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Library System" <${process.env.EMAIL_USER}>`,
       to: to,
       subject: 'LibMan - Email Verification Code',
       html: `
@@ -246,8 +251,13 @@ const sendSignupOTP = async (to, name, otp) => {
 // Send welcome email after successful signup
 const sendWelcomeEmail = async (to, name) => {
   try {
+    const transporter = createTransporter();
+    if (!transporter) {
+      console.error('❌ Failed to create email transporter');
+      throw new Error('Email transporter not configured');
+    }
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: `"Library System" <${process.env.EMAIL_USER}>`,
       to: to,
       subject: 'Welcome to LibMan! 🎉',
       html: `
