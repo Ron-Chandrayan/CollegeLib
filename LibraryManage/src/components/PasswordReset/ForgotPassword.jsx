@@ -43,11 +43,15 @@ const ForgotPassword = () => {
       const data = await response.json();
       
       if (data.success) {
-        // Don't show the token or redirect - in production this would be emailed
+        // Email is now being sent from the backend
         toast.success('Password reset link sent to your email address');
-        // Log to console only during development (remove in production)
-        console.log('DEV ONLY - Reset token:', data.resetToken);
-        console.log(`DEV ONLY - Reset URL: /reset-password?token=${data.resetToken}`);
+        
+        // Only log tokens in development if they're returned
+        if (data.resetToken) {
+          console.log('DEV ONLY - Reset token:', data.resetToken);
+          console.log(`DEV ONLY - Reset URL: ${data.resetUrl || `/reset-password?token=${data.resetToken}`}`);
+        }
+        
         setIsSubmitted(true);
       } else {
         toast.error(data.message || 'Failed to process request');
@@ -103,6 +107,9 @@ const ForgotPassword = () => {
                   <h3 className="text-lg font-semibold text-slate-800 mb-1">Check your inbox</h3>
                   <p className="text-slate-600 mb-4">
                     We've sent a password reset link to your email address. Please check your inbox and spam folder.
+                  </p>
+                  <p className="text-sm text-blue-600 font-medium mb-2">
+                    {formData.email || (usePRN ? `Email associated with PRN ${formData.PRN}` : '')}
                   </p>
                   <p className="text-sm text-slate-500">
                     The link will expire in 60 minutes

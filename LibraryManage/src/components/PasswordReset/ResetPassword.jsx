@@ -13,6 +13,7 @@ const ResetPassword = () => {
   const [userData, setUserData] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [resetSuccess, setResetSuccess] = useState(false);
   
   const [formData, setFormData] = useState({
     newPassword: '',
@@ -110,9 +111,12 @@ const ResetPassword = () => {
       
       if (data.success) {
         toast.success(data.message);
+        // Show success message and redirect after a delay
+        setIsLoading(false);
+        setResetSuccess(true);
         setTimeout(() => {
           navigate('/');
-        }, 3000);
+        }, 5000);
       } else {
         toast.error(data.message || 'Failed to reset password');
       }
@@ -153,15 +157,21 @@ const ResetPassword = () => {
           {/* Enhanced header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+              {resetSuccess ? (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              )}
             </div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent mb-2">
-              Create New Password
+              {resetSuccess ? "Password Reset Success" : "Create New Password"}
             </h2>
             <p className="text-slate-600 text-base mb-4">
-              Set a new password for your account
+              {resetSuccess ? "Your password has been reset successfully" : "Set a new password for your account"}
             </p>
             
             {/* User info card */}
@@ -180,7 +190,36 @@ const ResetPassword = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {resetSuccess ? (
+            <div className="bg-green-50 rounded-xl p-6 border border-green-100 mb-6">
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-800 mb-1">Password Reset Successful</h3>
+                  <p className="text-slate-600 mb-4">
+                    Your password has been reset successfully. You can now log in with your new password.
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    Redirecting to login page...
+                  </p>
+                </div>
+                <div className="pt-4">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/')}
+                    className="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors duration-200 font-medium"
+                  >
+                    Go to Login
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                 <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,6 +332,7 @@ const ResetPassword = () => {
               </button>
             </div>
           </form>
+          )}
         </div>
       </div>
     </div>

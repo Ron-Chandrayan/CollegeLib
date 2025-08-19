@@ -62,12 +62,13 @@ A complete password reset system for the Library Management application that mat
 
 ## Email Integration
 
-The system is designed for email delivery of reset links:
+The system uses Gmail SMTP to send password reset emails:
 
-- Backend prepares a complete reset URL
-- Frontend never displays tokens to users
-- Currently in development mode (tokens logged to console)
-- Ready for integration with nodemailer or other email service
+- **Password Reset Emails**: Contains secure reset link with token
+- **Success Confirmation Emails**: Sent after successful password reset
+- **Beautiful HTML Templates**: Responsive design for all email clients
+- **Secure Delivery**: Tokens only sent via email, never displayed in UI
+- **Development Mode**: Tokens still logged to console in development
 
 ## Implementation Notes
 
