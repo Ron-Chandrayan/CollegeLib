@@ -588,6 +588,8 @@ app.get('/gettime', async (req, res) => {
     if (!token) return res.status(401).json({ error: 'No token' });
 
     const decoded = jwt.verify(token, JWT_SECRET);
+    const PRN=decoded.PRN;
+    const use = await livefeed.findOne({PRN:PRN});
     res.json({ prn: decoded.PRN });
   } catch (err) {
     res.status(401).json({ error: 'Invalid token' });
