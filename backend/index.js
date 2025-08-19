@@ -954,10 +954,10 @@ app.post('/api/login', async (req, res) => {
 // Send OTP for signup
 app.post('/api/send-signup-otp', async (req, res) => {
   try {
-    const { PRN, email, name } = req.body;
-    
-    if (!PRN || !email || !name) {
-      return res.status(400).json({ success: false, message: 'PRN, email, and name are required' });
+    const { PRN } = req.body;
+
+    if (!PRN) {
+      return res.status(400).json({ success: false, message: 'PRN is required' });
     }
 
     // Check if user already exists
@@ -966,9 +966,22 @@ app.post('/api/send-signup-otp', async (req, res) => {
       return res.status(400).json({ success: false, message: 'User already exists' });
     }
 
+    // Fetch student details from FeStudent
+    const student = await festudents.findOne({ PRN });
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'PRN not found in student records' });
+    }
+
+    const email = student.email;
+    const name = student.name;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email not found for this PRN' });
+    }
+
     // Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
+
     // Store OTP with expiration (10 minutes)
     otpStore.set(PRN, {
       otp,
@@ -997,10 +1010,10 @@ app.post('/api/send-signup-otp', async (req, res) => {
 // Verify OTP and create account
 app.post('/api/verify-signup-otp', async (req, res) => {
   try {
-    const { PRN, email, name, password, otp } = req.body;
-    
-    if (!PRN || !email || !name || !password || !otp) {
-      return res.status(400).json({ success: false, message: 'All fields are required' });
+    const { PRN, password, otp } = req.body;
+
+    if (!PRN || !password || !otp) {
+      return res.status(400).json({ success: false, message: 'PRN, password, and OTP are required' });
     }
 
     // Check if user already exists
@@ -1023,6 +1036,15 @@ app.post('/api/verify-signup-otp', async (req, res) => {
     if (storedOTPData.otp !== otp) {
       return res.status(400).json({ success: false, message: 'Invalid OTP' });
     }
+
+    // Fetch student details for name/email
+    const student = await festudents.findOne({ PRN });
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'PRN not found in student records' });
+    }
+
+    const name = student.name;
+    const email = student.email;
 
     // Create new user
     const newUser = new Users({
