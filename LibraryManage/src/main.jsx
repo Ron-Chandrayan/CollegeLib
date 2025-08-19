@@ -53,19 +53,19 @@ const router = createBrowserRouter([
       }
     ]
   },
-  // Password reset routes (outside Layout to avoid header/footer)
-  {
-    path: '/forgot-password',
-    element: <ForgotPassword />
-  },
-  {
-    path: '/reset-password',
-    element: <ResetPassword />
-  },
-  {
-    path: '/test-password-reset',
-    element: <TestPasswordReset />
-  }
+  // // Password reset routes (outside Layout to avoid header/footer)
+  // {
+  //   path: '/forgot-password',
+  //   element: <ForgotPassword />
+  // },
+  // {
+  //   path: '/reset-password',
+  //   element: <ResetPassword />
+  // },
+  // {
+  //   path: '/test-password-reset',
+  //   element: <TestPasswordReset />
+  // }
 ]);
 
 createRoot(document.getElementById('root')).render(
