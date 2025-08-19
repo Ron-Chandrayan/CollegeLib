@@ -742,29 +742,7 @@ app.get('/verify-reset-token/:token', async (req, res) => {
   }
 });
 
-// Test email endpoint
-app.get('/test-email', async (req, res) => {
-  try {
-    const testEmail = req.query.email;
-    
-    if (!testEmail) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Email parameter is required. Use /test-email?email=your@email.com' 
-      });
-    }
-    
-    const result = await testEmailService(testEmail);
-    res.json(result);
-  } catch (error) {
-    console.error('Test email error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to send test email', 
-      error: error.message 
-    });
-  }
-});
+// (Removed /test-email route)
 
 // Reset password
 app.post('/reset-password', async (req, res) => {
