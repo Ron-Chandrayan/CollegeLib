@@ -10,8 +10,9 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
-// Import password reset routes
-const passwordResetRoutes = require('./routes/passwordReset');
+// Password reset functionality (no external APIs needed)
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 // load environment vars
 require('dotenv').config();
@@ -38,8 +39,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Password reset routes
-app.use('/api/auth', passwordResetRoutes);
+// Password reset routes (integrated directly)
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -583,6 +583,209 @@ app.get('/timetable', async(req,res)=>{
     res.status(500).json({ message: 'Error fetching footfall data' });
   }
 })
+
+// Password Reset Routes (No external APIs needed)
+
+// Request password reset
+app.post('/forgot-password', async (req, res) => {
+  try {
+    const { email, PRN } = req.body;
+
+    if (!email && !PRN) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide either email or PRN'
+      });
+    }
+
+    let user;
+    let studentEmail;
+    let studentName;
+
+    if (PRN) {
+      // Find user in Users collection by PRN
+      user = await Users.findOne({ PRN: PRN.toUpperCase() });
+      
+      if (!user) {
+        return res.status(200).json({
+          success: true,
+          message: 'If an account with that information exists, we have sent a password reset email.'
+        });
+      }
+
+      // Get email from fe_students collection
+      const feStudent = await festudents.findOne({ PRN: PRN.toUpperCase() });
+      
+      if (!feStudent || !feStudent.email) {
+        return res.status(400).json({
+          success: false,
+          message: 'No email address found for this PRN. Please contact library administration.'
+        });
+      }
+
+      studentEmail = feStudent.email;
+      studentName = feStudent.name || user.name;
+
+    } else if (email) {
+      // Find student by email in fe_students collection
+      const feStudent = await festudents.findOne({ email: email.toLowerCase() });
+      
+      if (!feStudent) {
+        return res.status(200).json({
+          success: true,
+          message: 'If an account with that information exists, we have sent a password reset email.'
+        });
+      }
+
+      // Find corresponding user account
+      user = await Users.findOne({ PRN: feStudent.PRN });
+      
+      if (!user) {
+        return res.status(400).json({
+          success: false,
+          message: 'No user account found for this email. Please contact library administration.'
+        });
+      }
+
+      studentEmail = feStudent.email;
+      studentName = feStudent.name;
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // Save hashed token and expiry to user
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
+    await user.save();
+
+    // For now, just return success (no email sending)
+    // In a real app, you'd send an email here
+    res.status(200).json({
+      success: true,
+      message: 'Password reset link generated successfully!',
+      resetToken: resetToken, // In production, this would be sent via email
+      resetUrl: `/reset-password?token=${resetToken}`
+    });
+
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again later.'
+    });
+  }
+});
+
+// Verify reset token
+app.get('/verify-reset-token/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    // Hash the token to compare with stored hash
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user with valid token
+    const user = await Users.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired reset token'
+      });
+    }
+
+    // Get student info from fe_students for display
+    const feStudent = await festudents.findOne({ PRN: user.PRN });
+    
+    res.status(200).json({
+      success: true,
+      message: 'Token is valid',
+      user: {
+        name: feStudent?.name || user.name,
+        PRN: user.PRN,
+        email: feStudent?.email || 'Email not found'
+      }
+    });
+
+  } catch (error) {
+    console.error('Verify token error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
+// Reset password
+app.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword, confirmPassword } = req.body;
+
+    if (!token || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all required fields'
+      });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Passwords do not match'
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long'
+      });
+    }
+
+    // Hash the token to compare with stored hash
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user with valid token
+    const user = await Users.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired reset token'
+      });
+    }
+
+    // Hash the new password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    // Update password
+    user.password = hashedPassword;
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful! You can now log in with your new password.'
+    });
+
+  } catch (error) {
+    console.error('Reset password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error. Please try again later.'
+    });
+  }
+});
 
 
 // static React build for client-side routing

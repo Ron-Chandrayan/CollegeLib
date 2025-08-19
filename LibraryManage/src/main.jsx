@@ -17,6 +17,7 @@ import Library from './components/Library/Library.jsx'
 import LibraryWrapper from './components/LibraryWrapper/LibraryWrapper.jsx'
 import ForgotPassword from './components/PasswordReset/ForgotPassword.jsx'
 import ResetPassword from './components/PasswordReset/ResetPassword.jsx'
+import TestPasswordReset from './components/PasswordReset/TestPasswordReset.jsx'
 import { ToastContainer } from "react-toastify";
 
 
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/reset-password',
     element: <ResetPassword />
+  },
+  {
+    path: '/test-password-reset',
+    element: <TestPasswordReset />
   }
 ]);
 
