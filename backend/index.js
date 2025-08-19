@@ -583,6 +583,7 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
 
 app.get('/gettime',async(req,res)=>{
   console.log(gPRN);
+  res.json({prn:gPRN});
 })
 
 
