@@ -6,6 +6,7 @@ import { useOutletContext } from 'react-router-dom'
 import wallpaper from '../../assets/wallpaper.jpeg';
 import loadingGif from '../../assets/loading-gst.gif';
 import AnimatedAuth from '../Auth/AnimatedAuth';
+import { Users, BarChart3, Clock, BookOpen, UserCheck, Search, CreditCard, Zap, TrendingUp, Calendar, Activity } from 'lucide-react'
 
 function Home() {
     const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData} = useOutletContext()
