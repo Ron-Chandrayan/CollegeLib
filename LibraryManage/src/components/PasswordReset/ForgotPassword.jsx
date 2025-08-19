@@ -7,6 +7,7 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [usePRN, setUsePRN] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     PRN: ''
@@ -42,15 +43,12 @@ const ForgotPassword = () => {
       const data = await response.json();
       
       if (data.success) {
-        toast.success(data.message);
-        if (data.resetToken) {
-          // In production, this would be sent via email
-          // For now, we'll show it and redirect to reset page
-          toast.info(`Your reset link: /reset-password?token=${data.resetToken}`);
-          setTimeout(() => {
-            navigate(`/reset-password?token=${data.resetToken}`);
-          }, 3000);
-        }
+        // Don't show the token or redirect - in production this would be emailed
+        toast.success('Password reset link sent to your email address');
+        // Log to console only during development (remove in production)
+        console.log('DEV ONLY - Reset token:', data.resetToken);
+        console.log(`DEV ONLY - Reset URL: /reset-password?token=${data.resetToken}`);
+        setIsSubmitted(true);
       } else {
         toast.error(data.message || 'Failed to process request');
       }
@@ -72,19 +70,57 @@ const ForgotPassword = () => {
           {/* Enhanced header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-              </svg>
+              {isSubmitted ? (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              ) : (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                </svg>
+              )}
             </div>
             <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent mb-2">
-              Reset Your Password
+              {isSubmitted ? "Check Your Email" : "Reset Your Password"}
             </h2>
             <p className="text-slate-600 text-base">
-              Enter your {usePRN ? "PRN" : "email"} to receive a password reset link
+              {isSubmitted 
+                ? "We've sent a password reset link to your email address" 
+                : `Enter your ${usePRN ? "PRN" : "email"} to receive a password reset link via email`
+              }
             </p> 
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {isSubmitted ? (
+            <div className="bg-blue-50 rounded-xl p-6 border border-blue-100 mb-6">
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-800 mb-1">Check your inbox</h3>
+                  <p className="text-slate-600 mb-4">
+                    We've sent a password reset link to your email address. Please check your inbox and spam folder.
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    The link will expire in 60 minutes
+                  </p>
+                </div>
+                <div className="pt-4">
+                  <button
+                    type="button"
+                    onClick={() => navigate('/')}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors duration-200 font-medium"
+                  >
+                    Return to Login
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex justify-center mb-4">
               <div className="bg-slate-100 p-1 rounded-xl inline-flex">
                 <button
@@ -191,6 +227,7 @@ const ForgotPassword = () => {
               </button>
             </div>
           </form>
+          )}
         </div>
       </div>
     </div>

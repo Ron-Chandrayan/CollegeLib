@@ -10,9 +10,10 @@ const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const { uploadToS3, getSignedUrl, listS3Files, deleteFromS3 } = require('./s3Utils');
 
-// Password reset functionality (no external APIs needed)
+// Password reset functionality
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
+const { sendPasswordResetEmail, sendPasswordResetConfirmation, testEmailService } = require('./services/emailService');
 
 // load environment vars
 require('dotenv').config();
@@ -660,14 +661,31 @@ app.post('/forgot-password', async (req, res) => {
     user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
     await user.save();
 
-    // For now, just return success (no email sending)
-    // In a real app, you'd send an email here
-    res.status(200).json({
-      success: true,
-      message: 'Password reset link generated successfully!',
-      resetToken: resetToken, // In production, this would be sent via email
-      resetUrl: `/reset-password?token=${resetToken}`
-    });
+    // Create the reset URL
+    const resetUrl = `${process.env.FRONTEND_URL || 'https://library-sies-92fbc1e81669.herokuapp.com'}/reset-password?token=${resetToken}`;
+    
+    // Try to send the email
+    const emailSent = await sendPasswordResetEmail(studentEmail, studentName, resetUrl);
+    
+    // Return appropriate response
+    if (emailSent) {
+      res.status(200).json({
+        success: true,
+        message: 'Password reset link has been sent to your email address.',
+        // Only include these in development, remove in production
+        resetToken: process.env.NODE_ENV === 'production' ? undefined : resetToken,
+        resetUrl: process.env.NODE_ENV === 'production' ? undefined : resetUrl
+      });
+    } else {
+      // If email fails but token was created successfully
+      res.status(200).json({
+        success: true,
+        message: 'Password reset link generated, but email delivery failed. Please try again later.',
+        // Only include these in development, remove in production
+        resetToken: process.env.NODE_ENV === 'production' ? undefined : resetToken,
+        resetUrl: process.env.NODE_ENV === 'production' ? undefined : resetUrl
+      });
+    }
 
   } catch (error) {
     console.error('Forgot password error:', error);
@@ -717,6 +735,30 @@ app.get('/verify-reset-token/:token', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error'
+    });
+  }
+});
+
+// Test email endpoint
+app.get('/test-email', async (req, res) => {
+  try {
+    const testEmail = req.query.email;
+    
+    if (!testEmail) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email parameter is required. Use /test-email?email=your@email.com' 
+      });
+    }
+    
+    const result = await testEmailService(testEmail);
+    res.json(result);
+  } catch (error) {
+    console.error('Test email error:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to send test email', 
+      error: error.message 
     });
   }
 });
@@ -779,9 +821,19 @@ app.post('/reset-password', async (req, res) => {
       }
     );
 
+    // Get user email from fe_students collection
+    const feStudent = await festudents.findOne({ PRN: user.PRN });
+    const userEmail = feStudent?.email;
+    const userName = feStudent?.name || user.name;
+
+    // Send confirmation email if email is available
+    if (userEmail) {
+      await sendPasswordResetConfirmation(userEmail, userName);
+    }
+
     res.status(200).json({
       success: true,
-      message: 'Password reset successful! You can now log in with your new password. (v3)'
+      message: 'Password reset successful! You can now log in with your new password.'
     });
 
   } catch (error) {

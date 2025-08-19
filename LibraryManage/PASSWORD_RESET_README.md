@@ -8,6 +8,7 @@ A complete password reset system for the Library Management application that mat
   - Toggle between PRN and Email input methods
   - Matches the existing application's design language
   - Shows loading states and error handling
+  - Email-based workflow (token never shown to user)
 
 - **Reset Password Page**
   - Token verification on load
@@ -22,6 +23,7 @@ A complete password reset system for the Library Management application that mat
   - Token expiration (1 hour)
   - Password hashing with bcrypt (12 salt rounds)
   - Single-hash password storage (fixed double-hash issue)
+  - Email-based reset link delivery
 
 ## How It Works
 
@@ -31,7 +33,7 @@ A complete password reset system for the Library Management application that mat
    - User provides PRN or Email
    - System generates a secure token
    - Token is hashed and stored in database
-   - Token is returned in response (for testing)
+   - Token is prepared for email delivery (currently in development mode)
 
 2. **Verify Token**
    - System validates the token hash
@@ -48,34 +50,40 @@ A complete password reset system for the Library Management application that mat
 1. **Forgot Password Page**
    - User enters PRN or Email
    - System sends request to backend
-   - Shows success message with reset link
-   - Redirects to reset password page
+   - Shows success message instructing user to check email
+   - In development mode, token is logged to console (not visible to user)
 
 2. **Reset Password Page**
-   - Extracts token from URL
+   - Extracts token from URL (received via email)
    - Verifies token with backend
    - Shows user information
    - User enters and confirms new password
    - System updates password
 
-## Testing
+## Email Integration
 
-Visit `/forgot-password` to start the password reset process. For testing purposes, the reset token is shown directly in the UI and in console logs.
+The system is designed for email delivery of reset links:
+
+- Backend prepares a complete reset URL
+- Frontend never displays tokens to users
+- Currently in development mode (tokens logged to console)
+- Ready for integration with nodemailer or other email service
 
 ## Implementation Notes
 
 - Uses the same UI components and styling as the main application
 - Responsive design works on all device sizes
 - Proper error handling and user feedback
-- No external APIs or email sending required
+- Secure token handling (never exposed to users in production)
 
 ## Fixed Issues
 
 - Fixed double-hashing problem by using `updateOne()` instead of `save()`
 - Ensured consistent salt rounds (12) across all password hashing
 - Proper token validation and error handling
+- Improved security by removing token display from UI
 
 ## Routes
 
 - `/forgot-password` - Request password reset
-- `/reset-password?token=TOKEN` - Reset password with token
+- `/reset-password?token=TOKEN` - Reset password with token (accessed via email link)

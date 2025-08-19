@@ -1,175 +1,193 @@
 const nodemailer = require('nodemailer');
 
-// Create email transporter
+// Create a transporter using Gmail SMTP
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  // Get email credentials from environment variables
+  const EMAIL_USER = process.env.EMAIL_USER;
+  const EMAIL_PASS = process.env.EMAIL_PASS;
+
+  // Check if credentials are available
+  if (!EMAIL_USER || !EMAIL_PASS) {
+    console.error('❌ Missing email credentials in .env (EMAIL_USER, EMAIL_PASS)');
+    return null;
+  }
+
+  // Create and return the transporter
+  return nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
+      user: EMAIL_USER,
+      pass: EMAIL_PASS // This should be an app password for Gmail
     }
   });
 };
 
-// Send password reset email
-const sendPasswordResetEmail = async (userEmail, userName, resetToken) => {
-  const transporter = createTransporter();
-  
-  const resetURL = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
-  
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            .container { max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; }
-            .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; }
-            .content { padding: 30px; background-color: #f9f9f9; }
-            .button { 
-                display: inline-block; 
-                padding: 12px 30px; 
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                color: white; 
-                text-decoration: none; 
-                border-radius: 5px; 
-                margin: 20px 0;
-            }
-            .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
-            .warning { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>🏛️ SIES Library</h1>
-                <h2>Password Reset Request</h2>
-            </div>
-            
-            <div class="content">
-                <h3>Hello ${userName},</h3>
-                
-                <p>We received a request to reset your password for your SIES Library account.</p>
-                
-                <p>Click the button below to reset your password:</p>
-                
-                <div style="text-align: center;">
-                    <a href="${resetURL}" class="button">Reset Password</a>
-                </div>
-                
-                <div class="warning">
-                    <strong>⚠️ Important:</strong>
-                    <ul>
-                        <li>This link will expire in <strong>1 hour</strong></li>
-                        <li>If you didn't request this reset, please ignore this email</li>
-                        <li>For security, never share this link with anyone</li>
-                    </ul>
-                </div>
-                
-                <p>If the button doesn't work, copy and paste this link into your browser:</p>
-                <p style="word-break: break-all; color: #667eea;">${resetURL}</p>
-                
-                <p>Best regards,<br>SIES Library Team</p>
-            </div>
-            
-            <div class="footer">
-                <p>This is an automated email from SIES Library System</p>
-                <p>If you have any questions, please contact the library administration</p>
-            </div>
-        </div>
-    </body>
-    </html>
-  `;
-
-  const mailOptions = {
-    from: `"SIES Library" <${process.env.EMAIL_USER}>`,
-    to: userEmail,
-    subject: '🔐 Password Reset - SIES Library',
-    html: htmlContent
-  };
-
+/**
+ * Send a password reset email
+ * 
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient name
+ * @param {string} resetUrl - Password reset URL with token
+ * @returns {Promise<boolean>} - Success status
+ */
+const sendPasswordResetEmail = async (email, name, resetUrl) => {
   try {
-    await transporter.sendMail(mailOptions);
-    console.log(`Password reset email sent to: ${userEmail}`);
+    const transporter = createTransporter();
+    
+    if (!transporter) {
+      console.error('❌ Failed to create email transporter');
+      return false;
+    }
+
+    // HTML email content
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h2 style="color: #3b82f6;">Password Reset Request</h2>
+        </div>
+        
+        <div style="margin-bottom: 30px; color: #4b5563;">
+          <p>Hello ${name},</p>
+          <p>We received a request to reset your password for the Library Management System. To reset your password, click the button below:</p>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${resetUrl}" style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Reset Password</a>
+        </div>
+        
+        <div style="margin-top: 30px; color: #4b5563; font-size: 14px;">
+          <p>If you didn't request a password reset, you can safely ignore this email.</p>
+          <p>This link will expire in 60 minutes.</p>
+          <p>If the button above doesn't work, copy and paste the following URL into your browser:</p>
+          <p style="word-break: break-all; color: #6b7280;"><a href="${resetUrl}" style="color: #3b82f6;">${resetUrl}</a></p>
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #6b7280; font-size: 12px;">
+          <p>This is an automated email. Please do not reply.</p>
+          <p>&copy; ${new Date().getFullYear()} Library Management System</p>
+        </div>
+      </div>
+    `;
+
+    // Send the email
+    const info = await transporter.sendMail({
+      from: `"Library System" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Password Reset Request',
+      html: htmlContent
+    });
+
+    console.log('✅ Password reset email sent:', info.messageId);
     return true;
   } catch (error) {
-    console.error('Email sending failed:', error);
-    throw new Error('Failed to send reset email');
+    console.error('❌ Failed to send password reset email:', error);
+    return false;
   }
 };
 
-// Send password reset confirmation email
-const sendPasswordResetConfirmation = async (userEmail, userName) => {
-  const transporter = createTransporter();
-  
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            .container { max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; }
-            .header { background: linear-gradient(135deg, #00b894 0%, #00cec9 100%); color: white; padding: 20px; text-align: center; }
-            .content { padding: 30px; background-color: #f9f9f9; }
-            .success { background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; margin: 20px 0; color: #155724; }
-            .footer { padding: 20px; text-align: center; color: #666; font-size: 12px; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>🏛️ SIES Library</h1>
-                <h2>Password Reset Successful</h2>
-            </div>
-            
-            <div class="content">
-                <h3>Hello ${userName},</h3>
-                
-                <div class="success">
-                    <strong>✅ Success!</strong> Your password has been successfully reset.
-                </div>
-                
-                <p>Your SIES Library account password has been changed successfully.</p>
-                
-                <p><strong>What's next?</strong></p>
-                <ul>
-                    <li>You can now log in with your new password</li>
-                    <li>Make sure to keep your password secure</li>
-                    <li>Consider using a strong, unique password</li>
-                </ul>
-                
-                <p><strong>⚠️ If you didn't make this change:</strong></p>
-                <p>Please contact the library administration immediately if you didn't request this password reset.</p>
-                
-                <p>Best regards,<br>SIES Library Team</p>
-            </div>
-            
-            <div class="footer">
-                <p>This is an automated email from SIES Library System</p>
-                <p>Login at: <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}">SIES Library Portal</a></p>
-            </div>
-        </div>
-    </body>
-    </html>
-  `;
-
-  const mailOptions = {
-    from: `"SIES Library" <${process.env.EMAIL_USER}>`,
-    to: userEmail,
-    subject: '✅ Password Reset Successful - SIES Library',
-    html: htmlContent
-  };
-
+/**
+ * Send a password reset confirmation email
+ * 
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient name
+ * @returns {Promise<boolean>} - Success status
+ */
+const sendPasswordResetConfirmation = async (email, name) => {
   try {
-    await transporter.sendMail(mailOptions);
-    console.log(`Password reset confirmation sent to: ${userEmail}`);
+    const transporter = createTransporter();
+    
+    if (!transporter) {
+      console.error('❌ Failed to create email transporter');
+      return false;
+    }
+
+    // HTML email content
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h2 style="color: #10b981;">Password Reset Successful</h2>
+        </div>
+        
+        <div style="margin-bottom: 30px; color: #4b5563;">
+          <p>Hello ${name},</p>
+          <p>Your password for the Library Management System has been successfully reset.</p>
+          <p>You can now log in with your new password.</p>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${process.env.FRONTEND_URL || 'https://library-sies-92fbc1e81669.herokuapp.com'}" style="background-color: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Go to Login</a>
+        </div>
+        
+        <div style="margin-top: 30px; color: #4b5563; font-size: 14px;">
+          <p>If you didn't reset your password, please contact us immediately.</p>
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #6b7280; font-size: 12px;">
+          <p>This is an automated email. Please do not reply.</p>
+          <p>&copy; ${new Date().getFullYear()} Library Management System</p>
+        </div>
+      </div>
+    `;
+
+    // Send the email
+    const info = await transporter.sendMail({
+      from: `"Library System" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Password Reset Successful',
+      html: htmlContent
+    });
+
+    console.log('✅ Password reset confirmation email sent:', info.messageId);
     return true;
   } catch (error) {
-    console.error('Confirmation email failed:', error);
-    // Don't throw error for confirmation email - it's not critical
+    console.error('❌ Failed to send password reset confirmation email:', error);
     return false;
+  }
+};
+
+// Test function to verify email configuration
+const testEmailService = async (testEmail) => {
+  try {
+    const transporter = createTransporter();
+    
+    if (!transporter) {
+      return { success: false, message: 'Failed to create email transporter. Check EMAIL_USER and EMAIL_PASS in .env' };
+    }
+
+    // HTML test email content
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+        <h2 style="color: #3b82f6;">Email Service Test</h2>
+        <p>This is a test email to verify that the email service is working correctly.</p>
+        <p>Time: ${new Date().toLocaleString()}</p>
+      </div>
+    `;
+
+    // Send the test email
+    const info = await transporter.sendMail({
+      from: `"Library System" <${process.env.EMAIL_USER}>`,
+      to: testEmail,
+      subject: 'Email Service Test',
+      html: htmlContent
+    });
+
+    return { 
+      success: true, 
+      message: 'Test email sent successfully!', 
+      messageId: info.messageId 
+    };
+  } catch (error) {
+    console.error('❌ Email test failed:', error);
+    return { 
+      success: false, 
+      message: 'Failed to send test email', 
+      error: error.message 
+    };
   }
 };
 
 module.exports = {
   sendPasswordResetEmail,
-  sendPasswordResetConfirmation
+  sendPasswordResetConfirmation,
+  testEmailService
 };
