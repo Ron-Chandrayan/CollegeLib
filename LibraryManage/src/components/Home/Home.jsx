@@ -76,7 +76,7 @@ function Home() {
                 })
                 .then(res => res.json())
                 .then(data => {
-                    console.log("PRN from /gettime:", data.prn);
+                    //console.log("PRN from /gettime:", data.prn);
                 })
                 .catch(err => console.error(err));
 
