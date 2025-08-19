@@ -1,135 +1,81 @@
-# Password Reset Functionality
+# Password Reset System
 
-This document describes the password reset functionality implemented in the SIES Library Management System.
+A complete password reset system for the Library Management application that matches the existing UI style.
 
-## Overview
+## Features
 
-The password reset system allows users to reset their passwords securely through email verification. The system consists of:
+- **Forgot Password Page**
+  - Toggle between PRN and Email input methods
+  - Matches the existing application's design language
+  - Shows loading states and error handling
 
-1. **Forgot Password Page** - Where users can request a password reset
-2. **Reset Password Page** - Where users can set a new password using a token from email
-3. **Backend API** - Handles the password reset logic and email sending
-
-## Frontend Components
-
-### 1. ForgotPassword Component (`/forgot-password`)
-- **Location**: `src/components/PasswordReset/ForgotPassword.jsx`
-- **Features**:
-  - Toggle between email and PRN input methods
-  - Form validation
-  - Loading states
-  - Success/error notifications
-  - Responsive design with Tailwind CSS
-
-### 2. ResetPassword Component (`/reset-password`)
-- **Location**: `src/components/PasswordReset/ResetPassword.jsx`
-- **Features**:
-  - Token validation from URL parameters
-  - Password strength validation
-  - Password confirmation matching
-  - Show/hide password toggles
+- **Reset Password Page**
+  - Token verification on load
+  - Password strength requirements
+  - Password matching validation
+  - Show/hide password toggle
   - User information display
-  - Real-time password match indicator
 
-## Backend API Endpoints
+- **Security Features**
+  - Secure token generation (32 bytes)
+  - Token hashing with SHA-256
+  - Token expiration (1 hour)
+  - Password hashing with bcrypt (12 salt rounds)
+  - Single-hash password storage (fixed double-hash issue)
 
-### 1. Request Password Reset
-- **Endpoint**: `POST /api/auth/forgot-password`
-- **Body**: `{ email?: string, PRN?: string }`
-- **Response**: Success/error message
+## How It Works
 
-### 2. Verify Reset Token
-- **Endpoint**: `GET /api/auth/verify-reset-token/:token`
-- **Response**: User information if token is valid
+### Backend Flow
 
-### 3. Reset Password
-- **Endpoint**: `POST /api/auth/reset-password`
-- **Body**: `{ token: string, newPassword: string, confirmPassword: string }`
-- **Response**: Success/error message
+1. **Request Password Reset**
+   - User provides PRN or Email
+   - System generates a secure token
+   - Token is hashed and stored in database
+   - Token is returned in response (for testing)
 
-## Email Templates
+2. **Verify Token**
+   - System validates the token hash
+   - Checks if token is expired
+   - Returns user information if valid
 
-The system sends two types of emails:
+3. **Reset Password**
+   - System validates the token again
+   - Updates password with proper bcrypt hashing
+   - Clears the reset token from database
 
-1. **Password Reset Email** - Contains the reset link with token
-2. **Password Reset Confirmation** - Sent after successful password reset
+### Frontend Flow
 
-Both emails are styled with HTML and include:
-- SIES Library branding
-- Clear instructions
-- Security warnings
-- Expiration information
+1. **Forgot Password Page**
+   - User enters PRN or Email
+   - System sends request to backend
+   - Shows success message with reset link
+   - Redirects to reset password page
 
-## Security Features
+2. **Reset Password Page**
+   - Extracts token from URL
+   - Verifies token with backend
+   - Shows user information
+   - User enters and confirms new password
+   - System updates password
 
-- **Token Expiration**: Reset tokens expire after 1 hour
-- **Secure Token Generation**: Uses crypto.randomBytes for token generation
-- **Token Hashing**: Tokens are hashed before storage
-- **Password Validation**: Minimum 6 characters required
-- **Email Verification**: Confirmation emails sent for security
+## Testing
 
-## Usage Flow
+Visit `/forgot-password` to start the password reset process. For testing purposes, the reset token is shown directly in the UI and in console logs.
 
-1. User clicks "Forgot Password?" on login page
-2. User enters email or PRN on forgot password page
-3. System sends reset email with secure token
-4. User clicks link in email (goes to `/reset-password?token=...`)
-5. User enters new password and confirmation
-6. System validates token and updates password
-7. User receives confirmation email
-8. User can now login with new password
+## Implementation Notes
 
-## Development Setup
+- Uses the same UI components and styling as the main application
+- Responsive design works on all device sizes
+- Proper error handling and user feedback
+- No external APIs or email sending required
 
-### Frontend
-```bash
-cd LibraryManage
-npm install
-npm run dev
-```
+## Fixed Issues
 
-### Backend
-```bash
-cd backend
-npm install
-# Add start script to package.json
-npm start
-```
+- Fixed double-hashing problem by using `updateOne()` instead of `save()`
+- Ensured consistent salt rounds (12) across all password hashing
+- Proper token validation and error handling
 
-### Environment Variables Required
+## Routes
 
-**Backend (.env)**:
-```
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-FRONTEND_URL=http://localhost:3000
-JWT_SECRET=your-jwt-secret
-MONGO_URI=your-mongodb-connection-string
-```
-
-**Frontend (.env)**:
-```
-VITE_API_URL=your-backend-url
-VITE_SECRET_KEY=your-api-key
-```
-
-## Styling
-
-The components use Tailwind CSS for styling and include:
-- Gradient backgrounds
-- Responsive design
-- Loading animations
-- Hover effects
-- Form validation styling
-- Success/error state indicators
-
-## Integration
-
-The password reset functionality is integrated into the existing login form by adding a "Forgot Password?" link that appears only when the user is in login mode (not signup mode).
-
-## Error Handling
-
-- Invalid/expired tokens redirect to forgot password page
-- Network errors show user-friendly messages
-- Form validation prevents invalid submissions
-- Loading states prevent multiple submissions
+- `/forgot-password` - Request password reset
+- `/reset-password?token=TOKEN` - Reset password with token

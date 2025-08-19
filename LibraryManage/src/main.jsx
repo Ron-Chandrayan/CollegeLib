@@ -15,10 +15,10 @@ import QuestionWrapper from './components/QuestionWrapper/QuestionWrapper.jsx'
 import OthersWrapper from './components/OthersWrapper/OthersWrapper.jsx'
 import Library from './components/Library/Library.jsx'
 import LibraryWrapper from './components/LibraryWrapper/LibraryWrapper.jsx'
-// import ForgotPassword from './components/PasswordReset/ForgotPassword.jsx'
-// import ResetPassword from './components/PasswordReset/ResetPassword.jsx'
-// import TestPasswordReset from './components/PasswordReset/TestPasswordReset.jsx'
+import ForgotPassword from './components/PasswordReset/ForgotPassword.jsx'
+import ResetPassword from './components/PasswordReset/ResetPassword.jsx'
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -53,19 +53,15 @@ const router = createBrowserRouter([
       }
     ]
   },
-  // // Password reset routes (outside Layout to avoid header/footer)
-  // {
-  //   path: '/forgot-password',
-  //   element: <ForgotPassword />
-  // },
-  // {
-  //   path: '/reset-password',
-  //   element: <ResetPassword />
-  // },
-  // {
-  //   path: '/test-password-reset',
-  //   element: <TestPasswordReset />
-  // }
+  // Password reset routes (outside Layout to avoid header/footer)
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword />
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(
