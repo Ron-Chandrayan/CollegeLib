@@ -72,6 +72,14 @@ function Library() {
   const handleSubmit2=async (e)=>{
     e.preventDefault();
     console.log("so you are the entity huh");
+    const res = await fetch('/remove', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+
+    const data = await res.json()
+    
   }
 
   const fetchData = async () => {
