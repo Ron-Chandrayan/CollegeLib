@@ -69,6 +69,10 @@ function Library() {
     }
   };
 
+  const handleSubmit2=async ()=>{
+    console.log("so you are the entity huh");
+  }
+
   const fetchData = async () => {
     try {
       const response = await fetch('/fetch');
@@ -115,7 +119,7 @@ function Library() {
 
           <div className='flex flex-row justify-between'>
             <button
-            type="submit"
+            // type="submit"
             onClick={handleSubmit}
             className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
           >
@@ -123,7 +127,8 @@ function Library() {
           </button>
 
           <button
-            type="submit"
+            // type="submit"
+            onClick={handleSubmit2}
             className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700"
           >
             Remove all
