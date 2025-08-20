@@ -84,17 +84,7 @@ function Home() {
             setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
           });
 
-                fetch('/gettime', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                })
-                .then(res => res.json())
-                .then(data => {
-                    console.log("message from gettime ", data.message);
-                })
-                .catch(err => console.error(err));
+               
 
     }, []);
 
