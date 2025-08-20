@@ -75,7 +75,7 @@ function Library() {
     const res = await fetch('/remove', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(student)
       });
 
     const data = await res.json()
