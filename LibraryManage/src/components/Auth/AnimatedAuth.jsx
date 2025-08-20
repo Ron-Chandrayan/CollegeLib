@@ -92,6 +92,7 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
         localStorage.setItem('token', data.token);
         toast.success('Welcome back!');
         console.log(data.strtime);
+        settime(data.strtime);
         onAuthSuccess(data);
       } else {
         toast.error(data.message || 'Invalid password');
