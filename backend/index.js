@@ -354,10 +354,20 @@ app.post('/submit', async (req, res) => {
 app.post('/remove',async(req,res)=>{
   try {
     console.log(req.body);
-    const student=req.body;
-    if(student.length>0){
-      const status= await remove("124A1017","Study");
-      res.json({message:status});
+    let status
+    const students=req.body;
+    if(students.length>0){
+     for(let i =0;i<students.length;i++){
+      status= await remove(students[i].PRN,students[i].purpose);
+      if(status==="error"){
+        res.json({message:status});
+        break;
+      }
+     
+     }
+      res.json({message:status})
+      //const status= await remove("124A1017","Study");
+      
      
     }else{
       res.json({message:"no students present"})
