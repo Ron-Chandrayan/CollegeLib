@@ -930,6 +930,8 @@ app.post('/api/check-student', async (req, res) => {
 // Login endpoint
 app.post('/api/login', async (req, res) => {
   try {
+    let token;
+    let strtime;
     const { PRN, password } = req.body;
     
     if (!PRN || !password) {
@@ -950,9 +952,9 @@ app.post('/api/login', async (req, res) => {
 
     const find = await livefeed.findOne({PRN:PRN});
     if(find){
-      const strtime = find.timestamp;
+       strtime = find.timestamp;
     // Generate JWT token
-    const token = jwt.sign(
+     token = jwt.sign(
       { 
         userId: user._id, 
         PRN: user.PRN, 
@@ -964,8 +966,8 @@ app.post('/api/login', async (req, res) => {
       { expiresIn: '24h' }
     );
     }else{
-      const strtime=null;
-       const token = jwt.sign(
+       strtime=null;
+        token = jwt.sign(
       { 
         userId: user._id, 
         PRN: user.PRN, 
