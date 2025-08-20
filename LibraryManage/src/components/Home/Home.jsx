@@ -55,10 +55,11 @@ function Home() {
               setwelcome2(data.PRN);
               console.log(data.strtime);
               if(data.strtime!=null){
-                const date = new Date(data.strtime);
+                settime(data.strtime);
+             const date = new Date(data.strtime);
             const strtime= date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
             console.log(strtime);
-            settime(strtime);
+            
               }else{
                 console.log("student not inside library");
                 settime(null);
