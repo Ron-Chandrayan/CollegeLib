@@ -118,6 +118,13 @@ function Library() {
           >
             Enter/Out
           </button>
+
+          <button
+            type="submit"
+            className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700"
+          >
+            Remove all
+          </button>
         </form>
       </div>
 
