@@ -4,13 +4,14 @@ import { NavLink } from 'react-router-dom';
 
 function Header({ signup, setSignup , login,setLogin,library}) {
   // Option 1: If you want dynamic signup context
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen,time,settime] = useState(false);
 
 const handleChange=(e)=>{
   e.preventDefault();
   localStorage.removeItem("token");
   setSignup(false);
   setLogin(false);
+  settime(null);
 }
 
 const toggleMobileMenu = () => {
