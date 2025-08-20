@@ -356,7 +356,7 @@ app.post('/remove',async(req,res)=>{
     console.log(req.body);
     const student=req.body;
     if(student.length>0){
-      const status= remove("124A1017","Study");
+      const status= await remove("124A1017","Study");
       res.json({message:status});
      
     }else{
