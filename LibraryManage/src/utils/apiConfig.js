@@ -24,16 +24,16 @@ export const getLibraryApiUrl = (endpoint) => {
   
   if (isDevelopment) {
     // Use Vite proxy in development
-    const url = `/api/library/${endpoint}`;
+    const url = `/altapi/${endpoint}`;
     return url;
   } else {
     // Use environment variable for production
-    let baseUrl = import.meta.env.VITE_BOOKS_API_URL || 'https://libman.ethiccode.in';
+    let baseUrl = import.meta.env.VITE_API_URL || 'https://libman.ethiccode.in.net';
     
     // Remove trailing slash if present to avoid double slashes
     baseUrl = baseUrl.replace(/\/$/, '');
     
-    const url = `${baseUrl}/api/library/${endpoint}`;
+    const url = `${baseUrl}/api/${endpoint}`;
     return url;
   }
 };
