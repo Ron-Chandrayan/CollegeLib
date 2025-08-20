@@ -323,7 +323,8 @@ function Home() {
                                 <div className={`w-3 h-3 rounded-full animate-pulse ${(name.length) > 30 ? 'bg-orange-500' : 'bg-indigo-500'}`}></div>
                             </div>
                             <p className="text-sm font-semibold text-slate-600 mb-2">Timer</p>
-                            {time && <Timer startTimeISO={time} />}
+                            {/* {time && <Timer startTimeISO={time} />} */}
+                            {time ? <Timer startTimeISO={time} /> : "You are not inside the library"}
 
                         </div>
 
