@@ -79,6 +79,7 @@ function Library() {
       });
 
     const data = await res.json()
+    console.log(data.message);
     
   }
 
