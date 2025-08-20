@@ -75,6 +75,37 @@ mongoose.connect(process.env.MONGO_URI, {
   
  }
 
+async function remove(PRN,purpose){
+  const formData={
+    PRN:PRN,
+    purpose:purpose
+  }
+
+   try {
+          const res = await fetch(`${process.env.API_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.API_KEY
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+    if(res.ok){
+       return "success";
+    }else{
+      console.error("API Error:", data);
+      return "error";
+    }
+   
+
+  }catch(error){
+    console.error(error.message);
+    return "error";
+  }
+} 
+
 cron.schedule(("30 15 * * *"),async ()=>{
   try {
       const response = await axios.get(process.env.API_URL, { //daily footfall
@@ -326,7 +357,9 @@ app.post('/remove',async(req,res)=>{
     console.log(req.body);
     const student=req.body;
     if(student.length>0){
-      res.json({message:"students will be removed"})
+      const status= remove("124A1017","Study");
+      res.json({message:status});
+     
     }else{
       res.json({message:"no students present"})
     }
