@@ -4,7 +4,10 @@ function Timer({ startTimeISO }) {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
-    if (!startTimeISO) return; // do nothing if null
+    if (!startTimeISO){ 
+        setElapsed(0);           // reset display
+      return;  
+    }; // do nothing if null
 
     const startTime = new Date(startTimeISO).getTime(); // ISO → epoch (ms)
 
