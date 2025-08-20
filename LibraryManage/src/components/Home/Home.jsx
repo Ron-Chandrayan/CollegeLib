@@ -52,6 +52,14 @@ function Home() {
               setwelcome(data.name);
               setwelcome2(data.PRN);
               console.log(data.strtime);
+              if(data.strtime!=null){
+                const date = new Date(data.strtime);
+            const strtime= date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
+            console.log(strtime);
+              }else{
+                console.log("student not inside library");
+              }
+             
               seterr(false);
             } else {
               localStorage.removeItem('token');
