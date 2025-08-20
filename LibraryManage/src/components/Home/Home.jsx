@@ -382,6 +382,8 @@ function Home() {
                     seterr(false);
                     setErrMessage("");
                 }}
+                time={time}
+                settime={settime}
             />
         );
     }

@@ -948,23 +948,43 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid password' });
     }
 
+    const find = await livefeed.findOne({PRN:PRN});
+    if(find){
+      const strtime = find.timestamp;
     // Generate JWT token
     const token = jwt.sign(
       { 
         userId: user._id, 
         PRN: user.PRN, 
+        strtime:strtime,
         name: user.name,
         type: user.PRN === '124A1017' ? 'library' : 'student'
       },
       JWT_SECRET,
       { expiresIn: '24h' }
     );
+    }else{
+      const strtime=null;
+       const token = jwt.sign(
+      { 
+        userId: user._id, 
+        PRN: user.PRN, 
+        strtime:strtime,
+        name: user.name,
+        type: user.PRN === '124A1017' ? 'library' : 'student'
+      },
+      JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+    }
+    
 
     res.json({
       success: true,
       message: 'Login successful',
       token,
       name: user.name,
+      strtime:strtime,
       PRN: user.PRN,
       type: user.PRN === '124A1017' ? 'library' : 'student'
     });

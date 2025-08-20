@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import wallpaper from '../../assets/wallpaper.jpeg';
 
-const AnimatedAuth = ({ onAuthSuccess }) => {
+const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState('prn'); // 'prn', 'password', 'signup', 'otp'
   const [formData, setFormData] = useState({
@@ -91,6 +91,7 @@ const AnimatedAuth = ({ onAuthSuccess }) => {
       if (data.success) {
         localStorage.setItem('token', data.token);
         toast.success('Welcome back!');
+        console.log(data.strtime);
         onAuthSuccess(data);
       } else {
         toast.error(data.message || 'Invalid password');
