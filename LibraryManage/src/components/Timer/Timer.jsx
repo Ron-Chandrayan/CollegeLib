@@ -4,14 +4,16 @@ function Timer({ startTimeISO }) {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
-    const startTime = new Date(startTimeISO).getTime(); // convert ISO → epoch (ms)
+    if (!startTimeISO) return; // do nothing if null
+
+    const startTime = new Date(startTimeISO).getTime(); // ISO → epoch (ms)
 
     const interval = setInterval(() => {
       const now = Date.now();
-      setElapsed(now - startTime); // elapsed time in ms
+      setElapsed(now - startTime); // elapsed ms
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // cleanup on unmount or startTimeISO change
   }, [startTimeISO]);
 
   // Convert ms → hh:mm:ss
