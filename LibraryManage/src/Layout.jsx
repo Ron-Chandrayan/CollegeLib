@@ -68,6 +68,14 @@ function Layout() {
             console.log(error.message);
           }
 
+           const token = localStorage.getItem('token');
+
+           if(token){
+            console.log("token exists");
+           }else{
+            console.log("token doesnt exists");
+           }
+
 
 
              fetch(getLibraryApiUrl('total_footfall'), {
