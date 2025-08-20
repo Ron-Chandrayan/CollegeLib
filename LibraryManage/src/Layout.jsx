@@ -80,7 +80,12 @@ function Layout() {
                             })
                             .then(res => res.json())
                             .then(data => {
-                                console.log("message from gettime ", data.message);
+                                console.log("message from gettime ", data.strtime);
+                                if(data.message==="yes"){
+                                  settime()
+                                }else{
+                                  settime(null);
+                                }
                             })
                             .catch(err => console.error(err));
            }else{

@@ -609,10 +609,12 @@ app.get('/gettime', async (req, res) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const PRN=decoded.PRN;
     const use = await livefeed.findOne({PRN:PRN});
+    
     if(use){
-    res.json({ message:"student still inside the library" });
+    const strtime = use.timestamp;
+    res.json({ message:"yes", strtime:strtime });
     }else{
-      res.json({ message : "student not inside the library" });
+      res.json({ message : "no",strtime:null });
     }
     
   } catch (err) {
