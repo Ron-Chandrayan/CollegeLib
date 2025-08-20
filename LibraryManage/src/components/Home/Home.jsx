@@ -305,18 +305,18 @@ function Home() {
 
                          <div className="group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                             <div className="flex items-center justify-between mb-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${(name.length) > 30 ? 'bg-gradient-to-br from-orange-500 to-red-600' : 'bg-gradient-to-br from-indigo-500 to-blue-600'}`}>
-                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${time ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-gray-400 to-gray-500'}`}>
+                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                                 </div>
-                                <div className={`w-3 h-3 rounded-full animate-pulse ${(name.length) > 30 ? 'bg-orange-500' : 'bg-indigo-500'}`}></div>
+                                <div className={`w-3 h-3 rounded-full animate-pulse ${time ? 'bg-green-500' : 'bg-gray-400'}`}></div>
                             </div>
                             <p className="text-sm font-semibold text-slate-600 mb-2">Timer</p>
-                            {/* {time && <Timer startTimeISO={time} />} */}
-                            {time ? <Timer startTimeISO={time} /> : "You are not inside the library"}
-
-                        </div>
+                            <div className="text-2xl sm:text-3xl font-bold text-slate-700">
+                                {time ? <Timer startTimeISO={time} /> : "You are not inside the library"}
+                            </div>
+                            </div>
 
                     </div>
 
