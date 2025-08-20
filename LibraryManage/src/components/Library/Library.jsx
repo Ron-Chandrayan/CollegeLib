@@ -92,7 +92,7 @@ function Library() {
   return (
     <>
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
