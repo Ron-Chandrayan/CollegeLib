@@ -70,6 +70,7 @@ function Home() {
               localStorage.removeItem('token');
               setSignup(false);
               setLogin(false);
+              settime(null);
             }
           })
           .catch(err => {
@@ -77,6 +78,7 @@ function Home() {
             localStorage.removeItem('token');
             setSignup(false);
             setLogin(false);
+            settime(null);
           })
           .finally(() => {
             setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
