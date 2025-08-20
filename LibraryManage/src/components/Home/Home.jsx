@@ -6,6 +6,7 @@ import { useOutletContext } from 'react-router-dom'
 import wallpaper from '../../assets/wallpaper.jpeg';
 import loadingGif from '../../assets/loading-gst.gif';
 import AnimatedAuth from '../Auth/AnimatedAuth';
+import Timer from '../Timer/Timer'
 import { Users, BarChart3, Clock, BookOpen, UserCheck, Search, CreditCard, Zap, TrendingUp, Calendar, Activity } from 'lucide-react'
 
 function Home() {
@@ -19,6 +20,7 @@ function Home() {
     const [isAuthLoading, setIsAuthLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const[time,settime]=useState();
 
     const crowdClass = 
     name.length >= 120 ? 'text-red-600' :
@@ -56,8 +58,10 @@ function Home() {
                 const date = new Date(data.strtime);
             const strtime= date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
             console.log(strtime);
+            settime(strtime);
               }else{
                 console.log("student not inside library");
+                settime(null);
               }
              
               seterr(false);
@@ -305,6 +309,20 @@ function Home() {
                                 }
                             </p>
                         </div>
+
+                         <div className="group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${(name.length) > 30 ? 'bg-gradient-to-br from-orange-500 to-red-600' : 'bg-gradient-to-br from-indigo-500 to-blue-600'}`}>
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div className={`w-3 h-3 rounded-full animate-pulse ${(name.length) > 30 ? 'bg-orange-500' : 'bg-indigo-500'}`}></div>
+                            </div>
+                            <p className="text-sm font-semibold text-slate-600 mb-2">Timer</p>
+                            {time!=null?<> <Timer startTimeISO={time} /> </>:null}
+                        </div>
+
                     </div>
 
                     {/* Enhanced Search Section */}
