@@ -303,7 +303,7 @@ function Home() {
                             </p>
                         </div>
 
-                         <div className="group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                         <div className="inline-block group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                         <div className="flex items-center justify-between mb-4">
                             <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${time ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-gray-400 to-gray-500'}`}>
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
