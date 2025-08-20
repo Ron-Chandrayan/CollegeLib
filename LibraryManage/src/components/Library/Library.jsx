@@ -112,7 +112,9 @@ function Library() {
               <option value="References">References</option>
             </select>
           </div>
-          <button
+
+          <div className='flex flex-row justify-between'>
+            <button
             type="submit"
             className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
           >
@@ -125,6 +127,8 @@ function Library() {
           >
             Remove all
           </button>
+          </div>
+          
         </form>
       </div>
 
