@@ -18,22 +18,22 @@ export const getApiUrl = (endpoint) => {
   }
 };
 
-// Library Management API (separate server)
+// Library Management API (now integrated with main backend)
 export const getLibraryApiUrl = (endpoint) => {
   const isDevelopment = import.meta.env.DEV;
   
   if (isDevelopment) {
     // Use Vite proxy in development
-    const url = `/altapi/${endpoint}`;
+    const url = `/api/library/${endpoint}`;
     return url;
   } else {
     // Use environment variable for production
-    let baseUrl = import.meta.env.VITE_API_URL || 'https://libman.ethiccode.in.net';
+    let baseUrl = import.meta.env.VITE_BOOKS_API_URL || 'https://libman.ethiccode.in';
     
     // Remove trailing slash if present to avoid double slashes
     baseUrl = baseUrl.replace(/\/$/, '');
     
-    const url = `${baseUrl}/api/${endpoint}`;
+    const url = `${baseUrl}/api/library/${endpoint}`;
     return url;
   }
 };
