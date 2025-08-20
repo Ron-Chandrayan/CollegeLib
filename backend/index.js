@@ -321,6 +321,16 @@ app.post('/submit', async (req, res) => {
   }
 });
 
+app.post('/remove',async(req,res)=>{
+  try {
+    console.log(req.body);
+    res.json({message:"all okay"})
+  } catch (error) {
+    res.status(500).json({message:"server error"});
+  }
+  
+})
+
 
 app.get('/fetchtime', async (req, res) => {
   try {

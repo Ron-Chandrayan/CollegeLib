@@ -69,6 +69,19 @@ function Library() {
     }
   };
 
+  const handleSubmit2=async (e)=>{
+    e.preventDefault();
+    console.log("so you are the entity huh");
+    const res = await fetch('/remove', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student)
+      });
+
+    const data = await res.json()
+    
+  }
+
   const fetchData = async () => {
     try {
       const response = await fetch('/fetch');
@@ -88,7 +101,7 @@ function Library() {
   return (
     <>
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
               type="text"
@@ -112,12 +125,25 @@ function Library() {
               <option value="References">References</option>
             </select>
           </div>
-          <button
-            type="submit"
+
+          <div className='flex flex-row justify-between'>
+            <button
+            // type="submit"
+            onClick={handleSubmit}
             className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
           >
             Enter/Out
           </button>
+
+          <button
+            // type="submit"
+            onClick={handleSubmit2}
+            className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700"
+          >
+            Remove all
+          </button>
+          </div>
+          
         </form>
       </div>
 
