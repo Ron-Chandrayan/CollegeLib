@@ -356,6 +356,7 @@ app.post('/remove',async(req,res)=>{
     console.log(req.body);
     let status
     const students=req.body;
+    const PRNs = students.map(s => s.PRN); 
     if(students.length>0){
      for(let i =0;i<students.length;i++){
       status= await remove(students[i].PRN,students[i].purpose);
@@ -365,6 +366,8 @@ app.post('/remove',async(req,res)=>{
       }
      
      }
+      
+      await livefeed.deleteMany({ PRN: { $in: PRNs } });
       res.json({message:status})
       //const status= await remove("124A1017","Study");
       
