@@ -70,6 +70,7 @@ function Library() {
   };
 
   const handleSubmit2=async ()=>{
+    e.preventDefault();
     console.log("so you are the entity huh");
   }
 
