@@ -462,7 +462,9 @@ app.get('/validate', async (req, res) => {
        const PRN=decoded.PRN;
     const use = await livefeed.findOne({PRN:PRN});
     if(use){
-    const strtime=use.timestamp;
+    const strtimestring=use.timestamp;
+    const date = new Date(strtimestring);
+    const strtime= date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
     res.json({
       valid: true,
       name: user.name,
