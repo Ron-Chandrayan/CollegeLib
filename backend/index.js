@@ -324,7 +324,13 @@ app.post('/submit', async (req, res) => {
 app.post('/remove',async(req,res)=>{
   try {
     console.log(req.body);
-    res.json({message:"all okay"})
+    const student=req.body;
+    if(student.length>0){
+      res.json({message:"students will be removed"})
+    }else{
+      res.json({message:"no students present"})
+    }
+    
   } catch (error) {
     res.status(500).json({message:"server error"});
   }
