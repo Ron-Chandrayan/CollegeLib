@@ -116,6 +116,7 @@ function Library() {
           <div className='flex flex-row justify-between'>
             <button
             type="submit"
+            onClick={handleSubmit}
             className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
           >
             Enter/Out
