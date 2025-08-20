@@ -91,11 +91,10 @@ async function remove(PRN,purpose){
       body: JSON.stringify(formData)
     });
 
-    const data = await res.json();
     if(res.ok){
        return "success";
     }else{
-      console.error("API Error:", data);
+      console.error("API Error:");
       return "error";
     }
    
