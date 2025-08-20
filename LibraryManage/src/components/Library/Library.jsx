@@ -79,7 +79,12 @@ function Library() {
       });
 
     const data = await res.json()
-    console.log(data.message);
+    if(data.message==="success"){
+      toast.success("All Students deleted");
+    }else{
+      toast.error("Something Went Wrong");
+    }
+    
     
   }
 
