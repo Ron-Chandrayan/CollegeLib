@@ -51,6 +51,7 @@ function Home() {
               setLogin(true);
               setwelcome(data.name);
               setwelcome2(data.PRN);
+              console.log(data.strtime);
               seterr(false);
             } else {
               localStorage.removeItem('token');
@@ -68,17 +69,17 @@ function Home() {
             setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
           });
 
-                fetch('/gettime', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                })
-                .then(res => res.json())
-                .then(data => {
-                    //console.log("PRN from /gettime:", data.prn);
-                })
-                .catch(err => console.error(err));
+                // fetch('/gettime', {
+                // method: 'GET',
+                // headers: {
+                //     'Authorization': `Bearer ${token}`,
+                // },
+                // })
+                // .then(res => res.json())
+                // .then(data => {
+                //     //console.log("PRN from /gettime:", data.prn);
+                // })
+                // .catch(err => console.error(err));
 
     }, []);
 

@@ -459,12 +459,28 @@ app.get('/validate', async (req, res) => {
     const user = await Users.findOne({ PRN: decoded.PRN });
     if (!user) return res.status(401).json({ valid: false });
 
+       const PRN=decoded.PRN;
+    const use = await livefeed.findOne({PRN:PRN});
+    if(use){
+    const strtime=use.timestamp;
     res.json({
       valid: true,
       name: user.name,
       PRN: user.PRN,
-      type: decoded.type // 'library' or 'normal'
+      type: decoded.type, // 'library' or 'normal'
+      strtime: strtime
     });
+    }else{
+      res.json({
+      valid: true,
+      name: user.name,
+      PRN: user.PRN,
+      type: decoded.type, // 'library' or 'normal'
+      strtime: null
+    });
+    }
+
+    
   } catch (err) {
     res.status(401).json({ valid: false });
   }
@@ -581,26 +597,26 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
   }
 });
 
-app.get('/gettime', async (req, res) => {
-  try {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.status(401).json({ error: 'No token' });
+// app.get('/gettime', async (req, res) => {
+//   try {
+//     const authHeader = req.headers['authorization'];
+//     const token = authHeader && authHeader.split(' ')[1];
+//     if (!token) return res.status(401).json({ error: 'No token' });
 
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const PRN=decoded.PRN;
-    const use = await livefeed.findOne({PRN:PRN});
-    if(use){
-    const strtime=use.timestamp;
-    res.json({ prn: strtime });
-    }else{
-      res.json({ prn: "no students with tht prn" });
-    }
+//     const decoded = jwt.verify(token, JWT_SECRET);
+//     const PRN=decoded.PRN;
+//     const use = await livefeed.findOne({PRN:PRN});
+//     if(use){
+//     const strtime=use.timestamp;
+//     res.json({ prn: strtime });
+//     }else{
+//       res.json({ prn: "no students with tht prn" });
+//     }
     
-  } catch (err) {
-    res.status(401).json({ error: 'Invalid token' });
-  }
-});
+//   } catch (err) {
+//     res.status(401).json({ error: 'Invalid token' });
+//   }
+// });
 
 
 
