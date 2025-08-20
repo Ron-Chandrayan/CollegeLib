@@ -29,7 +29,7 @@ function Home() {
     name.length > 0 ? 'text-green-600' :
     'text-slate-400';
 
-    useEffect(() => {
+    useEffect( () => {
         const token = localStorage.getItem('token');
 
         if (!token) {
@@ -84,17 +84,17 @@ function Home() {
             setIsAuthLoading(false);  // IMPORTANT: Turn off loading here always
           });
 
-                // fetch('/gettime', {
-                // method: 'GET',
-                // headers: {
-                //     'Authorization': `Bearer ${token}`,
-                // },
-                // })
-                // .then(res => res.json())
-                // .then(data => {
-                //     //console.log("PRN from /gettime:", data.prn);
-                // })
-                // .catch(err => console.error(err));
+                fetch('/gettime', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("message from gettime ", data.message);
+                })
+                .catch(err => console.error(err));
 
     }, []);
 

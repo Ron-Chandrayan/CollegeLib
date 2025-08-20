@@ -600,26 +600,25 @@ app.get('/api/hourlyfootfalls', async (req, res) => {
   }
 });
 
-// app.get('/gettime', async (req, res) => {
-//   try {
-//     const authHeader = req.headers['authorization'];
-//     const token = authHeader && authHeader.split(' ')[1];
-//     if (!token) return res.status(401).json({ error: 'No token' });
+app.get('/gettime', async (req, res) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'No token' });
 
-//     const decoded = jwt.verify(token, JWT_SECRET);
-//     const PRN=decoded.PRN;
-//     const use = await livefeed.findOne({PRN:PRN});
-//     if(use){
-//     const strtime=use.timestamp;
-//     res.json({ prn: strtime });
-//     }else{
-//       res.json({ prn: "no students with tht prn" });
-//     }
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const PRN=decoded.PRN;
+    const use = await livefeed.findOne({PRN:PRN});
+    if(use){
+    res.json({ message:"student still inside the library" });
+    }else{
+      res.json({ message : "student not inside the library" });
+    }
     
-//   } catch (err) {
-//     res.status(401).json({ error: 'Invalid token' });
-//   }
-// });
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+});
 
 
 
@@ -1127,6 +1126,8 @@ app.post('/api/verify-signup-otp', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 });
+
+
 
 // static React build for client-side routing
 const staticPath = path.join(__dirname, '../LibraryManage/dist');
