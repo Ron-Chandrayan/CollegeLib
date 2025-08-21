@@ -106,17 +106,17 @@ async function remove(PRN,purpose){
   }
 } 
 
-    const createWard = async () => {
-      const newWard = new totalfootfall({
-        no: 'first',
-        count: 87797,  // Initialize count
-        timestamp: new Date()
-      });
-      await newWard.save();
-      console.log(newWard);
-    };
+    // const createWard = async () => {
+    //   const newWard = new totalfootfall({
+    //     no: 'first',
+    //     count: 87797,  // Initialize count
+    //     timestamp: new Date()
+    //   });
+    //   await newWard.save();
+    //   console.log(newWard);
+    // };
 
-    createWard();
+    // createWard();
 
 
 cron.schedule(("30 15 * * *"),async ()=>{
@@ -356,11 +356,11 @@ app.post('/submit', async (req, res) => {
       new livefeed(studentData).save(),
       new lifetime(studentData).save()
     ]);
-    //     await totalfootfall.findOneAndUpdate(
-    //   { no: "first" },              
-    //   { $inc: { count: 1 } }, 
-    //   { new: true }           
-    // );
+        await totalfootfall.findOneAndUpdate(
+      { no: "first" },              
+      { $inc: { count: 1 } }, 
+      { new: true }           
+    );
 
     res.json({ success: true, message: "Student inserted" });
 
