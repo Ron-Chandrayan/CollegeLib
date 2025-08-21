@@ -64,6 +64,11 @@ function Library() {
     // const data2=await resp.json();
     // console.log(data2);
 
+    setformData({
+      PRN: '',
+      purpose: 'Study'
+    })
+
     } catch (error) {
       toast.error("Network error");
     }
