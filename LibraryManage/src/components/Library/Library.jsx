@@ -25,10 +25,21 @@ function Library() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+      const payload={
+        PRN:formData.PRN,
+        purpose:formData.purpose
+      }
+      
+      setformData({
+          PRN: '',
+          purpose: 'Study'
+        })
+
       const res = await fetch('/submit', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       const data = await res.json();
@@ -41,14 +52,7 @@ function Library() {
 
       setflag(prev => !prev);
 
-      const payload={
-        PRN:formData.PRN,
-        purpose:formData.purpose
-      }
-          setformData({
-          PRN: '',
-          purpose: 'Study'
-        })
+      
 
 
     //       const resp = await fetch("https://libman.ethiccode.in.net/api/in_out", {
