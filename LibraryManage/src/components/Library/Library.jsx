@@ -70,7 +70,7 @@ function Library() {
     })
 
     } catch (error) {
-      toast.error("Network error");
+      toast.error("Network error"); 
     }
   };
 
