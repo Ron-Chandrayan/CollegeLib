@@ -100,11 +100,26 @@ function Layout() {
                .then(response => response.json())
                                .then(data => {
                   const totfootfall = Number(data.total_footfall);
-                  settotalfootfall(totfootfall);
+                 // settotalfootfall(totfootfall);
                 })
                .catch(error => {
                    console.error('Error fetching total footfall:', error);
                });
+
+              
+               try {
+
+                const response = await fetch('/totalfootfalll');
+                 const data = await response.json();
+                 if(data.success){
+                  settotalfootfall(data.footfall);
+                 }else{
+                  settotalfootfall(null);
+                 }
+                
+               } catch (error) {
+                settotalfootfall(null);
+               }
 
 
            }
