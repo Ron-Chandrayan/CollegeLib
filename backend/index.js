@@ -37,6 +37,7 @@ const Users = require('./models/Users');
 const festudents = require('./models/FeStudent');
 const timetable=require('./models/timetable');
 const livefeed=require('./models/livefeed');
+const totalfootfall = require('./models/totalfootfall');
 
 const app = express();
 app.use(cors());
@@ -104,6 +105,19 @@ async function remove(PRN,purpose){
     return "error";
   }
 } 
+
+    const createWard = async () => {
+      const newWard = new totalfootfall({
+        no: 'first',
+        count: 1,  // Initialize count
+        timestamp: new Date()
+      });
+      await newWard.save();
+      console.log(newWard);
+    };
+
+    createWard();
+
 
 cron.schedule(("30 15 * * *"),async ()=>{
   try {
