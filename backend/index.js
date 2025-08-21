@@ -373,7 +373,7 @@ app.post('/submit', async (req, res) => {
 app.get('/totalfootfalll',async(req,res)=>{
   try {
     const footfalls = await totalfootfall.find()
-    const footfalll = footfall[0].count;
+    const footfalll = footfalls[0].count;
     res.json({succes:true,footfall:footfalll});
   } catch (error) {
     res.status(500).json({success:false,footfall:null , message:"server error"})
