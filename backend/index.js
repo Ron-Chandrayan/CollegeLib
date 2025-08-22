@@ -35,7 +35,6 @@ const members = require('./models/members');
 const lifetime = require('./models/lifetime');
 const Users = require('./models/Users');
 const festudents = require('./models/FeStudent');
-const testudents=require('./models/TeStudent');
 const timetable=require('./models/timetable');
 const livefeed=require('./models/livefeed');
 const totalfootfall = require('./models/totalfootfall');
