@@ -349,7 +349,15 @@ app.post('/submit', async (req, res) => {
     }
 
     // If not in livefeed, check in festudents
-    const fetchname = await festudents.findOne({ PRN: prn }, { name: 1 });
+
+    let fetchname;
+    if(prn.substring(0,3)==="124"){
+      fetchname = await festudents.findOne({ PRN: prn }, { name: 1 });
+    }else if(prn.substring(0,3)==="123"){
+      fetchname = await testudents.findOne({ PRN: prn }, { name: 1 });
+    }
+
+    // const fetchname = await festudents.findOne({ PRN: prn }, { name: 1 });
     if (!fetchname) {
       return res.json({ success: false, message: "PRN is invalid" });
     }
