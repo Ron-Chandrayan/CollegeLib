@@ -35,6 +35,7 @@ const members = require('./models/members');
 const lifetime = require('./models/lifetime');
 const Users = require('./models/Users');
 const festudents = require('./models/FeStudent');
+const testudents=require('./models/TeStudent');
 const timetable=require('./models/timetable');
 const livefeed=require('./models/livefeed');
 const totalfootfall = require('./models/totalfootfall');
@@ -106,17 +107,20 @@ async function remove(PRN,purpose){
   }
 } 
 
-    // const createWard = async () => {
-    //   const newWard = new totalfootfall({
-    //     no: 'first',
-    //     count: 87797,  // Initialize count
-    //     timestamp: new Date()
-    //   });
-    //   await newWard.save();
-    //   console.log(newWard);
-    // };
+    const createWard = async () => {
+      const newWard = new testudents({
+          PRN: "123AX019",
+          name: "HAJWANE ABUZAR RAFIQUE",
+          email: "abuzarhajwane60@gmail.com",
+          batch: null,
+          division: null
+          
+      });
+      await newWard.save();
+      console.log(newWard);
+    };
 
-    // createWard();
+    createWard();
 
 
 cron.schedule(("30 15 * * *"),async ()=>{
