@@ -173,13 +173,17 @@ function Library() {
           </button>
 
           <button
-            // type="submit"
-            disabled
-            onClick={handleSubmit2}
-            className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700 cursor-not-allowed"
-          >
-            Remove all
-          </button>
+                    disabled={disable}
+                    onClick={handleSubmit2}
+                    className={`px-6 py-3 rounded-lg font-semibold text-white ${
+                      disable
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-red-600 hover:bg-red-700 cursor-pointer"
+                    }`}
+                  >
+                    Remove all
+                  </button>
+
           </div>
           
         </form>
