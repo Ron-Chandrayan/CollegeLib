@@ -184,10 +184,10 @@ function Library() {
           </button>
 
           <button
-                    disabled={disable}
+                    disabled={disable || loading===true}
                     onClick={handleSubmit2}
                     className={`px-6 py-3 rounded-lg font-semibold text-white ${
-                      disable
+                      (disable || loading===true)
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-red-600 hover:bg-red-700 cursor-pointer"
                     }`}
