@@ -11,6 +11,7 @@ function Library() {
   const[student, setStudent]=useState([])
   const[flag,setflag]=useState();
   const[disable,setdisable]=useState(true);
+  const[loading,setloading]=useState(false);
   const [formData, setformData] = useState({
     PRN: '',
     purpose: 'Study'
@@ -102,7 +103,10 @@ function Library() {
 
   const handleSubmit2=async (e)=>{
     e.preventDefault();
-    console.log("so you are the entity huh");
+    setloading(true);
+
+    try {
+      console.log("so you are the entity huh");
     const res = await fetch('/remove', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -115,6 +119,13 @@ function Library() {
     }else{
       toast.error("Something Went Wrong");
     }
+      
+    } catch (error) {
+      toast.error("Something went wrong")
+    }finally{
+      setloading(false)
+    }
+    
     
     
   }
@@ -181,7 +192,7 @@ function Library() {
                         : "bg-red-600 hover:bg-red-700 cursor-pointer"
                     }`}
                   >
-                    Remove all
+                    {loading?"Loading":"Remove all"}
                   </button>
 
           </div>
