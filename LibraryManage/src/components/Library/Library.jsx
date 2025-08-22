@@ -10,10 +10,31 @@ function Library() {
 //  const { student, setStudent, flag, setflag } = useOutletContext();
   const[student, setStudent]=useState([])
   const[flag,setflag]=useState();
+  const[disable,setdisable]=useState(true);
   const [formData, setformData] = useState({
     PRN: '',
     purpose: 'Study'
   });
+
+  useEffect(() => {
+          const checkTime = () => {
+            const now = new Date();
+            const currentHours = now.getHours();
+            const currentMinutes = now.getMinutes();
+  
+            // 17:35 in 24-hour format = 5:35 PM
+            if (((currentHours > 17 || (currentHours === 17 && currentMinutes >= 45)) )||(currentHours<8 || (currentHours === 8 && currentMinutes <= 15))) {
+              setdisable(true);
+            } else {
+              setdisable(false);
+            }
+          };
+  
+          checkTime(); // Check immediately
+          const interval = setInterval(checkTime, 60 * 1000); // Recheck every minute
+  
+          return () => clearInterval(interval); // Clean up on unmount
+      }, []);
 
   const handleChange = (e) => {
     setformData((prev) => ({
@@ -153,8 +174,9 @@ function Library() {
 
           <button
             // type="submit"
+            disabled
             onClick={handleSubmit2}
-            className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700"
+            className="px-6 py-3 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700 cursor-not-allowed"
           >
             Remove all
           </button>
