@@ -107,20 +107,20 @@ async function remove(PRN,purpose){
   }
 } 
 
-    const createWard = async () => {
-      const newWard = new testudents({
-          PRN: "123AX019",
-          name: "HAJWANE ABUZAR RAFIQUE",
-          email: "abuzarhajwane60@gmail.com",
-          batch: null,
-          division: null
+    // const createWard = async () => {
+    //   const newWard = new testudents({
+    //       PRN: "123AX019",
+    //       name: "HAJWANE ABUZAR RAFIQUE",
+    //       email: "abuzarhajwane60@gmail.com",
+    //       batch: null,
+    //       division: null
           
-      });
-      await newWard.save();
-      console.log(newWard);
-    };
+    //   });
+    //   await newWard.save();
+    //   console.log(newWard);
+    // };
 
-    createWard();
+    // createWard();
 
 
 cron.schedule(("30 15 * * *"),async ()=>{
