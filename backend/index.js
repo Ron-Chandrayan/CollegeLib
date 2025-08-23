@@ -466,8 +466,8 @@ app.post('/remove', async (req, res) => {
       .map(s => s.PRN);
 
     if (failedPRNs.length > 0) {
-      return res.status(400).json({
-        message: "some removals failed",
+      return res.json({
+        message: "success",
         failedPRNs
       });
     }
