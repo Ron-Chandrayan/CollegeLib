@@ -458,6 +458,8 @@ app.post('/remove', async (req, res) => {
       students.map(s => remove(s.PRN, s.purpose))
     );
 
+    await livefeed.deleteMany({ PRN: { $in: PRNs } });
+
     // Separate success and failure PRNs
     const failedPRNs = students
       .filter((_, index) => results[index] === "error")
@@ -470,7 +472,7 @@ app.post('/remove', async (req, res) => {
       });
     }
 
-    await livefeed.deleteMany({ PRN: { $in: PRNs } });
+    // await livefeed.deleteMany({ PRN: { $in: PRNs } });
     return res.json({ message: "success" });
 
   } catch (error) {
