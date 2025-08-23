@@ -10,7 +10,7 @@ function Student({ name, Students }) { // Students prop kept, but unused
 
 const[i,seti]=useState(1);
 
-   const itemsPerPage = 3;
+   const itemsPerPage = 10;
     const start = (i - 1) * itemsPerPage;
     const end = i * itemsPerPage;
 
@@ -139,11 +139,11 @@ const[i,seti]=useState(1);
             <tbody className="divide-y divide-slate-200">
               {slicename.map((element, index) => (
                 <tr 
-                  key={index}
+                  key={name.indexOf(element)}
                   className="hover:bg-slate-50 transition-colors duration-150 group"
                 >
                   <td className="py-4 px-6 text-slate-600 font-medium">
-                    {index + 1}
+                    {(name.indexOf(element)) + 1}
                   </td>
                   <td className="py-4 px-6 text-slate-800 font-mono text-sm">
                     {element.PRN}
@@ -202,7 +202,7 @@ const[i,seti]=useState(1);
             seti(i+1);
           }}
 
-          disabled={i>=((Math.ceil(name.length))/3)}
+          disabled={i>=((Math.ceil(name.length))/10)}
 
           >
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
