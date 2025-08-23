@@ -12,7 +12,7 @@ async function testLibraryInvitation() {
   console.log('🧪 Testing Library Invitation Email Feature...\n');
   
   // Test with a sample PRN (replace with actual PRN from your database)
-  const testPRN = '2020BTEIT00001'; // Replace with actual PRN
+  const testPRN = '124A1018'; // Replace with actual PRN
   
   try {
     console.log(`📧 Attempting to send invitation email for PRN: ${testPRN}`);
