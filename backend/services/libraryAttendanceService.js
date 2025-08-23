@@ -2,7 +2,7 @@
  * Library Attendance Service
  * 
  * This service provides functionality to interact with the SIES GST library attendance system.
- * It handles authentication, data scraping, and caching of responses.
+ * Simplified to focus on IN/OUT functionality.
  */
 
 const axios = require('axios');
@@ -12,9 +12,10 @@ const cheerio = require('cheerio');
 const LOGIN_URL = 'http://siesgstattendance.ourlib.in/signin.php';
 const INDEX_URL = 'http://siesgstattendance.ourlib.in/index.php';
 const UPDATE_URL = 'http://siesgstattendance.ourlib.in/update_ajax.php';
-const VERIFY_URL = "https://api.ethiccode.in/library/verify.php";
+// const VERIFY_URL = "https://api.ethiccode.in/library/verify.php";
 
-// Cache implementation
+// Cache implementation (commented out - not needed for IN/OUT only)
+/*
 class SimpleCache {
   constructor() {
     this._cache = {};
@@ -51,6 +52,7 @@ class SimpleCache {
 
 // Global cache instance
 const cache = new SimpleCache();
+*/
 
 // Optimized session management
 class OptimizedSession {
@@ -62,6 +64,9 @@ class OptimizedSession {
         'User-Agent': 'AUDACITY-API/1.0'
       }
     });
+    
+    // Store cookies manually
+    this.cookies = [];
     
     // Add retry logic
     this.session.interceptors.response.use(undefined, async (err) => {
@@ -102,41 +107,87 @@ class OptimizedSession {
   }
 
   async _performLogin() {
-    const loginData = {
-      'form_action': 'signin',
-      'username': 'Libatt',
-      'password': 'Libatt@123',
-      'submit': 'submit'
-    };
-    
-    const response = await this.session.post(LOGIN_URL, loginData, {
-      retry: 3,
-      retryDelay: 300
-    });
-    
-    return response.status === 200;
+    try {
+      // First, visit the main page to establish a session
+      const mainPageResponse = await this.session.get(INDEX_URL);
+      
+      // Store any cookies from the main page
+      const mainPageCookies = mainPageResponse.headers['set-cookie'];
+      if (mainPageCookies) {
+        this.cookies = mainPageCookies.map(cookie => cookie.split(';')[0]);
+      }
+      
+      // Now attempt login
+      const loginData = {
+        'form_action': 'signin',
+        'username': 'Libatt',
+        'password': 'Libatt@123',
+        'submit': 'submit'
+      };
+      
+      const loginResponse = await this.session.post(LOGIN_URL, loginData, {
+        retry: 3,
+        retryDelay: 300,
+        timeout: 10000,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Cookie': this.cookies.join('; ')
+        }
+      });
+      
+      // Store cookies from login response
+      const setCookieHeaders = loginResponse.headers['set-cookie'];
+      if (setCookieHeaders) {
+        this.cookies = setCookieHeaders.map(cookie => cookie.split(';')[0]);
+      }
+      
+      // Check if login was successful
+      if (loginResponse.status === 200) {
+        if (setCookieHeaders) {
+          return true;
+        } else {
+          const responseText = loginResponse.data;
+          if (responseText.includes('loginModel') || responseText.includes('signin')) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error('Login failed:', error.message);
+      return false;
+    }
   }
 }
 
 // Global session instance
 const optimizedSession = new OptimizedSession();
 
-// HTML parsing functions
+// HTML parsing functions (commented out - not needed for IN/OUT only)
+/*
 function extractTableData(html) {
   try {
     const $ = cheerio.load(html);
     const table = $('#inMembersTable');
-    if (!table.length) return [];
+    if (!table.length) {
+      return [];
+    }
     
+    const tbody = table.find('tbody');
     const students = [];
-    table.find('tbody tr').each((i, row) => {
+    const rows = tbody.length ? tbody.find('tr') : table.find('tr');
+    
+    rows.each((i, row) => {
       const cells = $(row).find('td');
       if (cells.length >= 4) {
-        students.push({
+        const student = {
           PRN: $(cells[1]).text().trim(),
           name: $(cells[2]).text().trim(),
           purpose: $(cells[3]).text().trim()
-        });
+        };
+        students.push(student);
       }
     });
     
@@ -180,8 +231,10 @@ function extractFootfallData(html) {
     return {};
   }
 }
+*/
 
-// API functions
+// API functions (commented out - not needed for IN/OUT only)
+/*
 async function verifyApiKey(apiKey, endpoint) {
   if (!apiKey) return false;
   
@@ -205,8 +258,10 @@ async function verifyApiKey(apiKey, endpoint) {
     return false;
   }
 }
+*/
 
-// Service functions
+// Service functions (commented out - not needed for IN/OUT only)
+/*
 async function getLastEntry(apiKey) {
   // Check cache first
   const cachedData = cache.get('last_entry', 30); // 30 second cache
@@ -215,7 +270,11 @@ async function getLastEntry(apiKey) {
   try {
     await optimizedSession.ensureLoggedIn();
     
-    const response = await optimizedSession.session.get(INDEX_URL);
+    const response = await optimizedSession.session.get(INDEX_URL, {
+      headers: {
+        'Cookie': optimizedSession.cookies.join('; ')
+      }
+    });
     if (response.status !== 200) {
       throw new Error('Failed to retrieve data');
     }
@@ -242,7 +301,11 @@ async function listAllStudents(apiKey) {
   try {
     await optimizedSession.ensureLoggedIn();
     
-    const response = await optimizedSession.session.get(INDEX_URL);
+    const response = await optimizedSession.session.get(INDEX_URL, {
+      headers: {
+        'Cookie': optimizedSession.cookies.join('; ')
+      }
+    });
     if (response.status !== 200) {
       throw new Error('Failed to retrieve data');
     }
@@ -265,7 +328,11 @@ async function getTodaysFootfall(apiKey) {
   try {
     await optimizedSession.ensureLoggedIn();
     
-    const response = await optimizedSession.session.get(INDEX_URL);
+    const response = await optimizedSession.session.get(INDEX_URL, {
+      headers: {
+        'Cookie': optimizedSession.cookies.join('; ')
+      }
+    });
     if (response.status !== 200) {
       throw new Error('Failed to retrieve data');
     }
@@ -292,7 +359,11 @@ async function getTotalFootfall(apiKey) {
   try {
     await optimizedSession.ensureLoggedIn();
     
-    const response = await optimizedSession.session.get(INDEX_URL);
+    const response = await optimizedSession.session.get(INDEX_URL, {
+      headers: {
+        'Cookie': optimizedSession.cookies.join('; ')
+      }
+    });
     if (response.status !== 200) {
       throw new Error('Failed to retrieve data');
     }
@@ -315,7 +386,11 @@ async function getDashboard(apiKey) {
   try {
     await optimizedSession.ensureLoggedIn();
     
-    const response = await optimizedSession.session.get(INDEX_URL);
+    const response = await optimizedSession.session.get(INDEX_URL, {
+      headers: {
+        'Cookie': optimizedSession.cookies.join('; ')
+      }
+    });
     if (response.status !== 200) {
       throw new Error('Failed to retrieve data');
     }
@@ -335,7 +410,9 @@ async function getDashboard(apiKey) {
     throw new Error(`Error getting dashboard data: ${error.message}`);
   }
 }
+*/
 
+// Main IN/OUT action function
 async function inOutAction(apiKey, prn, purpose) {
   try {
     await optimizedSession.ensureLoggedIn();
@@ -346,19 +423,98 @@ async function inOutAction(apiKey, prn, purpose) {
       submit: 'IN/OUT'
     };
     
-    const response = await optimizedSession.session.post(UPDATE_URL, formData);
+    const response = await optimizedSession.session.post(UPDATE_URL, formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Cookie': optimizedSession.cookies.join('; ')
+      },
+      timeout: 10000
+    });
     
-    try {
-      return response.data;
-    } catch {
-      return { raw_response: response.data };
+    if (response.status === 200) {
+      const responseData = response.data;
+      
+      // Parse the response to determine IN/OUT status and extract name
+      let name = 'Unknown';
+      let status = 'unknown';
+      
+      if (typeof responseData === 'string') {
+        // Parse HTML response to extract name and determine IN/OUT
+        const $ = cheerio.load(responseData);
+        
+        // Extract name from the welcome message - look for the bold text
+        const nameElement = $('b').first();
+        if (nameElement.length) {
+          name = nameElement.text().trim();
+        }
+        
+        // Determine IN/OUT status based on content
+        const responseText = responseData.toLowerCase();
+        if (responseText.includes('welcome')) {
+          status = 'IN';
+        } else if (responseText.includes('thanks') || responseText.includes('thank')) {
+          status = 'OUT';
+        } else {
+          // Fallback: check for specific patterns
+          if (responseText.includes('check-in') || responseText.includes('signed in')) {
+            status = 'IN';
+          } else if (responseText.includes('check-out') || responseText.includes('signed out')) {
+            status = 'OUT';
+          }
+        }
+      } else if (typeof responseData === 'object') {
+        // Handle JSON response
+        if (responseData.checkZero === 0 || responseData.checkZero === 1) {
+          // For JSON responses, we need to make another request to get the actual page content
+          try {
+            const pageResponse = await optimizedSession.session.get(INDEX_URL, {
+              headers: {
+                'Cookie': optimizedSession.cookies.join('; ')
+              }
+            });
+            
+            if (pageResponse.status === 200) {
+              const $ = cheerio.load(pageResponse.data);
+              
+              // Look for the student in the current list
+              const studentRow = $(`tr:contains("${prn}")`);
+              if (studentRow.length) {
+                const cells = studentRow.find('td');
+                if (cells.length >= 3) {
+                  name = $(cells[2]).text().trim();
+                  status = 'IN'; // If found in current list, they're IN
+                }
+              } else {
+                // Student not in current list, likely checked OUT
+                status = 'OUT';
+                // Try to get name from previous state or use PRN
+                name = `(${prn})`;
+              }
+            }
+          } catch (pageError) {
+            name = `(${prn})`;
+            status = 'unknown';
+          }
+        }
+      }
+      
+      return {
+        name: name,
+        status: status
+      };
+    } else {
+      return { 
+        name: 'Error',
+        status: 'failed'
+      };
     }
   } catch (error) {
     throw new Error(`Error performing IN/OUT action: ${error.message}`);
   }
 }
 
-// Health check function
+// Health check function (commented out - not needed for IN/OUT only)
+/*
 function getHealth() {
   return {
     status: 'healthy',
@@ -366,21 +522,24 @@ function getHealth() {
     cache_size: cache.size()
   };
 }
+*/
 
-// Cache management
+// Cache management (commented out - not needed for IN/OUT only)
+/*
 function clearCache() {
   cache.clear();
   return { message: 'Cache cleared successfully' };
 }
+*/
 
 module.exports = {
-  verifyApiKey,
-  getLastEntry,
-  listAllStudents,
-  getTodaysFootfall,
-  getTotalFootfall,
-  getDashboard,
+  // verifyApiKey,
+  // getLastEntry,
+  // listAllStudents,
+  // getTodaysFootfall,
+  // getTotalFootfall,
+  // getDashboard,
   inOutAction,
-  getHealth,
-  clearCache
+  // getHealth,
+  // clearCache
 };
