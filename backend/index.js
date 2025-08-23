@@ -117,7 +117,7 @@ async function remove(PRN, purpose) {
   const formData = { PRN, purpose };
 
   try {
-    const response = await fetch(`${process.env.LIBRARY_SERVICE_URL}/api/library/in_out`, {
+    const response = await fetch(`${process.env.FRONTEND_URL}/api/library/in_out`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
