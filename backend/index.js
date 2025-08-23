@@ -379,7 +379,7 @@ app.post('/submit', async (req, res) => {
     const removed = await livefeed.findOneAndDelete({ PRN: prn });
 
     if (removed) {
-      return res.json({ success: true, message: "Student removed!" });
+      return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
     }
 
     // If not in livefeed, check in festudents
@@ -404,9 +404,6 @@ app.post('/submit', async (req, res) => {
     );
     const { checkAndSendLibraryInvitation } = require('./services/emailService');
 
-    const result = await checkAndSendLibraryInvitation(prn);
-    console.log(result);
-    // Returns: { success: true/false, message: "..." }
     res.json({ success: true, message: "Student inserted" });
 
   } catch (err) {
