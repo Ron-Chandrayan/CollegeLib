@@ -92,7 +92,9 @@ async function remove(PRN,purpose){
       body: JSON.stringify(formData)
     });
 
-    //console.log(res.json());
+    const data=await res.json()
+
+    console.log(data);
 
     if(res.ok){
        return "success";
@@ -389,36 +391,30 @@ app.get('/totalfootfalll',async(req,res)=>{
 })
 
 
-app.post('/remove',async(req,res)=>{
+app.post('/remove', async (req, res) => {
   try {
-    console.log(req.body);
-    let status
-    const students=req.body;
-    const PRNs = students.map(s => s.PRN); 
-    if(students.length>0){
-     for(let i =0;i<students.length;i++){
-      status= await remove(students[i].PRN,students[i].purpose);
-      if(status==="error"){
-        res.json({message:status});
-        break;
-      }
-     
-     }
-      
-      await livefeed.deleteMany({ PRN: { $in: PRNs } });
-      res.json({message:status})
-      //const status= await remove("124A1017","Study");
-      
-     
-    }else{
-      res.json({message:"no students present"})
+    const students = req.body;
+    const PRNs = students.map(s => s.PRN);
+
+    if (students.length === 0) {
+      return res.json({ message: "no students present" });
     }
-    
+
+    for (let i = 0; i < students.length; i++) {
+      const status = await remove(students[i].PRN, students[i].purpose);
+      if (status === "error") {
+        return res.json({ message: status }); // ✅ stops function here
+      }
+    }
+
+    await livefeed.deleteMany({ PRN: { $in: PRNs } });
+    return res.json({ message: "success" }); // ✅ only one response sent
+
   } catch (error) {
-    res.status(500).json({message:"server error"});
+    console.error("API Error:", error);
+    return res.status(500).json({ message: "server error" });
   }
-  
-})
+});
 
 
 app.get('/fetchtime', async (req, res) => {
