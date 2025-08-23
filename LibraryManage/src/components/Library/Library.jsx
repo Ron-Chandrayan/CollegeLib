@@ -86,7 +86,8 @@ function Library() {
     //   body: JSON.stringify(payload),
     // });
 
-    const resp = await fetch(getLibraryApiUrl('in_out'), {
+    try {
+      const resp = await fetch(getLibraryApiUrl('in_out'), {
         method: 'POST',
         headers: getLibraryApiHeaders(),
         body: JSON.stringify(payload),
@@ -94,6 +95,13 @@ function Library() {
 
     const data2=await resp.json();
     console.log(data2);
+    toast.success("koha pe jarha");
+      
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Koha pe nahi jarha");
+    }
+    
 
     
     } catch (error) {

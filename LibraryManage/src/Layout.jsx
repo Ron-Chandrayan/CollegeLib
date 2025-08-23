@@ -94,17 +94,17 @@ function Layout() {
 
 
 
-             fetch(getLibraryApiUrl('total_footfall'), {
-                   headers: getLibraryApiHeaders()
-               })
-               .then(response => response.json())
-                               .then(data => {
-                  const totfootfall = Number(data.total_footfall);
-                 // settotalfootfall(totfootfall);
-                })
-               .catch(error => {
-                   console.error('Error fetching total footfall:', error);
-               });
+            //  fetch(getLibraryApiUrl('total_footfall'), {
+            //        headers: getLibraryApiHeaders()
+            //    })
+            //    .then(response => response.json())
+            //                    .then(data => {
+            //       const totfootfall = Number(data.total_footfall);
+            //      // settotalfootfall(totfootfall);
+            //     })
+            //    .catch(error => {
+            //        console.error('Error fetching total footfall:', error);
+            //    });
 
               
                try {
