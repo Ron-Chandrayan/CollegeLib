@@ -10,8 +10,8 @@ function Student({ name, Students }) { // Students prop kept, but unused
    
 
     const payload = {
-      cardNumber: prnno,
-      purpose: name
+      PRN: prnno,
+      purpose:name
     };
 
     try {
