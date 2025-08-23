@@ -379,6 +379,11 @@ app.post('/submit', async (req, res) => {
     const removed = await livefeed.findOneAndDelete({ PRN: prn });
 
     if (removed) {
+          await lifetime.findOneAndUpdate(
+      { PRN: "124A1017" },
+      { $set: {} }, 
+      { sort: { _id: -1 } }  // sort newest first
+);
       return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
     }
 
