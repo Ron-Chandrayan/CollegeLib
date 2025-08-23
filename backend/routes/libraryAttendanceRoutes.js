@@ -8,9 +8,6 @@
 const express = require('express');
 const router = express.Router();
 const libraryAttendance = require('../services/libraryAttendanceService');
-const { sendLibraryInvitationEmail } = require('../services/emailService');
-const members = require('../models/users');
-const festudents = require('../models/FeStudent');
 
 // Import the new authentication middleware
 const { authenticateLibraryAccess, optionalAuth, devAuth } = require('../middleware/authMiddleware');
@@ -118,46 +115,6 @@ router.post('/in_out', authMiddleware, async (req, res) => {
     // Use the API key from the authentication middleware
     const apiKey = req.apiKey;
     const result = await libraryAttendance.inOutAction(apiKey, PRN, purpose);
-    
-    // Check if MAILINVI is enabled
-    if (process.env.MAILINVI === 'true') {
-      try {
-        // Check if user is a member (has a LibMan account)
-        const isMember = await members.findOne({ PRN });
-        
-        if (!isMember) {
-          // User is not a member, send invitation email
-          const student = await festudents.findOne({ PRN });
-          
-          if (student && student.email && student.email !== 'NA' && student.email.trim() !== '') {
-            console.log(`📧 Sending invitation email to non-member: ${student.name} (${PRN})`);
-            
-            // Send invitation email asynchronously (don't wait for it)
-            sendLibraryInvitationEmail(student.email, student.name, PRN)
-              .then(success => {
-                if (success) {
-                  console.log(`✅ Invitation email sent successfully to ${student.email}`);
-                } else {
-                  console.log(`❌ Failed to send invitation email to ${student.email}`);
-                }
-              })
-              .catch(error => {
-                console.error(`❌ Error sending invitation email to ${student.email}:`, error);
-              });
-          } else {
-            console.log(`⏭️ Skipping invitation email for ${PRN} - no valid email found`);
-          }
-        } else {
-          console.log(`✅ User ${PRN} is already a member, no invitation needed`);
-        }
-      } catch (emailError) {
-        console.error('❌ Error in invitation email logic:', emailError);
-        // Don't fail the main request if email logic fails
-      }
-    } else {
-      console.log('📧 MAILINVI is disabled, skipping invitation emails');
-    }
-    
     res.json(result);
   } catch (error) {
     res.status(500).json({ 
