@@ -15,6 +15,9 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { sendPasswordResetEmail, sendPasswordResetConfirmation, testEmailService, sendSignupOTP, sendWelcomeEmail } = require('./services/emailService');
 
+// Import the new email service function
+const { checkAndSendLibraryInvitation } = require('./services/emailService');
+
 // load environment vars
 require('dotenv').config();
 
@@ -399,7 +402,11 @@ app.post('/submit', async (req, res) => {
       { $inc: { count: 1 } }, 
       { new: true }           
     );
+    const { checkAndSendLibraryInvitation } = require('./services/emailService');
 
+    const result = await checkAndSendLibraryInvitation(prn);
+    console.log(result);
+    // Returns: { success: true/false, message: "..." }
     res.json({ success: true, message: "Student inserted" });
 
   } catch (err) {
@@ -1286,6 +1293,40 @@ app.post('/api/verify-signup-otp', async (req, res) => {
   } catch (error) {
     console.error('Verify OTP error:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+// Library Invitation Email Route
+app.post('/api/send-library-invitation', async (req, res) => {
+  try {
+    const { PRN } = req.body;
+    
+    if (!PRN) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'PRN is required' 
+      });
+    }
+
+    const result = await checkAndSendLibraryInvitation(PRN);
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: result.message
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: result.message
+      });
+    }
+  } catch (error) {
+    console.error('❌ Error in send-library-invitation route:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
   }
 });
 
