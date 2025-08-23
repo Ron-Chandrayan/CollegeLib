@@ -178,6 +178,7 @@ const[i,seti]=useState(1);
            onClick={()=>{
             seti(i-1);
            }}
+           disabled={i==1}
           >
              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
@@ -192,6 +193,9 @@ const[i,seti]=useState(1);
           onClick={()=>{
             seti(i+1);
           }}
+
+          disabled={i>=((Math.ceil(name.length))/3)}
+
           >
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
