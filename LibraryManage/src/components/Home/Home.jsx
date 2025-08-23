@@ -53,15 +53,15 @@ function Home() {
               setLogin(true);
               setwelcome(data.name);
               setwelcome2(data.PRN);
-              console.log(data.strtime);
+              //console.log(data.strtime);
               if(data.strtime!=null){
                 settime(data.strtime);
              const date = new Date(data.strtime);
             const strtime= date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
-            console.log(strtime);
+           // console.log(strtime);
             
               }else{
-                console.log("student not inside library");
+               // console.log("student not inside library");
                 settime(null);
               }
              
@@ -100,7 +100,7 @@ function Home() {
                     data.forEach(element => {
                         if(element.PRN===formData.PRN){
                             setwelcome(element.name);
-                            console.log(welcome);
+                            //console.log(welcome);
                         }
                     });
                 }

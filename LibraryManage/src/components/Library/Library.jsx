@@ -106,7 +106,7 @@ function Library() {
     setloading(true);
 
     try {
-      console.log("so you are the entity huh");
+      // console.log("so you are the entity huh");
     const res = await fetch('/remove', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
