@@ -478,11 +478,11 @@ const checkAndSendLibraryInvitation = async (prn) => {
     }
 
     // Import models dynamically to avoid circular dependencies
-    const members = require('../models/members');
+    const users = require('../models/users');
     const festudents = require('../models/FeStudent');
 
     // Check if user is already a member
-    const isMember = await members.findOne({ PRN: prn });
+    const isMember = await users.findOne({ PRN: prn });
     if (isMember) {
       return { 
         success: false, 
