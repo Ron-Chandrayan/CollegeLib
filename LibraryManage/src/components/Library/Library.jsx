@@ -95,11 +95,11 @@ function Library() {
 
     const data2=await resp.json();
     console.log(data2);
-    toast.success("koha pe jarha");
+    // toast.success("koha pe jarha");
       
     } catch (error) {
       console.error(error.message);
-      toast.error("Koha pe nahi jarha");
+      toast.error("Student not recorded");
     }
     
 
@@ -114,7 +114,7 @@ function Library() {
     setloading(true);
 
     try {
-      // console.log("so you are the entity huh");
+      console.log("so you are the entity huh");
     const res = await fetch('/remove', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -125,7 +125,7 @@ function Library() {
     if(data.message==="success"){
       toast.success("All Students deleted");
     }else{
-      toast.error("Something Went Wrong");
+      toast.error("student can't be deleted");
     }
       
     } catch (error) {
