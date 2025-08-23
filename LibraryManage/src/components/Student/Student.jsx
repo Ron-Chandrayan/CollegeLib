@@ -1,33 +1,46 @@
 import React from 'react';
+import { toast } from 'react-toastify'; // ✅ Import toast
+import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
+import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 function Student({ name, Students }) { // Students prop kept, but unused
 
   // Optional: Remove logic (currently not used in UI)
-  // function remove({ prnno, name }) {
-  //   const apiUrl = '/api/?endpoint=in_out';
-  //   const apiKey = 'ahambrahmasmi';
+  async function remove({ prnno, name }) {
+   
 
-  //   const payload = {
-  //     cardNumber: prnno,
-  //     purpose: name
-  //   };
+    const payload = {
+      cardNumber: prnno,
+      purpose: name
+    };
 
-  //   fetch(apiUrl, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'X-API-KEY': apiKey
-  //     },
-  //     body: JSON.stringify(payload)
-  //   })
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     console.log('Success:', data);
-  //   })
-  //   .catch(err => {
-  //     console.error('Error:', err);
-  //   });
-  // }
+    try {
+
+      const res = await fetch('/submit', {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            });
+      
+            const data = await res.json();
+      
+            if (data.success===true) {
+              toast.success(data.message || "Student inserted!");
+            } else {
+              toast.error(data.message || "Something went wrong");
+            }
+
+       const resp = await fetch(getLibraryApiUrl('in_out'), {
+              method: 'POST',
+              headers: getLibraryApiHeaders(),
+              body: JSON.stringify(payload),
+            });
+      
+    } catch (error) {
+      toast.error("Network error");
+    }
+    
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200">
