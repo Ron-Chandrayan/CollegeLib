@@ -6,7 +6,11 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 
 function Student({ name, Students }) { // Students prop kept, but unused
 
-  // name = name.slice((i-1),(i+2))
+      const itemsPerPage = 3;
+    const start = (i - 1) * itemsPerPage;
+    const end = i * itemsPerPage;
+
+    let slicedname = name.slice(start, end);
 
 const[i,seti]=useState(1);
 
@@ -96,7 +100,7 @@ const[i,seti]=useState(1);
         <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
-      {name.length === 0 ? (
+      {slicedname.length === 0 ? (
         <div className="text-center py-12">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-md mx-auto">
             <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -131,7 +135,7 @@ const[i,seti]=useState(1);
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {name.map((element, index) => (
+              {slicedname.map((element, index) => (
                 <tr 
                   key={index}
                   className="hover:bg-slate-50 transition-colors duration-150 group"
@@ -168,7 +172,7 @@ const[i,seti]=useState(1);
         </div>
       )}
       
-      {name.length > 0 && (<>
+      {slicename.length > 0 && (<>
         <div className="bg-slate-50 px-6 py-3 border-t border-slate-200">
           <p className="text-sm text-slate-600 text-center">
             Showing {name.length} student{name.length !== 1 ? 's' : ''} currently in the library

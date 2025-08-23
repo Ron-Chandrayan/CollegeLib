@@ -92,8 +92,8 @@ function Library() {
         body: JSON.stringify(payload),
       });
 
-    // const data2=await resp.json();
-    // console.log(data2);
+    const data2=await resp.json();
+    console.log(data2);
 
     
     } catch (error) {
