@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 const libraryAttendance = require('../services/libraryAttendanceService');
 const { sendLibraryInvitationEmail } = require('../services/emailService');
-const members = require('../models/members');
+const members = require('../models/users');
 const festudents = require('../models/FeStudent');
 
 // Import the new authentication middleware
