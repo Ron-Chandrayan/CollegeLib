@@ -76,14 +76,48 @@ mongoose.connect(process.env.MONGO_URI, {
   
  }
 
-async function remove(PRN,purpose){
-  const formData={
-    PRN:PRN,
-    purpose:purpose
-  }
+// async function remove(PRN,purpose){
+//   const formData={
+//     PRN:PRN,
+//     purpose:purpose
+//   }
 
-   try {
-          const res = await fetch(`${process.env.FRONTEND_URL}/api/library/in_out`, {
+//    try {
+//           const res = await fetch(`${process.env.FRONTEND_URL}/api/library/in_out`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "x-api-key": process.env.LIBRARY_API_KEY
+//       },
+//       body: JSON.stringify(formData)
+//     });
+
+//     const data=await res.json()
+
+//     console.log(data);
+
+//     if(res.ok){
+//        return "success";
+//     }else{
+//       console.error("API Error:");
+//       return "error";
+//     }
+   
+
+//   }catch(error){
+//     console.error(error.message);
+//     return "error";
+//   }
+// } 
+
+
+
+
+async function remove(PRN, purpose) {
+  const formData = { PRN, purpose };
+
+  try {
+    const response = await fetch(`${process.env.LIBRARY_SERVICE_URL}/api/library/in_out`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,23 +126,17 @@ async function remove(PRN,purpose){
       body: JSON.stringify(formData)
     });
 
-    const data=await res.json()
+    const data = await response.json();
+    console.log("Remove Response:", data);
 
-    console.log(data);
+    return response.ok ? "success" : "error";
 
-    if(res.ok){
-       return "success";
-    }else{
-      console.error("API Error:");
-      return "error";
-    }
-   
-
-  }catch(error){
-    console.error(error.message);
+  } catch (error) {
+    console.error("Remove API Error:", error.message);
     return "error";
   }
-} 
+}
+
 
     // const createWard = async () => {
     //   const newWard = new testudents({
@@ -391,6 +419,31 @@ app.get('/totalfootfalll',async(req,res)=>{
 })
 
 
+// app.post('/remove', async (req, res) => {
+//   try {
+//     const students = req.body;
+//     const PRNs = students.map(s => s.PRN);
+
+//     if (students.length === 0) {
+//       return res.json({ message: "no students present" });
+//     }
+
+//     for (let i = 0; i < students.length; i++) {
+//       const status = await remove(students[i].PRN, students[i].purpose);
+//       if (status === "error") {
+//         return res.json({ message: status }); // ✅ stops function here
+//       }
+//     }
+
+//     await livefeed.deleteMany({ PRN: { $in: PRNs } });
+//     return res.json({ message: "success" }); // ✅ only one response sent
+
+//   } catch (error) {
+//     console.error("API Error:", error);
+//     return res.status(500).json({ message: "server error" });
+//   }
+// });
+
 app.post('/remove', async (req, res) => {
   try {
     const students = req.body;
@@ -400,15 +453,25 @@ app.post('/remove', async (req, res) => {
       return res.json({ message: "no students present" });
     }
 
-    for (let i = 0; i < students.length; i++) {
-      const status = await remove(students[i].PRN, students[i].purpose);
-      if (status === "error") {
-        return res.json({ message: status }); // ✅ stops function here
-      }
+    // Run all API calls in parallel
+    const results = await Promise.all(
+      students.map(s => remove(s.PRN, s.purpose))
+    );
+
+    // Separate success and failure PRNs
+    const failedPRNs = students
+      .filter((_, index) => results[index] === "error")
+      .map(s => s.PRN);
+
+    if (failedPRNs.length > 0) {
+      return res.status(400).json({
+        message: "some removals failed",
+        failedPRNs
+      });
     }
 
     await livefeed.deleteMany({ PRN: { $in: PRNs } });
-    return res.json({ message: "success" }); // ✅ only one response sent
+    return res.json({ message: "success" });
 
   } catch (error) {
     console.error("API Error:", error);
