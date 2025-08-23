@@ -6,6 +6,8 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 
 function Student({ name, Students }) { // Students prop kept, but unused
 
+  // name = name.slice((i-1),(i+2))
+
 const[i,seti]=useState(1);
 
   // Optional: Remove logic (currently not used in UI)
