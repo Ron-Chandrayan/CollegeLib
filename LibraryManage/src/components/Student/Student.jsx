@@ -174,7 +174,11 @@ const[i,seti]=useState(1);
         </div>
 
         <div className="flex bg-slate-50 px-6 py-3 border-t border-slate-200">
-          <button>
+          <button
+           onClick={()=>{
+            seti(i-1);
+           }}
+          >
              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
                           </svg>
@@ -184,7 +188,11 @@ const[i,seti]=useState(1);
             <div>{i+1}</div>
             <div>{i+2}</div>
           </div>
-          <button>
+          <button
+          onClick={()=>{
+            seti(i+1);
+          }}
+          >
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                 </svg>
