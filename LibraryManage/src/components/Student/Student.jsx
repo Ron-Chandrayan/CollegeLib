@@ -14,7 +14,7 @@ const[i,seti]=useState(1);
     const start = (i - 1) * itemsPerPage;
     const end = i * itemsPerPage;
 
-    let slicedname = name.slice(start, end);
+    let slicename = name.slice(start, end);
 
   // Optional: Remove logic (currently not used in UI)
   async function remove({ prnno, name }) {
