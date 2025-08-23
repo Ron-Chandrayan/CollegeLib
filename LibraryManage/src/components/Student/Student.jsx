@@ -36,7 +36,7 @@ const[i,seti]=useState(1);
             const data = await res.json();
       
             if (data.success===true) {
-              toast.success(data.message || "Student inserted!");
+              toast.success(data.message || "Student removed!");
             } else {
               toast.error(data.message || "Something went wrong");
             }

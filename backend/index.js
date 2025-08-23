@@ -83,7 +83,7 @@ async function remove(PRN,purpose){
   }
 
    try {
-          const res = await fetch(`${process.env.API_URLX}`, {
+          const res = await fetch(`${process.env.FRONTEND_URL}/in_out`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
