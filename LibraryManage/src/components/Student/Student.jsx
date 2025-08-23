@@ -102,7 +102,7 @@ const[i,seti]=useState(1);
         <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
-      {slicedname.length === 0 ? (
+      {slicename.length === 0 ? (
         <div className="text-center py-12">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-md mx-auto">
             <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -137,7 +137,7 @@ const[i,seti]=useState(1);
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {slicedname.map((element, index) => (
+              {slicename.map((element, index) => (
                 <tr 
                   key={index}
                   className="hover:bg-slate-50 transition-colors duration-150 group"
