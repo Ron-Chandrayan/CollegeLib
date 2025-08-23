@@ -376,7 +376,7 @@ app.post('/submit', async (req, res) => {
     const removed = await livefeed.findOneAndDelete({ PRN: prn });
 
     if (removed) {
-      return res.json({ success: true, message: "Student removed!" });
+      return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
     }
 
     // If not in livefeed, check in festudents
@@ -400,7 +400,7 @@ app.post('/submit', async (req, res) => {
       { new: true }           
     );
 
-    res.json({ success: true, message: "Student inserted" });
+    res.json({ success: true, message: `Welcome ${fetchname.name} to the library`});
 
   } catch (err) {
     console.error("Error in /submit:", err);
