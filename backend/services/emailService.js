@@ -357,10 +357,114 @@ const sendWelcomeEmail = async (to, name) => {
   }
 };
 
+/**
+ * Send an invitation email to non-members who enter the library
+ * 
+ * @param {string} email - Recipient email address
+ * @param {string} name - Recipient name
+ * @param {string} prn - Recipient PRN
+ * @returns {Promise<boolean>} - Success status
+ */
+const sendLibraryInvitationEmail = async (email, name, prn) => {
+  try {
+    const transporter = createTransporter();
+    
+    if (!transporter) {
+      console.error('❌ Failed to create email transporter');
+      return false;
+    }
+
+    // HTML email content with beautiful design
+    const htmlContent = `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div style="text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.2);">
+          <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">LibMan</h1>
+          <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0 0; font-size: 16px;">SIES Graduate School of Technology</p>
+        </div>
+        
+        <div style="background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #1e40af; font-weight: 700; margin: 0; font-size: 28px;">Welcome to the Library! 📚</h2>
+            <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 18px;">Hi ${name}, we noticed you're here!</p>
+          </div>
+          
+          <div style="margin-bottom: 35px; color: #4b5563; font-size: 16px; line-height: 1.7;">
+            <p>Great to see you at the SIES GST Library! We noticed you're not yet part of our <strong>LibMan</strong> community. Join thousands of students who are already using our amazing features!</p>
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 12px; margin: 30px 0; color: white;">
+            <h3 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 600; text-align: center;">🚀 Amazing Features Await You!</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">⏱️</div>
+                <div style="font-weight: 600; font-size: 14px;">Track Library Hours</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">📖</div>
+                <div style="font-weight: 600; font-size: 14px;">Search Books</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">📝</div>
+                <div style="font-weight: 600; font-size: 14px;">Get PYQs</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">🏆</div>
+                <div style="font-weight: 600; font-size: 14px;">Leaderboard</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin: 35px 0;">
+            <a href="${process.env.FRONTEND_URL || 'https://library-sies-92fbc1e81669.herokuapp.com'}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 10px; font-weight: 600; display: inline-block; font-size: 18px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">Join LibMan Now! 🎉</a>
+          </div>
+          
+          <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; margin: 30px 0; border-left: 4px solid #667eea;">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-weight: 600;">Why Join LibMan?</h4>
+            <ul style="color: #4b5563; margin: 0; padding-left: 20px; line-height: 1.8;">
+              <li><strong>Personalized Dashboard:</strong> Track your library activity and study patterns</li>
+              <li><strong>Smart Book Search:</strong> Find books and resources instantly</li>
+              <li><strong>Previous Year Papers:</strong> Access exam papers for better preparation</li>
+              <li><strong>Leaderboard:</strong> Compete with friends and see who studies the most</li>
+              <li><strong>Real-time Updates:</strong> Get notified about library events and announcements</li>
+            </ul>
+          </div>
+          
+          <div style="text-align: center; background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 25px 0;">
+            <p style="color: #92400e; font-size: 16px; font-weight: 500; margin: 0;">
+              💡 <strong>Pro Tip:</strong> Students who use LibMan study 40% more effectively!
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; color: rgba(255,255,255,0.8); font-size: 14px;">
+          <p>Questions? Contact the library staff at SIES Graduate School of Technology.</p>
+          <p>This is an automated invitation. Please don't reply to this message.</p>
+          <p style="margin-top: 15px; font-weight: 600;">&copy; LibMan 2025 | SIES Graduate School of Technology</p>
+        </div>
+      </div>
+    `;
+
+    // Send the email
+    const info = await transporter.sendMail({
+      from: `"LibMan - SIES GST Library" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: '🎉 Welcome to SIES GST Library! Join LibMan for Amazing Features!',
+      html: htmlContent
+    });
+
+    console.log('✅ Library invitation email sent:', info.messageId);
+    return true;
+  } catch (error) {
+    console.error('❌ Failed to send library invitation email:', error);
+    return false;
+  }
+};
+
 module.exports = {
   sendPasswordResetEmail,
   sendPasswordResetConfirmation,
   testEmailService,
   sendSignupOTP,
-  sendWelcomeEmail
+  sendWelcomeEmail,
+  sendLibraryInvitationEmail
 };

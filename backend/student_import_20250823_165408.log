@@ -1,0 +1,10 @@
+2025-08-23 16:54:08,972 - INFO - Starting student import process...
+2025-08-23 16:54:09,705 - INFO - Connected to MongoDB database: libraryDB
+2025-08-23 16:54:09,705 - INFO - Using collection: fe_students
+2025-08-23 16:54:09,755 - INFO - Created unique index on PRN field
+2025-08-23 16:54:09,854 - INFO - Created index on email field
+2025-08-23 16:54:09,877 - INFO - Created index on batch field
+2025-08-23 16:54:09,928 - ERROR - Error reading CSV file: Missing required columns in CSV: ['mail']
+2025-08-23 16:54:09,937 - ERROR - Student import process failed: Missing required columns in CSV: ['mail']
+2025-08-23 16:54:09,943 - INFO - MongoDB connection closed
+2025-08-23 16:54:09,944 - ERROR - Script execution failed: Missing required columns in CSV: ['mail']

@@ -1,0 +1,32 @@
+2025-08-23 16:55:19,085 - INFO - Starting student import process...
+2025-08-23 16:55:19,640 - INFO - Connected to MongoDB database: libraryDB
+2025-08-23 16:55:19,640 - INFO - Using collection: fe_students
+2025-08-23 16:55:19,694 - INFO - Created unique index on PRN field
+2025-08-23 16:55:19,801 - INFO - Created index on email field
+2025-08-23 16:55:19,904 - INFO - Created index on batch field
+2025-08-23 16:55:19,933 - WARNING - Invalid email format for PRN 40026: NA
+2025-08-23 16:55:19,933 - WARNING - Invalid email format for PRN 40052: NA
+2025-08-23 16:55:19,933 - WARNING - Invalid email format for PRN 40097: NA
+2025-08-23 16:55:19,934 - WARNING - Invalid email format for PRN 40128: NA
+2025-08-23 16:55:19,936 - WARNING - Invalid email format for PRN 40188: NA
+2025-08-23 16:55:19,936 - WARNING - Invalid email format for PRN 40051: NA
+2025-08-23 16:55:19,937 - WARNING - Invalid email format for PRN 40302: NA
+2025-08-23 16:55:19,939 - WARNING - Invalid email format for PRN 40328: NA
+2025-08-23 16:55:19,939 - WARNING - Invalid email format for PRN 40342: NA
+2025-08-23 16:55:19,941 - WARNING - Invalid email format for PRN 40362: NA
+2025-08-23 16:55:19,941 - WARNING - Invalid email format for PRN 40424: NA
+2025-08-23 16:55:19,942 - WARNING - Invalid email format for PRN 40556: NA
+2025-08-23 16:55:19,942 - WARNING - Invalid email format for PRN 40619: NA
+2025-08-23 16:55:19,943 - WARNING - Invalid email format for PRN 40624: NA
+2025-08-23 16:55:19,943 - INFO - Loaded 99 student documents from CSV
+2025-08-23 16:55:19,984 - INFO - Found 1868 existing students in database
+2025-08-23 16:55:19,985 - INFO - New students to insert: 99
+2025-08-23 16:55:19,986 - INFO - Students already exist: 0
+2025-08-23 16:55:19,987 - INFO - Created 99 bulk insert operations
+2025-08-23 16:55:19,991 - INFO - Executing 99 bulk insert operations...
+2025-08-23 16:55:20,513 - INFO - Bulk insert completed:
+2025-08-23 16:55:20,525 - INFO -   - Successful inserts: 99
+2025-08-23 16:55:20,531 - INFO -   - Failed inserts: 0
+2025-08-23 16:55:20,539 - INFO - Student import process completed successfully!
+2025-08-23 16:55:20,544 - INFO - Summary: 99 successful inserts, 0 failed inserts
+2025-08-23 16:55:20,563 - INFO - MongoDB connection closed

@@ -1,0 +1,43 @@
+2025-08-23 18:01:41,795 - INFO - Connected to MongoDB database: libraryDB
+2025-08-23 18:01:41,796 - INFO - Using collection: fe_students
+2025-08-23 18:01:41,944 - INFO - Fetched 1967 PRN numbers from database
+2025-08-23 18:01:41,945 - INFO - Starting continuous PRN automation
+2025-08-23 18:01:41,945 - INFO - Move mouse to top-left corner to stop the automation
+2025-08-23 18:01:41,945 - INFO - === Starting Cycle 1 ===
+2025-08-23 18:01:51,448 - INFO - Starting automation cycle with 10 iterations
+2025-08-23 18:01:51,453 - INFO - Iteration 1/10: Processing PRN 124A2001
+2025-08-23 18:01:51,453 - INFO - Inputting PRN: 124A2001
+2025-08-23 18:01:52,431 - INFO - Successfully input PRN: 124A2001
+2025-08-23 18:01:52,732 - INFO - Iteration 2/10: Processing PRN 124A2002
+2025-08-23 18:01:52,733 - INFO - Inputting PRN: 124A2002
+2025-08-23 18:01:53,733 - INFO - Successfully input PRN: 124A2002
+2025-08-23 18:01:54,033 - INFO - Iteration 3/10: Processing PRN 124A2003
+2025-08-23 18:01:54,034 - INFO - Inputting PRN: 124A2003
+2025-08-23 18:01:54,981 - INFO - Successfully input PRN: 124A2003
+2025-08-23 18:01:55,282 - INFO - Iteration 4/10: Processing PRN 124A2004
+2025-08-23 18:01:55,282 - INFO - Inputting PRN: 124A2004
+2025-08-23 18:01:56,229 - INFO - Successfully input PRN: 124A2004
+2025-08-23 18:01:56,554 - INFO - Iteration 5/10: Processing PRN 124A2005
+2025-08-23 18:01:56,575 - INFO - Inputting PRN: 124A2005
+2025-08-23 18:01:57,623 - INFO - Successfully input PRN: 124A2005
+2025-08-23 18:01:57,925 - INFO - Iteration 6/10: Processing PRN 124A2006
+2025-08-23 18:01:57,925 - INFO - Inputting PRN: 124A2006
+2025-08-23 18:01:58,895 - INFO - Successfully input PRN: 124A2006
+2025-08-23 18:01:59,196 - INFO - Iteration 7/10: Processing PRN 124A2007
+2025-08-23 18:01:59,197 - INFO - Inputting PRN: 124A2007
+2025-08-23 18:02:00,149 - INFO - Successfully input PRN: 124A2007
+2025-08-23 18:02:00,450 - INFO - Iteration 8/10: Processing PRN 124A2008
+2025-08-23 18:02:00,450 - INFO - Inputting PRN: 124A2008
+2025-08-23 18:02:01,407 - INFO - Successfully input PRN: 124A2008
+2025-08-23 18:02:01,708 - INFO - Iteration 9/10: Processing PRN 124A2009
+2025-08-23 18:02:01,709 - INFO - Inputting PRN: 124A2009
+2025-08-23 18:02:02,720 - INFO - Successfully input PRN: 124A2009
+2025-08-23 18:02:03,020 - INFO - Iteration 10/10: Processing PRN 124A2010
+2025-08-23 18:02:03,021 - INFO - Inputting PRN: 124A2010
+2025-08-23 18:02:03,975 - INFO - Successfully input PRN: 124A2010
+2025-08-23 18:02:04,276 - INFO - Automation cycle completed
+2025-08-23 18:02:04,276 - INFO - Waiting 20 seconds before next cycle...
+2025-08-23 18:02:24,350 - INFO - === Starting Cycle 2 ===
+2025-08-23 18:02:49,605 - INFO - Exiting automation
+2025-08-23 18:02:49,610 - INFO - MongoDB connection closed
+2025-08-23 18:02:49,611 - INFO - MongoDB connection closed
