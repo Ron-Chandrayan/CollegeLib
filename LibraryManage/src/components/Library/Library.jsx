@@ -169,8 +169,18 @@ function Library() {
             >
               <option value="" hidden>Select purpose</option>
               <option value="Study">Study</option>
-              <option value="Research">Research</option>
-              <option value="References">References</option>
+              <option value="Circulation">Circulation</option>
+              <option value="Internet Search">Internet Search</option>
+              <option value="No due Clearance">No due Clearance</option>
+              <option value="Photo Copy/Printing">Photo Copy/Printing</option>
+              <option value="Project Work">Project Work</option>
+              <option value="Question Paper">Question Paper</option>
+              <option value="Project Work">Reading Newspaper</option>
+              <option value="Reference Book/Periodical">Reference Book/Periodical</option>
+              
+
+
+    
             </select>
           </div>
 
