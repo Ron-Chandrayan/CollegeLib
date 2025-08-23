@@ -28,7 +28,7 @@ export const getLibraryApiUrl = (endpoint) => {
     return url;
   } else {
     // Use environment variable for production
-    let baseUrl = import.meta.env.LIB_API_ENP;
+    let baseUrl = import.meta.env.LIB_API_ENP || 'https://library-sies-92fbc1e81669.herokuapp.com';
     
     // Remove trailing slash if present to avoid double slashes
     baseUrl = baseUrl.replace(/\/$/, '');
