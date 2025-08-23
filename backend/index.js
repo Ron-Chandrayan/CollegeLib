@@ -404,6 +404,9 @@ app.post('/submit', async (req, res) => {
     );
     const { checkAndSendLibraryInvitation } = require('./services/emailService');
 
+    const result = await checkAndSendLibraryInvitation(prn);
+    console.log(result);
+    // Returns: { success: true/false, message: "..." }
     res.json({ success: true, message: "Student inserted" });
 
   } catch (err) {
