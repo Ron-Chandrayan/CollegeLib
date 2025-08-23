@@ -9,30 +9,11 @@ const express = require('express');
 const router = express.Router();
 const libraryAttendance = require('../services/libraryAttendanceService');
 
-// Middleware to verify API key (temporarily disabled)
-const verifyApiKey = async (req, res, next) => {
-  // Temporarily bypass API key verification
-  next();
-  
-  /* Original implementation commented out
-  const apiKey = req.headers['xapikey'] || req.headers['x-api-key'];
-  
-  if (!apiKey) {
-    return res.status(401).json({ error: 'API key required' });
-  }
-  
-  try {
-    const isValid = await libraryAttendance.verifyApiKey(apiKey, req.path);
-    if (isValid) {
-      next();
-    } else {
-      res.status(401).json({ error: 'Invalid API key' });
-    }
-  } catch (error) {
-    res.status(503).json({ error: 'API verification failed' });
-  }
-  */
-};
+// Import the new authentication middleware
+const { authenticateLibraryAccess, optionalAuth, devAuth } = require('../middleware/authMiddleware');
+
+// Choose authentication middleware based on environment
+const authMiddleware = process.env.NODE_ENV === 'development' ? optionalAuth : authenticateLibraryAccess;
 
 // Get the last entered person (commented out - not needed for IN/OUT only)
 /*
@@ -119,19 +100,28 @@ router.post('/cache/clear', verifyApiKey, (req, res) => {
 */
 
 // Endpoint for IN/OUT action
-router.post('/in_out', verifyApiKey, async (req, res) => {
+router.post('/in_out', authMiddleware, async (req, res) => {
   const { purpose, PRN } = req.body;
   
   if (!purpose || !PRN) {
-    return res.status(400).json({ error: 'Missing purpose or PRN' });
+    return res.status(400).json({ 
+      error: 'Missing required fields',
+      message: 'Both purpose and PRN are required',
+      code: 'MISSING_FIELDS'
+    });
   }
   
   try {
-    const apiKey = req.headers['xapikey'] || req.headers['x-api-key'];
+    // Use the API key from the authentication middleware
+    const apiKey = req.apiKey;
     const result = await libraryAttendance.inOutAction(apiKey, PRN, purpose);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Server error',
+      message: error.message,
+      code: 'SERVER_ERROR'
+    });
   }
 });
 
