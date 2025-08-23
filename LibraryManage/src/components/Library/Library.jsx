@@ -17,7 +17,7 @@ function Library() {
     purpose: 'Study'
   });
 
-  console.log(name);
+  //console.log(name);
   useEffect(() => {
           const checkTime = () => {
             const now = new Date();
