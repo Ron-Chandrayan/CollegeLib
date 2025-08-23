@@ -374,69 +374,70 @@ const sendLibraryInvitationEmail = async (email, name, prn) => {
       return false;
     }
 
-    // HTML email content with beautiful design
+    // HTML email content with mobile-friendly design
     const htmlContent = `
-      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #e0e0e0; border-radius: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div style="text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.2);">
-          <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">LibMan</h1>
-          <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0 0; font-size: 16px;">SIES Graduate School of Technology</p>
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8fafc;">
+        <div style="text-align: center; margin-bottom: 30px; padding: 25px; background-color: #1e40af; border-radius: 12px;">
+          <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 600;">LibMan</h1>
+          <p style="color: #e0e7ff; margin: 8px 0 0 0; font-size: 16px;">SIES Graduate School of Technology</p>
         </div>
         
-        <div style="background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
-          <div style="text-align: center; margin-bottom: 30px;">
-            <h2 style="color: #1e40af; font-weight: 700; margin: 0; font-size: 28px;">Welcome to the Library! 📚</h2>
-            <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 18px;">Hi ${name}, we noticed you're here!</p>
+        <div style="background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+          <div style="text-align: center; margin-bottom: 25px;">
+            <h2 style="color: #1e40af; font-weight: 600; margin: 0; font-size: 24px;">Welcome to the Library! 📚</h2>
+            <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 16px;">Hi ${name}, we noticed you're here!</p>
           </div>
           
-          <div style="margin-bottom: 35px; color: #4b5563; font-size: 16px; line-height: 1.7;">
-            <p>Great to see you at the SIES GST Library! We noticed you're not yet part of our <strong>LibMan</strong> community. Join thousands of students who are already using our amazing features!</p>
+          <div style="margin-bottom: 25px; color: #4b5563; font-size: 16px; line-height: 1.6;">
+            <p><strong>See what you're missing out on, but your friends aren't!</strong> 🚀</p>
+            <p>While you're here at the library, thousands of your classmates are already using <strong>LibMan</strong> to ace their studies! Don't be the only one missing out on these game-changing features!</p>
           </div>
           
-          <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 12px; margin: 30px 0; color: white;">
-            <h3 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 600; text-align: center;">🚀 Amazing Features Await You!</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
-              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-                <div style="font-size: 24px; margin-bottom: 8px;">⏱️</div>
-                <div style="font-weight: 600; font-size: 14px;">Track Library Hours</div>
+          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #1e40af;">
+            <h3 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 600; text-align: center; color: #1e40af;">🚀 Amazing Features Await You!</h3>
+            <div style="display: block;">
+              <div style="display: flex; align-items: center; margin-bottom: 15px; padding: 12px; background-color: white; border-radius: 6px;">
+                <div style="font-size: 20px; margin-right: 12px;">⏱️</div>
+                <div style="font-weight: 600; font-size: 14px; color: #374151;">Track Library Hours</div>
               </div>
-              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-                <div style="font-size: 24px; margin-bottom: 8px;">📖</div>
-                <div style="font-weight: 600; font-size: 14px;">Search Books</div>
+              <div style="display: flex; align-items: center; margin-bottom: 15px; padding: 12px; background-color: white; border-radius: 6px;">
+                <div style="font-size: 20px; margin-right: 12px;">📖</div>
+                <div style="font-weight: 600; font-size: 14px; color: #374151;">Search Books</div>
               </div>
-              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-                <div style="font-size: 24px; margin-bottom: 8px;">📝</div>
-                <div style="font-weight: 600; font-size: 14px;">Get PYQs</div>
+              <div style="display: flex; align-items: center; margin-bottom: 15px; padding: 12px; background-color: white; border-radius: 6px;">
+                <div style="font-size: 20px; margin-right: 12px;">📝</div>
+                <div style="font-weight: 600; font-size: 14px; color: #374151;">Get PYQs</div>
               </div>
-              <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-                <div style="font-size: 24px; margin-bottom: 8px;">🏆</div>
-                <div style="font-weight: 600; font-size: 14px;">Leaderboard</div>
+              <div style="display: flex; align-items: center; padding: 12px; background-color: white; border-radius: 6px;">
+                <div style="font-size: 20px; margin-right: 12px;">🏆</div>
+                <div style="font-weight: 600; font-size: 14px; color: #374151;">Leaderboard</div>
               </div>
             </div>
           </div>
           
-          <div style="text-align: center; margin: 35px 0;">
-            <a href="${process.env.FRONTEND_URL || 'https://library-sies-92fbc1e81669.herokuapp.com'}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 10px; font-weight: 600; display: inline-block; font-size: 18px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">Join LibMan Now! 🎉</a>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${process.env.FRONTEND_URL || 'https://library-sies-92fbc1e81669.herokuapp.com'}" style="background-color: #1e40af; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block; font-size: 16px;">Join LibMan Now! 🎉</a>
           </div>
           
-          <div style="background-color: #f8fafc; padding: 20px; border-radius: 10px; margin: 30px 0; border-left: 4px solid #667eea;">
+          <div style="background-color: #f0f9ff; padding: 18px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #1e40af;">
             <h4 style="color: #1e40af; margin: 0 0 15px 0; font-weight: 600;">Why Join LibMan?</h4>
-            <ul style="color: #4b5563; margin: 0; padding-left: 20px; line-height: 1.8;">
-              <li><strong>Personalized Dashboard:</strong> Track your library activity and study patterns</li>
-              <li><strong>Smart Book Search:</strong> Find books and resources instantly</li>
-              <li><strong>Previous Year Papers:</strong> Access exam papers for better preparation</li>
-              <li><strong>Leaderboard:</strong> Compete with friends and see who studies the most</li>
-              <li><strong>Real-time Updates:</strong> Get notified about library events and announcements</li>
+            <ul style="color: #4b5563; margin: 0; padding-left: 20px; line-height: 1.6;">
+              <li><strong>Personalized Dashboard:</strong> See what your friends are studying!</li>
+              <li><strong>Smart Book Search:</strong> Find books in seconds while others struggle!</li>
+              <li><strong>Previous Year Papers:</strong> Get exam papers your classmates don't have!</li>
+              <li><strong>Leaderboard:</strong> Beat your friends and become the study champion!</li>
+              <li><strong>Real-time Updates:</strong> Know about library events before everyone else!</li>
             </ul>
           </div>
           
-          <div style="text-align: center; background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 25px 0;">
-            <p style="color: #92400e; font-size: 16px; font-weight: 500; margin: 0;">
-              💡 <strong>Pro Tip:</strong> Students who use LibMan study 40% more effectively!
+          <div style="text-align: center; background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="color: #92400e; font-size: 15px; font-weight: 500; margin: 0;">
+              💡 <strong>Pro Tip:</strong> Students who use LibMan study 40% more effectively! Your friends are already ahead - catch up now! 🏃‍♂️💨
             </p>
           </div>
         </div>
         
-        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; color: rgba(255,255,255,0.8); font-size: 14px;">
+        <div style="text-align: center; color: #6b7280; font-size: 14px; padding: 20px 0;">
           <p>Questions? Contact the library staff at SIES Graduate School of Technology.</p>
           <p>This is an automated invitation. Please don't reply to this message.</p>
           <p style="margin-top: 15px; font-weight: 600;">&copy; LibMan 2025 | SIES Graduate School of Technology</p>
