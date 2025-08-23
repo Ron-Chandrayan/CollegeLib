@@ -11,7 +11,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api\/api/, '/api'),
       },
       '/altapi': {
-        target: 'https://libman.ethiccode.in.net',
+        target: 'https://library-sies-92fbc1e81669.herokuapp.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/altapi/, '/api'),
       },

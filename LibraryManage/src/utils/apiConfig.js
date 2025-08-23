@@ -28,7 +28,7 @@ export const getLibraryApiUrl = (endpoint) => {
     return url;
   } else {
     // Use environment variable for production
-    let baseUrl = import.meta.env.VITE_API_URL || 'https://libman.ethiccode.in.net';
+    let baseUrl = import.meta.env.LIB_API_ENP;
     
     // Remove trailing slash if present to avoid double slashes
     baseUrl = baseUrl.replace(/\/$/, '');
@@ -46,7 +46,7 @@ export const getApiHeaders = () => {
 
 export const getLibraryApiHeaders = () => {
   return {
-    'XApiKey': import.meta.env.VITE_SECRET_KEY,
+    'XApiKey': import.meta.env.LIBRARY_API_KEY,
     'Content-Type': 'application/json',
   };
 };
