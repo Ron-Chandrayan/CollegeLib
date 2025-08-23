@@ -92,7 +92,7 @@ async function remove(PRN,purpose){
       body: JSON.stringify(formData)
     });
 
-    console.log(res.json());
+    //console.log(res.json());
 
     if(res.ok){
        return "success";
