@@ -1,9 +1,12 @@
 import React from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 function Student({ name, Students }) { // Students prop kept, but unused
+
+const[i,seti]=useState(1);
 
   // Optional: Remove logic (currently not used in UI)
   async function remove({ prnno, name }) {
@@ -88,6 +91,7 @@ function Student({ name, Students }) { // Students prop kept, but unused
       <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
         <h2 className="text-2xl font-bold text-slate-800">Students Currently in Library</h2>
         <p className="text-slate-600 mt-1">Total: {name.length} students</p>
+        <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
       {name.length === 0 ? (
@@ -162,12 +166,19 @@ function Student({ name, Students }) { // Students prop kept, but unused
         </div>
       )}
       
-      {name.length > 0 && (
+      {name.length > 0 && (<>
         <div className="bg-slate-50 px-6 py-3 border-t border-slate-200">
           <p className="text-sm text-slate-600 text-center">
             Showing {name.length} student{name.length !== 1 ? 's' : ''} currently in the library
           </p>
         </div>
+
+        <div className="bg-slate-50 px-6 py-3 border-t border-slate-200">
+          <p className="text-sm text-slate-600 text-center">
+            Showing {name.length} student{name.length !== 1 ? 's' : ''} currently in the library
+          </p>
+        </div>
+        </>
       )}
     </div>
   );
