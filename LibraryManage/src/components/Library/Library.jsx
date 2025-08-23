@@ -17,6 +17,7 @@ function Library() {
     purpose: 'Study'
   });
 
+  console.log(name);
   useEffect(() => {
           const checkTime = () => {
             const now = new Date();
@@ -122,6 +123,7 @@ function Library() {
       });
 
     const data = await res.json()
+    console.log(data);
     if(data.message==="success"){
       toast.success("All Students deleted");
     }else{
