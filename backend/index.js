@@ -407,7 +407,7 @@ app.post('/submit', async (req, res) => {
     const result = await checkAndSendLibraryInvitation(prn);
     console.log(result);
     // Returns: { success: true/false, message: "..." }
-    res.json({ success: true, message: "Student inserted" });
+    res.json({ success: true, message: `Welcome ${fetchname.name} to the Library` });
 
   } catch (err) {
     console.error("Error in /submit:", err);
