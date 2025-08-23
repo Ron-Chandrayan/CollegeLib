@@ -6,13 +6,15 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 
 function Student({ name, Students }) { // Students prop kept, but unused
 
-      const itemsPerPage = 3;
+   
+
+const[i,seti]=useState(1);
+
+   const itemsPerPage = 3;
     const start = (i - 1) * itemsPerPage;
     const end = i * itemsPerPage;
 
     let slicedname = name.slice(start, end);
-
-const[i,seti]=useState(1);
 
   // Optional: Remove logic (currently not used in UI)
   async function remove({ prnno, name }) {
