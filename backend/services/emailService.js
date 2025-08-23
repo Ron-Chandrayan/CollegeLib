@@ -478,7 +478,7 @@ const checkAndSendLibraryInvitation = async (prn) => {
     }
 
     // Import models dynamically to avoid circular dependencies
-    const users = require('../models/users');
+    const users = require('../models/Users');
     const festudents = require('../models/FeStudent');
 
     // Check if user is already a member
