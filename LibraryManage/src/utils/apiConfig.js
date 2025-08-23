@@ -46,7 +46,7 @@ export const getApiHeaders = () => {
 
 export const getLibraryApiHeaders = () => {
   return {
-    'x-api-key': import.meta.env.LIBRARY_API_KEY,
+    'x-api-key': import.meta.env.LIBRARY_API_KEY || 'TereIshqDaJaamHaseen.',
     'Content-Type': 'application/json',
   };
 };
