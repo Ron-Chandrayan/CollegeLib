@@ -6,10 +6,10 @@
  */
 
 // Default API key (change this in production)
-//const DEFAULT_API_KEY = '.';
+const DEFAULT_API_KEY = 'TereIshqDaJaamHaseen';
 
 // Get API key from environment variable or use default
-const LIBRARY_API_KEY = process.env.LIBRARY_API_KEY;
+const LIBRARY_API_KEY = process.env.LIBRARY_API_KEY || DEFAULT_API_KEY;
 
 // API key configuration
 const apiKeyConfig = {

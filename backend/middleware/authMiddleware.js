@@ -6,7 +6,7 @@
  */
 
 // Configuration
-const STATIC_API_KEY = process.env.LIBRARY_API_KEY;
+const STATIC_API_KEY = process.env.LIBRARY_API_KEY || 'TereIshqDaJaamHaseen';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // Simple in-memory cache for API keys

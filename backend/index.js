@@ -1226,7 +1226,9 @@ app.post('/api/verify-signup-otp', async (req, res) => {
   }
 });
 
-
+// Library Attendance Routes
+const libraryAttendanceRoutes = require('./routes/libraryAttendanceRoutes');
+app.use('/api/library', libraryAttendanceRoutes);
 
 // static React build for client-side routing
 const staticPath = path.join(__dirname, '../LibraryManage/dist');
