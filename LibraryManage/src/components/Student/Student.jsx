@@ -54,14 +54,14 @@ function Student({ name, Students }) { // Students prop kept, but unused
                 <p className="text-sm text-slate-600">{element.purpose}</p>
 
                 {/* Optional remove button (uncomment if needed) */}
-                {/*
+                
                 <button
                   onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
                   className="absolute top-2 right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
                 >
                   ×
                 </button>
-                */}
+               
               </div>
             ))}
           </div>
