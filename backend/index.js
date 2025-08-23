@@ -380,7 +380,7 @@ app.post('/submit', async (req, res) => {
 
     if (removed) {
           await lifetime.findOneAndUpdate(
-      { PRN: "124A1017" },
+      { PRN: prn },
       { $set: {} }, 
       { sort: { _id: -1 } }  // sort newest first
 );
