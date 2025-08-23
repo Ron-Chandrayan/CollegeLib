@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 // import StudentGrid from '../StudentGrid/StudentGrid';
 import Student from '../Student/Student';
+import { useOutletContext } from 'react-router-dom'
 import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 function Library() {
-//  const { student, setStudent, flag, setflag } = useOutletContext();
+ const { name,setname } = useOutletContext();
   const[student, setStudent]=useState([])
   const[flag,setflag]=useState();
   const[disable,setdisable]=useState(true);
@@ -130,21 +131,21 @@ function Library() {
     
   }
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/fetch');
-      const data = await response.json();
-      setStudent(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch('/fetch');
+  //     const data = await response.json();
+  //     setStudent(data);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-        return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  //   const interval = setInterval(fetchData, 1000);
+  //       return () => clearInterval(interval);
+  // }, []);
 
   return (
     <>
@@ -212,7 +213,7 @@ function Library() {
 
       <div className="mt-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">All Students</h2>
-        <Student name={student} />
+        <Student name={name} />
       </div>
     </>
   );
