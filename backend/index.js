@@ -80,9 +80,9 @@ mongoose.connect(process.env.MONGO_URI, {
  }
 
 async function difference(start,end){
-   startime=new Date(start);
-   endtime= new Date(end);
-   const diff = endtime-starttime;
+  const  startime=new Date(start);
+  const endtime= new Date(end);
+   const diff = endtime-startime;
    const diffinsec=Math.floor(diff/1000);
   //  console.log(diffinsec);
    return diffinsec;
