@@ -226,7 +226,7 @@ const toggleMobileMenu = () => {
                         `${isActive
                           ? "text-cyan-400 bg-slate-800 border-b-2 border-cyan-400"
                           : "text-slate-300 hover:text-white hover:bg-slate-700"
-                        } px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105`
+                        } block px-4 py-3 rounded-lg font-medium transition-all duration-200`
                       }
                     >
                       Library
