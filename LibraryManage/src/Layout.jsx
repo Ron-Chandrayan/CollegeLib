@@ -107,7 +107,7 @@ function Layout() {
                                   const seconds = format(Math.floor((diff % (60))));
 
                                   console.log(`${hours}:${minutes}:${seconds}`);
-                                  settimer(`${hours} hrs : ${minutes}mins : ${seconds} secs`);
+                                  settimer(`${hours} : ${minutes} : ${seconds}`);
 
                                    
                                 }else{
