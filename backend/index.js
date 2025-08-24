@@ -41,6 +41,7 @@ const festudents = require('./models/FeStudent');
 const timetable=require('./models/timetable');
 const livefeed=require('./models/livefeed');
 const totalfootfall = require('./models/totalfootfall');
+const timerlog=require('./models/timerlog');
 
 const app = express();
 app.use(cors());
@@ -79,7 +80,7 @@ mongoose.connect(process.env.MONGO_URI, {
   
  }
 
-async function difference(start,end){
+async function difference(prn,start,end){
   const  startime=new Date(start);
   const endtime= new Date(end);
    const diff = endtime-startime;
@@ -394,7 +395,7 @@ app.post('/submit', async (req, res) => {
       { sort: { _id: -1 }, // sort newest first
       new:true }  
 );
-      const diff = await difference(updatedoc.createdAt,updatedoc.updatedAt);
+      const diff = await difference(updatedoc.PRN,updatedoc.createdAt,updatedoc.updatedAt);
       console.log(diff);
 
       return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
