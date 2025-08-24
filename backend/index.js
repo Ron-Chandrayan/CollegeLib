@@ -85,8 +85,14 @@ async function difference(prn,start,end){
   const endtime= new Date(end);
    const diff = endtime-startime;
    const diffinsec=Math.floor(diff/1000);
+   try {
+    await timerlog.updateOne({PRN:prn},{$inc:{seconds:diffinsec}},{upsert:true});
+    return diffinsec;
+   } catch (error) {
+    return null;
+   }
+   
   //  console.log(diffinsec);
-   return diffinsec;
  }
 
 // async function remove(PRN,purpose){
