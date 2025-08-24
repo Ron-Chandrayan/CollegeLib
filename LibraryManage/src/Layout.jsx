@@ -88,6 +88,23 @@ function Layout() {
                                 }
                             })
                             .catch(err => console.error(err));
+
+            fetch('/timer', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                            },
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                               console.log(data);
+                                // if(data.message==="yes"){
+                                //   settime(data.strtime)
+                                // }else{
+                                //   settime(data.strtime);
+                                // }
+                            })
+                            .catch(err => console.error(err));
            }else{
             //console.log("token doesnt exists");
            }

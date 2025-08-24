@@ -514,6 +514,8 @@ app.post('/remove', async (req, res) => {
 });
 
 
+
+
 app.get('/fetchtime', async (req, res) => {
   try {
     const times = await lifetime.find().sort({ createdAt: -1 });
@@ -813,6 +815,26 @@ app.get('/gettime', async (req, res) => {
     res.status(401).json({ error: 'Invalid token' });
   }
 });
+
+app.get('/timer',async(req,res)=>{
+  try {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'No token' });
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const PRN=decoded.PRN;
+    const usec = await timerlog.findOne({PRN:PRN});
+    if(usec){
+      res.json({message:"success",sec:usec.seconds})
+    }else{
+      res.json({message:"error",sec:null})
+    }
+    
+  } catch (err) {
+    res.status(401).json({ error: 'Invalid token' });
+  }
+})
 
 
 
