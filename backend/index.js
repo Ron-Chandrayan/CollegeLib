@@ -79,8 +79,13 @@ mongoose.connect(process.env.MONGO_URI, {
   
  }
 
- async function difference(start,end){
-   startime=new Date(start)
+async function difference(start,end){
+   startime=new Date(start);
+   endtime= new Date(end);
+   const diff = endtime-starttime;
+   const diffinsec=Math.floor(diff/1000);
+  //  console.log(diffinsec);
+   return diffinsec;
  }
 
 // async function remove(PRN,purpose){
@@ -389,7 +394,9 @@ app.post('/submit', async (req, res) => {
       { sort: { _id: -1 }, // sort newest first
       new:true }  
 );
-      console.log(updatedoc);
+      const diff = await difference(updatedoc.createdAt,updatedoc.updatedAt);
+      console.log(diff);
+
       return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
     }
 
