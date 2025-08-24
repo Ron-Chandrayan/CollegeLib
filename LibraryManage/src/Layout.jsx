@@ -17,6 +17,7 @@ function Layout() {
       const [welcome2,setwelcome2]=useState("");
       const[books,setBooks]=useState([]);
       const[time,settime]=useState(null);
+      const[timer,settimer]=useState(null);
       const [universalformData, setuniversalFormData] = useState({
           name: '',
           PRN: ''
@@ -105,15 +106,18 @@ function Layout() {
                                   const seconds = Math.floor((diff % (60)));
 
                                   console.log(`${hours}:${minutes}:${seconds}`);
+                                  settimer(`${hours}:${minutes}:${seconds}`);
 
                                    const format = (n) => String(n).padStart(2, "0");
                                 }else{
                                   console.log("you haven't visited the library yet");
+                                  settimer("You havent visited the library yet");
                                 }
                             })
                             .catch(err => console.error(err));
            }else{
             //console.log("token doesnt exists");
+            settimer(null);
            }
 
 
@@ -232,8 +236,8 @@ function Layout() {
 
   return (
     <div>
-       <Header signup={signup} setSignup={setSignup} login={login} setLogin={setLogin} library={library} time={time} settime={settime}/>
-       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks,universalformData,setuniversalFormData,welcome2,setwelcome2,info, setInfo,info2, setInfo2,library,setlibrary,formData,setFormData,time,settime}} />
+       <Header signup={signup} setSignup={setSignup} login={login} setLogin={setLogin} library={library} time={time} settime={settime} timer={timer} settimer={settimer}/>
+       <Outlet context={{name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,Students,setStudents,loading,setloading,signup,setSignup,login,setLogin,welcome,setwelcome, books,setBooks,universalformData,setuniversalFormData,welcome2,setwelcome2,info, setInfo,info2, setInfo2,library,setlibrary,formData,setFormData,time,settime,timer,settimer}} />
        <Footer/>
     </div>
   )

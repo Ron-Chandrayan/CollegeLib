@@ -10,7 +10,7 @@ import Timer from '../Timer/Timer'
 import { Users, BarChart3, Clock, BookOpen, UserCheck, Search, CreditCard, Zap, TrendingUp, Calendar, Activity } from 'lucide-react'
 
 function Home() {
-    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData,time,settime} = useOutletContext()
+    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData,time,settime,timer,settimer} = useOutletContext()
 
     const[err,seterr]= useState(false)
     const[errMessage, setErrMessage] = useState("")
@@ -303,19 +303,34 @@ function Home() {
                             </p>
                         </div>
 
-                         <div className="inline-block group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${time ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-gray-400 to-gray-500'}`}>
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            </div>
+                        <div className="inline-block group bg-gradient-to-br from-white to-indigo-50 rounded-2xl shadow-xl p-6 border border-indigo-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${time ? 'bg-gradient-to-br from-green-500 to-emerald-600' : 'bg-gradient-to-br from-gray-400 to-gray-500'}`}>
+                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                </div>
                             <div className={`w-3 h-3 rounded-full animate-pulse ${time ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                            </div>
+                            <p className="text-sm font-semibold text-slate-600 mb-2">Timer</p>
+                            <div className="text-2xl sm:text-3xl font-bold text-slate-700">
+                                {time ? <Timer startTimeISO={time} /> : "You are not inside the library"}
+                            </div>
                         </div>
-                        <p className="text-sm font-semibold text-slate-600 mb-2">Timer</p>
-                        <div className="text-2xl sm:text-3xl font-bold text-slate-700">
-                            {time ? <Timer startTimeISO={time} /> : "You are not inside the library"}
-                        </div>
+
+                        <div className="group bg-gradient-to-br from-white to-orange-50 rounded-2xl shadow-xl p-6 border border-orange-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${isClosed ? 'bg-gradient-to-br from-red-500 to-pink-600' : 'bg-gradient-to-br from-green-500 to-emerald-600'}`}>
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div className={`w-3 h-3 rounded-full animate-pulse ${isClosed ? 'bg-red-500' : 'bg-green-500'}`}></div>
+                            </div>
+                            <p className="text-sm font-semibold text-slate-600 mb-2">Total Time in Library</p>
+                            <p className={`text-2xl sm:text-3xl font-bold ${isClosed ? 'text-red-600' : 'text-green-600'}`}>
+                                {timer}
+                            </p>
                         </div>
 
                     </div>
