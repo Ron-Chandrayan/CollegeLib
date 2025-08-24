@@ -329,7 +329,7 @@ function Home() {
                             </div>
                             <p className="text-sm font-semibold text-slate-600 mb-2">Total Time in Library</p>
                             <p className={`text-2xl sm:text-3xl font-bold ${isClosed ? 'text-red-600' : 'text-green-600'}`}>
-                                {timer?{timer}:"You haven't visited the library yet"}
+                                {timer?timer:"You haven't visited the library yet"}
                             </p>
                         </div>
 
