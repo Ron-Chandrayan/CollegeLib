@@ -79,6 +79,10 @@ mongoose.connect(process.env.MONGO_URI, {
   
  }
 
+ async function difference(start,end){
+   startime=new Date(start)
+ }
+
 // async function remove(PRN,purpose){
 //   const formData={
 //     PRN:PRN,
@@ -379,11 +383,13 @@ app.post('/submit', async (req, res) => {
     const removed = await livefeed.findOneAndDelete({ PRN: prn });
 
     if (removed) {
-          await lifetime.findOneAndUpdate(
+        const updatedoc=  await lifetime.findOneAndUpdate(
       { PRN: prn },
       { $set: {} }, 
-      { sort: { _id: -1 } }  // sort newest first
+      { sort: { _id: -1 }, // sort newest first
+      new:true }  
 );
+      console.log(updatedoc);
       return res.json({ success: true, message: `Thank You ${removed.name} for Visiting the Library` });
     }
 
