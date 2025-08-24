@@ -99,7 +99,7 @@ function Layout() {
                             .then(data => {
                                console.log(data);
                                 if(data.message==="success"){
-                                  const diff = data.seconds
+                                  const diff = data.sec
                                    const hours = Math.floor(diff / (60 * 60));
                                   const minutes = Math.floor((diff % (60 * 60)) / (60));
                                   const seconds = Math.floor((diff % (60)));
