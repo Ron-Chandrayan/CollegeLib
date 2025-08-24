@@ -98,11 +98,18 @@ function Layout() {
                             .then(res => res.json())
                             .then(data => {
                                console.log(data);
-                                // if(data.message==="yes"){
-                                //   settime(data.strtime)
-                                // }else{
-                                //   settime(data.strtime);
-                                // }
+                                if(data.message==="success"){
+                                  const diff = data.seconds
+                                   const hours = Math.floor(diff / (60 * 60));
+                                  const minutes = Math.floor((diff % (60 * 60)) / (60));
+                                  const seconds = Math.floor((diff % (60)));
+
+                                  console.log(`${hours}:${minutes}:${seconds}`);
+
+                                   const format = (n) => String(n).padStart(2, "0");
+                                }else{
+                                  console.log("you haven't visited the library yet");
+                                }
                             })
                             .catch(err => console.error(err));
            }else{
