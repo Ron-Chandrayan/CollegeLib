@@ -101,17 +101,18 @@ function Layout() {
                                console.log(data);
                                 if(data.message==="success"){
                                   const diff = data.sec
-                                   const hours = Math.floor(diff / (60 * 60));
-                                  const minutes = Math.floor((diff % (60 * 60)) / (60));
-                                  const seconds = Math.floor((diff % (60)));
+                                  const format = (n) => String(n).padStart(2, "0");
+                                   const hours =format( Math.floor(diff / (60 * 60)));
+                                  const minutes = format(Math.floor((diff % (60 * 60)) / (60)));
+                                  const seconds = format(Math.floor((diff % (60))));
 
                                   console.log(`${hours}:${minutes}:${seconds}`);
-                                  settimer(`${hours}:${minutes}:${seconds}`);
+                                  settimer(`${hours} hrs : ${minutes}mins : ${seconds} secs`);
 
-                                   const format = (n) => String(n).padStart(2, "0");
+                                   
                                 }else{
                                   console.log("you haven't visited the library yet");
-                                  settimer("You havent visited the library yet");
+                                  settimer(null);
                                 }
                             })
                             .catch(err => console.error(err));
