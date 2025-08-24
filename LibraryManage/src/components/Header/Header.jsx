@@ -219,7 +219,7 @@ const toggleMobileMenu = () => {
                     </NavLink>
                   </div>
                   <div>
-                    {library?<div>
+                    {library?
                     <NavLink
                       to="/library"
                       className={({ isActive }) =>
@@ -231,7 +231,7 @@ const toggleMobileMenu = () => {
                     >
                       Library
                     </NavLink>
-                  </div>:null}
+                  :null}
                   </div>
                    <div>
                     <NavLink
