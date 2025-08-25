@@ -10,7 +10,7 @@ import Timer from '../Timer/Timer'
 import { Users, BarChart3, Clock, BookOpen, UserCheck, Search, CreditCard, Zap, TrendingUp, Calendar, Activity } from 'lucide-react'
 
 function Home() {
-    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData,time,settime,timer,settimer} = useOutletContext()
+    const {name,setName,todayfootfall,settodayfootfall,totalfootfall,settotalfootfall,signup,setSignup, Students,setStudents,login,setLogin,welcome,setwelcome,universalformData,setuniversalFormData,welcome2,setwelcome2,library,setlibrary,formData,setFormData,time,settime,timer,settimer,front,setfront} = useOutletContext()
 
     const[err,seterr]= useState(false)
     const[errMessage, setErrMessage] = useState("")
@@ -49,7 +49,8 @@ function Home() {
               if(data.type==="library"){
                 setlibrary(true);
               }else if(data.type==="frontscanner"){
-                console.log("this is the front scanner");
+                setfront(true);
+                console.log(true);
               }
               setSignup(true);
               setLogin(true);
@@ -387,6 +388,7 @@ function Home() {
                     setwelcome(data.name);
                     setwelcome2(data.PRN);
                     setlibrary(data.type === 'library');
+                    setfront(data.type === 'frontscanner');
                     seterr(false);
                     setErrMessage("");
                 }}
