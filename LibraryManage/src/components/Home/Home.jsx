@@ -393,9 +393,9 @@ function Home() {
                     setlibrary(data.type === 'library');
                     setfront(data.type === 'frontscanner');
 
-                    // if(data.type==='frontscanner'){
-                    //     navigate('/library');
-                    // }
+                    if(data.type==='frontscanner'){
+                        navigate('/library');
+                    }
 
                     seterr(false);
                     setErrMessage("");
