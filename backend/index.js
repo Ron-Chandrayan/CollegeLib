@@ -1206,7 +1206,7 @@ app.post('/api/login', async (req, res) => {
       name: user.name,
       strtime:strtime,
       PRN: user.PRN,
-      type: user.PRN === '124A1017' ? 'library' : 'student'
+      type: tokentype
     });
   } catch (error) {
     console.error('Login error:', error);
