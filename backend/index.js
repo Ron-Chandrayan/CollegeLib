@@ -664,7 +664,7 @@ app.get('/validate', async (req, res) => {
       valid: true,
       name: user.name,
       PRN: user.PRN,
-      type: decoded.type, // 'library' or 'normal'
+      type: decoded.type, // 'library' or 'normal' or 'front'
       strtime: strtime
     });
     }else{
@@ -672,7 +672,7 @@ app.get('/validate', async (req, res) => {
       valid: true,
       name: user.name,
       PRN: user.PRN,
-      type: decoded.type, // 'library' or 'normal'
+      type: decoded.type, // 'library' or 'normal' or 'front'
       strtime: null
     });
     }
@@ -1146,6 +1146,7 @@ app.post('/api/check-student', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   try {
     let strtime;
+    let tokentype;
     const { PRN, password } = req.body;
     
     if (!PRN || !password) {
@@ -1173,13 +1174,25 @@ app.post('/api/login', async (req, res) => {
        strtime=null;
     }
     // Generate JWT token
+    if(user.PRN==='124A1017'){
+
+      tokentype='library';
+
+    }else if(user.PRN==='124A1018'){
+
+      tokentype='frontscanner';
+
+    }else{
+      tokentype='student';
+    }
+      
       const token = jwt.sign(
       { 
         userId: user._id, 
         PRN: user.PRN, 
         strtime:strtime,
         name: user.name,
-        type: user.PRN === '124A1017' ? 'library' : 'student'
+        type: tokentype
       },
       JWT_SECRET,
       { expiresIn: '24h' }

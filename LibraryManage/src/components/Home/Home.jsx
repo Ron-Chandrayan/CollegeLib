@@ -48,6 +48,8 @@ function Home() {
             if (data.valid) {
               if(data.type==="library"){
                 setlibrary(true);
+              }else if(data.type==="frontscanner"){
+                console.log("this is the front scanner");
               }
               setSignup(true);
               setLogin(true);
