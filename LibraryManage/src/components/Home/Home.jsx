@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Student from '../Student/Student'
 import Searching from '../Seaching/Searching'
 import { useOutletContext } from 'react-router-dom'
@@ -20,6 +21,8 @@ function Home() {
     const [isAuthLoading, setIsAuthLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+
+    const navigate = useNavigate()
     
 
     const crowdClass = 
@@ -389,6 +392,11 @@ function Home() {
                     setwelcome2(data.PRN);
                     setlibrary(data.type === 'library');
                     setfront(data.type === 'frontscanner');
+
+                    if(data.type==='frontscanner'){
+                        navigate('/library');
+                    }
+
                     seterr(false);
                     setErrMessage("");
                 }}

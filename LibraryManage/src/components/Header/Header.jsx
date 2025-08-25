@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 //import { useOutletContext } from 'react-router-dom'; // only needed if you use context
 
-function Header({ signup, setSignup , login,setLogin,library,time,settime,timer,settimer}) {
+function Header({ signup, setSignup , login,setLogin,library,time,settime,timer,settimer,front}) {
   // Option 1: If you want dynamic signup context
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -90,7 +90,7 @@ const toggleMobileMenu = () => {
                     </NavLink>
                   </div>
 
-                  {library?<div>
+                  {(library || front) ?<div>
                     <NavLink
                       to="/library"
                       className={({ isActive }) =>
