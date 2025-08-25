@@ -1,7 +1,17 @@
 import React from 'react'
 import { NavLink , Link } from 'react-router-dom'
 
-function Footer() {
+function Footer({ signup, setSignup , login,setLogin,library,time,settime,timer,settimer,front}) {
+
+  const handleChange=(e)=>{
+  e.preventDefault();
+  localStorage.removeItem("token");
+  setSignup(false);
+  setLogin(false);
+  settime(null);
+  settimer(null);
+}
+  
   return (
    <div>
       <footer className='bg-gradient-to-r from-slate-900 to-slate-800 shadow-2xl border-t border-slate-700'>
@@ -75,6 +85,14 @@ function Footer() {
                 <NavLink to="#" className='text-slate-400 hover:text-cyan-400 transition-colors duration-200 text-sm'>
                   Support
                 </NavLink>
+                <div>
+                    <button 
+                      onClick={handleChange} 
+                      className='text-slate-400 hover:text-cyan-400 transition-colors duration-200 text-sm'
+                    >
+                      Log Out
+                    </button>
+                  </div>
               </div>
             </div>
           </div>
