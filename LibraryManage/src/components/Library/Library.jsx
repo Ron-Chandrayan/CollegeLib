@@ -269,7 +269,7 @@ function Library() {
                     </div>  
     
 
-      <div className="mt-12 flex flex-row items-center">
+      <div className="mt-12 flex flex-row items-center justify-center">
          <div><p>Current Student: {name.length}</p></div>
         <div> <Searching search={search} filter={filter} name={name} /></div>
         <div><div><p>Total Footfall: {totalfootfall}</p></div>
