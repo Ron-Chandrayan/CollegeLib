@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import Searching from '../Seaching/Searching'
 // import StudentGrid from '../StudentGrid/StudentGrid';
@@ -19,6 +19,16 @@ function Library() {
     PRN: '',
     purpose: 'Study'
   });
+
+  // Add ref for PRN input auto-focus
+  const prnInputRef = useRef(null);
+
+  // Auto-focus PRN input when component mounts
+  useEffect(() => {
+    if (prnInputRef.current) {
+      prnInputRef.current.focus();
+    }
+  }, []);
 
   //console.log(name);
   useEffect(() => {
@@ -42,9 +52,10 @@ function Library() {
       }, []);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setformData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: name === 'PRN' ? value.toUpperCase() : value,
     }));
   };
 
@@ -165,6 +176,7 @@ function Library() {
         <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
+              ref={prnInputRef}
               type="text"
               name="PRN"
               placeholder="Enter PRN"
