@@ -59,7 +59,7 @@ function Footer({ signup, setSignup , login,setLogin,library,time,settime,timer,
               <h4 className='text-white font-semibold mb-4'>Contact</h4>
               <div className='space-y-2 text-sm'>
                 <p className='text-slate-300'><a href='https://siesgst.edu.in/library' target='_main' className='text-slate-300'>Official Library</a></p>
-                <p className='text-slate-300'>+91 8828401969</p>
+                <p className='text-slate-300'>+91 7304726116 | +91 8828401969</p>
                 <p className='text-slate-300'>SIES GST</p>
                 <p className='text-slate-300'>Nerul, Navi Mumbai</p>
               </div>

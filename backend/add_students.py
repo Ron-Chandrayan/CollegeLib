@@ -274,7 +274,7 @@ class StudentImporter:
         except Exception as e:
             logger.error(f"Error creating indexes: {e}")
     
-    def run_import(self, csv_file_path: str = "faculties.csv"):
+    def run_import(self, csv_file_path: str = "2025_grads.csv"):
         """
         Main method to run the student import process
         
