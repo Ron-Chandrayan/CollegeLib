@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import Searching from '../Seaching/Searching'
 // import StudentGrid from '../StudentGrid/StudentGrid';
 import Student from '../Student/Student';
 import { toast } from 'react-toastify'; // ✅ Import toast
@@ -10,6 +11,8 @@ function Library() {
  const { name,setname } = useOutletContext();
   const[student, setStudent]=useState([])
   const[flag,setflag]=useState();
+  const[search,setsearch]=useState("");
+      const[filter,setFilter]= useState("");
   const[disable,setdisable]=useState(true);
   const[loading,setloading]=useState(false);
   const [formData, setformData] = useState({
@@ -220,9 +223,39 @@ function Library() {
         </form>
       </div>
 
+    <div className='mb-8'>
+                        <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/40">
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                                <div className="relative flex-1">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Search students..." 
+                                        onChange={(e) => setsearch(e.target.value)} 
+                                        value={search}
+                                        className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white"
+                                    />
+                                </div>
+                                <select 
+                                    value={filter} 
+                                    onChange={(e) => setFilter(e.target.value)} 
+                                    className="px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 bg-white/80 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white min-w-32"
+                                >
+                                    <option value="name">Search by Name</option>
+                                    <option value="PRN">Search by PRN</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>  
+    
+
       <div className="mt-12">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">All Students</h2>
-        <Student name={name} />
+        <Searching search={search} filter={filter} name={name} />
       </div>
     </>
   );
