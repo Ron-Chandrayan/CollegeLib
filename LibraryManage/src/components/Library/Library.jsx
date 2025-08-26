@@ -210,15 +210,17 @@ function Library() {
           </div>
 
           <div className='flex flex-row justify-between'>
-            <button
+             <button
             // type="submit"
             onClick={handleSubmit}
             className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
-          >
+           >
             Enter/Out
-          </button>
+           </button>
 
-          <button
+           <div><p>List of Users In SIES GST Library</p></div>
+
+           <button
                     disabled={disable || loading===true}
                     onClick={handleSubmit2}
                     className={`px-6 py-3 rounded-lg font-semibold text-white ${
