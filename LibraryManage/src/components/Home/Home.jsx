@@ -54,7 +54,7 @@ function Home() {
               }else if(data.type==="frontscanner"){
                 setfront(true);
                 // navigate()
-                navigate('/library');
+                navigate('/library'); 
                 console.log(true);
               }
               setSignup(true);
