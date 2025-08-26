@@ -53,6 +53,8 @@ function Home() {
                 setlibrary(true);
               }else if(data.type==="frontscanner"){
                 setfront(true);
+                // navigate()
+                navigate('/library');
                 console.log(true);
               }
               setSignup(true);
