@@ -559,7 +559,7 @@ function Library() {
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Current Students Card */}
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
+        <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
           <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
             <div className="flex items-center justify-center gap-2 mb-1">
               <div className="bg-blue-100 p-2 rounded-lg">
@@ -574,12 +574,12 @@ function Library() {
         </div>
 
         {/* Search Component - Takes full width */}
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
+        <div className="flex-shrink-0 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
           <Searching search={search} filter={filter} name={name} />
         </div>
 
         {/* Footfall Statistics - Stacked vertically */}
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50 space-y-4">
+        <div className=" flex-1 min-w-[200px] bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50 space-y-4">
           {/* Total Footfall Card */}
           <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
             <div className="flex items-center justify-center gap-2 mb-1">
