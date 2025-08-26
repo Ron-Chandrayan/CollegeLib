@@ -556,30 +556,32 @@ function Library() {
                     </div>  
     
 
-      <div className="mt-8 flex flex-col xl:flex-row items-center justify-between gap-6 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Current Students Card */}
-        <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 min-w-[160px]">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <div className="bg-blue-100 p-2 rounded-lg">
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-              </svg>
+        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
+          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <div className="bg-blue-100 p-2 rounded-lg">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+              </div>
             </div>
+            <p className="text-center text-sm text-gray-600 font-medium mb-1">Current Students</p>
+            <p className="text-center text-2xl font-bold text-blue-600">{name.length}</p>
           </div>
-          <p className="text-center text-sm text-gray-600 font-medium mb-1">Current Students</p>
-          <p className="text-center text-2xl font-bold text-blue-600">{name.length}</p>
         </div>
 
-        {/* Search Component */}
-        <div className="flex-1 max-w-md">
+        {/* Search Component - Takes full width */}
+        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
           <Searching search={search} filter={filter} name={name} />
         </div>
 
-        {/* Footfall Statistics */}
-        <div className="flex gap-4">
+        {/* Footfall Statistics - Stacked vertically */}
+        <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50 space-y-4">
           {/* Total Footfall Card */}
-          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 min-w-[140px]">
+          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
             <div className="flex items-center justify-center gap-2 mb-1">
               <div className="bg-emerald-100 p-2 rounded-lg">
                 <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -587,12 +589,12 @@ function Library() {
                 </svg>
               </div>
             </div>
-            <p className="text-center text-xs text-gray-600 font-medium mb-1">Total Footfall</p>
+            <p className="text-center text-sm text-gray-600 font-medium mb-1">Total Footfall</p>
             <p className="text-center text-xl font-bold text-emerald-600">{totalfootfall}</p>
           </div>
 
           {/* Today's Footfall Card */}
-          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 min-w-[140px]">
+          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
             <div className="flex items-center justify-center gap-2 mb-1">
               <div className="bg-orange-100 p-2 rounded-lg">
                 <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -600,7 +602,7 @@ function Library() {
                 </svg>
               </div>
             </div>
-            <p className="text-center text-xs text-gray-600 font-medium mb-1">Today's Footfall</p>
+            <p className="text-center text-sm text-gray-600 font-medium mb-1">Today's Footfall</p>
             <p className="text-center text-xl font-bold text-orange-600">{todayfootfall}</p>
           </div>
         </div>
