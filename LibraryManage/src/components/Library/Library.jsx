@@ -218,7 +218,9 @@ function Library() {
             Enter/Out
            </button>
 
-           <div><p>List of Users In SIES GST Library</p></div>
+           <div><div><p className='text-lg '>List of Users in </p>
+               <p className='text-lg'>SIES Graduate School of Technology</p></div>
+           </div>
 
            <button
                     disabled={disable || loading===true}
