@@ -20,6 +20,22 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
   const [showOTP, setShowOTP] = useState(false);
   const [showEmailReminder, setShowEmailReminder] = useState(false);
   const timerRef = useRef(null);
+  
+  // Add refs for auto-focus
+  const prnInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
+  const otpInputRef = useRef(null);
+
+  // Auto-focus effect when step changes
+  useEffect(() => {
+    if (step === 'prn' && prnInputRef.current) {
+      prnInputRef.current.focus();
+    } else if (step === 'password' && passwordInputRef.current) {
+      passwordInputRef.current.focus();
+    } else if (step === 'otp' && otpInputRef.current) {
+      otpInputRef.current.focus();
+    }
+  }, [step]);
 
   const handlePRNSubmit = async (e) => {
     e.preventDefault();
@@ -186,10 +202,18 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
   };
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: name === 'PRN' ? value.toUpperCase() : value
     }));
+  };
+
+  const handleKeyPress = (e, submitFunction) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submitFunction(e);
+    }
   };
 
   const goBack = () => {
@@ -276,10 +300,12 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
                   PRN Number
                 </label>
                 <input 
+                  ref={prnInputRef}
                   type="text" 
                   name="PRN" 
                   placeholder="Enter your PRN" 
                   onChange={handleChange}
+                  onKeyPress={(e) => handleKeyPress(e, handlePRNSubmit)}
                   value={formData.PRN} 
                   required 
                   className="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
@@ -321,10 +347,12 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
                 </label>
                 <div className="relative">
                   <input 
+                    ref={passwordInputRef}
                     type={showPassword ? "text" : "password"}
                     name="password" 
                     placeholder="Enter your password" 
                     onChange={handleChange}
+                    onKeyPress={(e) => handleKeyPress(e, handlePasswordSubmit)}
                     value={formData.password} 
                     required 
                     className="w-full px-4 py-4 pr-12 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
@@ -402,10 +430,12 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
                 </label>
                 <div className="relative">
                   <input 
+                    ref={passwordInputRef}
                     type={showPassword ? "text" : "password"}
                     name="password" 
                     placeholder="Create a password (min 6 characters)" 
                     onChange={handleChange}
+                    onKeyPress={(e) => handleKeyPress(e, handleSignupSubmit)}
                     value={formData.password} 
                     required 
                     className="w-full px-4 py-4 pr-12 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 outline-none bg-white/80 backdrop-blur-sm hover:bg-white text-base shadow-sm"
@@ -493,10 +523,12 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
                 </label>
                 <div className="relative">
                   <input 
+                    ref={otpInputRef}
                     type={showOTP ? "text" : "password"}
                     name="otp" 
                     placeholder="Enter 6-digit OTP" 
                     onChange={handleChange}
+                    onKeyPress={(e) => handleKeyPress(e, handleOTPSubmit)}
                     value={formData.otp} 
                     required 
                     maxLength={6}
