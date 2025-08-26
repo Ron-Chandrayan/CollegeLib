@@ -1,0 +1,18 @@
+2025-08-26 10:30:08,088 - INFO - Starting student import process...
+2025-08-26 10:30:08,717 - INFO - Connected to MongoDB database: libraryDB
+2025-08-26 10:30:08,727 - INFO - Using collection: fe_students
+2025-08-26 10:30:08,768 - INFO - Created unique index on PRN field
+2025-08-26 10:30:08,839 - INFO - Created index on email field
+2025-08-26 10:30:08,885 - INFO - Created index on batch field
+2025-08-26 10:30:09,001 - INFO - Loaded 382 student documents from CSV
+2025-08-26 10:30:09,042 - INFO - Found 1967 existing students in database
+2025-08-26 10:30:09,042 - INFO - New students to insert: 382
+2025-08-26 10:30:09,042 - INFO - Students already exist: 0
+2025-08-26 10:30:09,043 - INFO - Created 382 bulk insert operations
+2025-08-26 10:30:09,043 - INFO - Executing 382 bulk insert operations...
+2025-08-26 10:30:10,094 - INFO - Bulk insert completed:
+2025-08-26 10:30:10,094 - INFO -   - Successful inserts: 382
+2025-08-26 10:30:10,094 - INFO -   - Failed inserts: 0
+2025-08-26 10:30:10,095 - INFO - Student import process completed successfully!
+2025-08-26 10:30:10,095 - INFO - Summary: 382 successful inserts, 0 failed inserts
+2025-08-26 10:30:11,068 - INFO - MongoDB connection closed
