@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
 function Library() {
- const { name,setname } = useOutletContext();
+ const { name,setname,totalfootfall,todayfootfall } = useOutletContext();
   const[student, setStudent]=useState([])
   const[flag,setflag]=useState();
   const[search,setsearch]=useState("");
@@ -218,8 +218,8 @@ function Library() {
             Enter/Out
            </button>
 
-           <div><div><p className='text-lg '>List of Users in </p>
-               <p className='text-lg'>SIES Graduate School of Technology</p></div>
+           <div><div><p className='text-lg text-center '>List of Users in </p>
+               <p className='text-lg text-center'>SIES Graduate School of Technology</p></div>
            </div>
 
            <button
@@ -269,9 +269,12 @@ function Library() {
                     </div>  
     
 
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">All Students</h2>
-        <Searching search={search} filter={filter} name={name} />
+      <div className="mt-12 flex flex-row">
+        <div> <Searching search={search} filter={filter} name={name} /></div>
+        <div><div><p>Total Footfall: {totalfootfall}</p></div>
+             <div><p>Todays Footfall: {todayfootfall}</p></div>
+             <div><p>Current Student: {name.length}</p></div>
+        </div>
       </div>
     </>
   );

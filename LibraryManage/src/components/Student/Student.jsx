@@ -98,7 +98,6 @@ const[i,seti]=useState(1);
     <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
       <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
         <h2 className="text-2xl font-bold text-slate-800">Students Currently in Library</h2>
-        <p className="text-slate-600 mt-1">Total: {name.length} students</p>
         <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
