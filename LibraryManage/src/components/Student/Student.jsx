@@ -158,7 +158,7 @@ const[i,seti]=useState(1);
                   <td className="py-4 px-6 text-center">
                     <button
                       onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
-                      className="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group-hover:shadow-md"
+                      className="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group-hover:shadow-md"
                       title="Remove student"
                     >
                       {/* <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
