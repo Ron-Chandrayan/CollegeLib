@@ -302,6 +302,7 @@ function Library() {
       const[filter,setFilter]= useState("");
   const[disable,setdisable]=useState(true);
   const[loading,setloading]=useState(false);
+  const[clock,setclock]=useState();
   const [formData, setformData] = useState({
     PRN: '',
     purpose: 'Study'
@@ -316,6 +317,17 @@ function Library() {
       prnInputRef.current.focus();
     }
   }, []);
+
+  useEffect(()=>{
+    const fetchtime=()=>{
+      const time = (new Date()).toLocaleTimeString()
+      setclock(time);
+
+    }
+    const interval= setInterval( fetchtime , 1000);
+   
+         return () => clearInterval(interval);
+  },[])
 
   //console.log(name);
   useEffect(() => {
@@ -580,6 +592,22 @@ function Library() {
               <p className="text-center text-xl font-bold text-blue-600">{name.length}</p>
             </div>
           </div>
+
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50 h-fit">
+            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="bg-blue-100 p-1.5 rounded-lg">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-center text-xs text-gray-600 font-medium mb-1">Time</p>
+              <p className="text-center text-xl font-bold text-blue-600">{time}</p>
+            </div>
+          </div>
+
+
         </div>
 
         {/* Main Students Section - Wider */}
