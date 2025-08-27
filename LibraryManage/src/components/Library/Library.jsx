@@ -458,7 +458,7 @@ function Library() {
   // }, []);
 
   return (
-    <> <div className="min-h-screen bg-gradient-to-br from-slate-900 to-gray-500 p-8"><div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
+    <> <div className="min-h-screen bg-gradient-to-br from-slate-900 to-gray-500"><div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
         <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
