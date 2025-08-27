@@ -563,7 +563,7 @@ function Library() {
       </div>  
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="bg-gradient-to-br from-slate-900 to-gray-500 grid grid-cols-12 gap-6">
         
         {/* Current Students Card - Smaller */}
         <div className="col-span-2">
