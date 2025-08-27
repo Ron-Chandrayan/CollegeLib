@@ -459,7 +459,7 @@ function Library() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
+      <div className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 rounded-2xl shadow-2xl p-8 mb-8 border border-slate-300/50 dark:border-slate-600/50 backdrop-blur-sm">
         <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
@@ -470,14 +470,14 @@ function Library() {
               value={formData.PRN}
               onChange={handleChange}
               required
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 transition-all duration-200"
             />
             <select
               name="purpose"
               value={formData.purpose}
               onChange={handleChange}
               required
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 transition-all duration-200"
             >
               <option value="" hidden>Select purpose</option>
               <option value="Study">Study</option>
@@ -500,23 +500,23 @@ function Library() {
              <button
             // type="submit"
             onClick={handleSubmit}
-            className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+            className="px-8 py-3 rounded-lg font-bold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 dark:from-green-500 dark:to-emerald-500 dark:hover:from-green-600 dark:hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl border-2 border-green-500/20 dark:border-green-400/20"
            >
             Enter/Out
            </button>
 
            <div className="text-center">
-             <h1 className="text-xl font-bold text-gray-800 mb-1">List of Users in</h1>
-             <h2 className="text-lg font-semibold text-blue-700">SIES Graduate School of Technology</h2>
+             <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1 drop-shadow-sm">List of Users in</h1>
+             <h2 className="text-xl font-semibold text-blue-700 dark:text-blue-300 drop-shadow-sm">SIES Graduate School of Technology</h2>
            </div>
 
            <button
                     disabled={disable || loading===true}
                     onClick={handleSubmit2}
-                    className={`px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 transform hover:scale-105 shadow-lg ${
+                    className={`px-8 py-3 rounded-lg font-bold text-white transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl border-2 ${
                       (disable || loading===true)
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-red-600 hover:bg-red-700 cursor-pointer"
+                        ? "bg-gradient-to-r from-slate-400 to-gray-400 dark:from-slate-600 dark:to-gray-600 cursor-not-allowed border-slate-400/20 dark:border-slate-500/20"
+                        : "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:from-red-500 dark:to-rose-500 dark:hover:from-red-600 dark:hover:to-rose-600 cursor-pointer border-red-500/20 dark:border-red-400/20"
                     }`}
                   >
                     {loading?"Loading":"Remove all"}
@@ -534,11 +534,11 @@ function Library() {
 
       {/* Compact Search Bar */}
       <div className='mb-6'>
-        <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-white/40">
+        <div className="bg-gradient-to-r from-white/95 to-slate-50/95 dark:from-slate-800/95 dark:to-slate-700/95 backdrop-blur-sm rounded-xl shadow-xl p-4 border-2 border-slate-200/50 dark:border-slate-600/50">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -547,13 +547,13 @@ function Library() {
                 placeholder="Search students..." 
                 onChange={(e) => setsearch(e.target.value)} 
                 value={search}
-                className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white text-sm"
+                className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:border-blue-500 dark:focus:border-blue-400 placeholder-slate-500 dark:placeholder-slate-400 text-slate-900 dark:text-slate-100 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium"
               />
             </div>
             <select 
               value={filter} 
               onChange={(e) => setFilter(e.target.value)} 
-              className="px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 bg-white/80 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white text-sm min-w-32"
+              className="px-4 py-3 border-2 border-slate-200 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 focus:border-blue-500 dark:focus:border-blue-400 text-slate-700 dark:text-slate-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 text-sm font-medium min-w-36"
             >
               <option value="name">Search by Name</option>
               <option value="PRN">Search by PRN</option>
@@ -567,24 +567,24 @@ function Library() {
         
         {/* Current Students Card - Smaller */}
         <div className="col-span-2">
-          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50 h-fit">
-            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+          <div className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 p-4 rounded-xl shadow-xl border-2 border-slate-200/50 dark:border-slate-600/50 h-fit">
+            <div className="bg-white/90 dark:bg-slate-800/90 rounded-lg shadow-lg p-3 border-2 border-slate-200/50 dark:border-slate-600/50 backdrop-blur-sm">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="bg-blue-100 p-1.5 rounded-lg">
-                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 p-2 rounded-lg shadow-md">
+                  <svg className="w-4 h-4 text-blue-700 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-600 font-medium mb-1">Current Students</p>
-              <p className="text-center text-xl font-bold text-blue-600">{name.length}</p>
+              <p className="text-center text-xs text-slate-600 dark:text-slate-400 font-semibold mb-1 uppercase tracking-wide">Current Students</p>
+              <p className="text-center text-2xl font-bold text-blue-700 dark:text-blue-300 drop-shadow-sm">{name.length}</p>
             </div>
           </div>
         </div>
 
         {/* Main Students Section - Wider */}
         <div className="col-span-8">
-          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg border border-slate-200/50">
+          <div className="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 p-6 rounded-xl shadow-xl border-2 border-slate-200/50 dark:border-slate-600/50">
             <Searching search={search} filter={filter} name={name} />
           </div>
         </div>
@@ -592,32 +592,32 @@ function Library() {
         {/* Footfall Statistics - Smaller and Stacked */}
         <div className="col-span-2 space-y-4">
           {/* Total Footfall Card - Smaller */}
-          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50">
-            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+          <div className="bg-gradient-to-br from-slate-100 via-emerald-50 to-green-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 p-4 rounded-xl shadow-xl border-2 border-slate-200/50 dark:border-slate-600/50">
+            <div className="bg-white/90 dark:bg-slate-800/90 rounded-lg shadow-lg p-3 border-2 border-slate-200/50 dark:border-slate-600/50 backdrop-blur-sm">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="bg-emerald-100 p-1.5 rounded-lg">
-                  <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-gradient-to-br from-emerald-100 to-green-200 dark:from-emerald-900 dark:to-green-800 p-2 rounded-lg shadow-md">
+                  <svg className="w-4 h-4 text-emerald-700 dark:text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-600 font-medium mb-1">Total Footfall</p>
-              <p className="text-center text-lg font-bold text-emerald-600">{totalfootfall}</p>
+              <p className="text-center text-xs text-slate-600 dark:text-slate-400 font-semibold mb-1 uppercase tracking-wide">Total Footfall</p>
+              <p className="text-center text-xl font-bold text-emerald-700 dark:text-emerald-300 drop-shadow-sm">{totalfootfall}</p>
             </div>
           </div>
 
           {/* Today's Footfall Card - Smaller */}
-          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50">
-            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+          <div className="bg-gradient-to-br from-slate-100 via-orange-50 to-amber-100 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 p-4 rounded-xl shadow-xl border-2 border-slate-200/50 dark:border-slate-600/50">
+            <div className="bg-white/90 dark:bg-slate-800/90 rounded-lg shadow-lg p-3 border-2 border-slate-200/50 dark:border-slate-600/50 backdrop-blur-sm">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="bg-orange-100 p-1.5 rounded-lg">
-                  <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-gradient-to-br from-orange-100 to-amber-200 dark:from-orange-900 dark:to-amber-800 p-2 rounded-lg shadow-md">
+                  <svg className="w-4 h-4 text-orange-700 dark:text-orange-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-600 font-medium mb-1">Today's Footfall</p>
-              <p className="text-center text-lg font-bold text-orange-600">{todayfootfall}</p>
+              <p className="text-center text-xs text-slate-600 dark:text-slate-400 font-semibold mb-1 uppercase tracking-wide">Today's Footfall</p>
+              <p className="text-center text-xl font-bold text-orange-700 dark:text-orange-300 drop-shadow-sm">{todayfootfall}</p>
             </div>
           </div>
         </div>
