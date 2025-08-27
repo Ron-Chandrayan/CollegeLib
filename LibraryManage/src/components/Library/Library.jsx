@@ -459,7 +459,7 @@ function Library() {
 
   return (
     <> <div className="min-h-screen bg-gradient-to-br from-slate-900 to-gray-500">
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 shadow-xl p-8 mb-8 border border-blue-200/50 backdrop-blur-sm">
+      <div className="bg-white/10 backdrop-blur-xl border border-white/20 text-white p-8 mb-8">
         <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
@@ -534,7 +534,7 @@ function Library() {
 
       {/* Compact Search Bar */}
       <div className='mb-6'>
-        <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-white/40">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 text-white p-4">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
