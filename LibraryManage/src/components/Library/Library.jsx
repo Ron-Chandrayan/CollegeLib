@@ -578,7 +578,7 @@ function Library() {
       <div className="bg-gradient-to-br from-slate-900 to-gray-500 grid grid-cols-12 gap-6">
         
         {/* Current Students Card - Smaller */}
-        <div className="col-span-2">
+        <div className="col-span-2 space-y-4">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50 h-fit">
             <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
               <div className="flex items-center justify-center gap-2 mb-2">
