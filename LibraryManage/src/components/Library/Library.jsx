@@ -603,7 +603,7 @@ function Library() {
                 </div>
               </div>
               <p className="text-center text-xs text-gray-600 font-medium mb-1">Time</p>
-              <p className="text-center text-xl font-bold text-blue-600">{time}</p>
+              <p className="text-center text-xl font-bold text-blue-600">{clock}</p>
             </div>
           </div>
 
