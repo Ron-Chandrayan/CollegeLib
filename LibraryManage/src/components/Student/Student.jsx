@@ -6,6 +6,8 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 
 function Student({ name, Students }) { // Students prop kept, but unused
 
+   
+
 const[i,seti]=useState(1);
 
    const itemsPerPage = 10;
@@ -17,6 +19,7 @@ const[i,seti]=useState(1);
   // Optional: Remove logic (currently not used in UI)
   async function remove({ prnno, name }) {
    
+
     const payload = {
       PRN: prnno,
       purpose:name
@@ -42,7 +45,7 @@ const[i,seti]=useState(1);
               method: 'POST',
               headers: getLibraryApiHeaders(),
               body: JSON.stringify(payload),
-            });
+            });
       
     } catch (error) {
       toast.error("Network error");
@@ -50,196 +53,175 @@ const[i,seti]=useState(1);
     
   }
 
-  return (
-    <div className="h-full flex flex-col bg-white/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 overflow-hidden relative">
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, #3b82f6 2px, transparent 2px),
-                           radial-gradient(circle at 75% 75%, #8b5cf6 2px, transparent 2px)`,
-          backgroundSize: '50px 50px',
-          backgroundPosition: '0 0, 25px 25px'
-        }}></div>
-      </div>
+  // return (
+  //   <div className="bg-white rounded-xl shadow-lg border border-slate-200">
+  //     <div className="p-6 border-b border-slate-200">
+  //       <h2 className="text-xl font-semibold text-slate-800">Students Currently in Library</h2>
+  //     </div>
 
-      {/* Modern Header with Gradient */}
-      <div className="relative z-10 p-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 border-b border-white/20">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white drop-shadow-lg">Students Currently in Library</h2>
-              <p className="text-blue-100 text-sm font-medium">Real-time tracking system</p>
-            </div>
-          </div>
-          <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-xl">
-            <p className="text-white font-semibold">Page {i}</p>
-          </div>
-        </div>
+  //     <div className="p-6">
+  //       {name.length === 0 ? (
+  //         <div className="text-center py-8">
+  //           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-sm mx-auto">
+  //             <p className="text-amber-800 font-medium">No students in lib</p>
+  //           </div>
+  //         </div>
+  //       ) : (
+  //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  //           {name.map((element, index) => (
+  //             <div
+  //               key={index}
+  //               className="bg-slate-50 rounded-lg p-4 border border-slate-200 hover:bg-slate-100 transition-colors relative"
+  //             >
+  //               <p className="font-medium text-slate-800 mb-1">{element.name}</p>
+  //               <p className="text-sm text-slate-600">{element.PRN}</p>
+  //               <p className="text-sm text-slate-600">{element.purpose}</p>
+
+  //               {/* Optional remove button (uncomment if needed) */}
+                
+  //               <button
+  //                 onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
+  //                 className="absolute top-2 right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
+  //               >
+  //                 ×
+  //               </button>
+               
+  //             </div>
+  //           ))}
+  //         </div>
+  //       )}
+  //     </div>
+  //   </div>
+  // );
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+      <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
+        <h2 className="text-2xl font-bold text-slate-800">Students Currently in Library</h2>
+        <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
       {slicename.length === 0 ? (
-        <div className="relative z-10 flex-1 flex items-center justify-center py-20 bg-gradient-to-br from-white/60 to-blue-50/60 backdrop-blur-sm">
-          <div className="bg-white/80 backdrop-blur-xl border border-white/30 rounded-3xl p-12 max-w-md mx-auto shadow-2xl relative overflow-hidden group">
-            {/* Animated background for empty state */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl animate-pulse">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 text-center mb-2">Library is Peaceful</h3>
-              <p className="text-gray-600 text-center font-medium">No students currently in the library</p>
+        <div className="text-center py-12">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 max-w-md mx-auto">
+            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
             </div>
+            <p className="text-amber-800 font-semibold text-lg">No students in library</p>
+            <p className="text-amber-700 text-sm mt-2">The library is currently empty</p>
           </div>
         </div>
       ) : (
-        <div className="relative z-10 flex-1 flex flex-col min-h-0">
-          <div className="flex-1 overflow-auto">
-            {/* Modern Table Design */}
-            <div className="bg-white/60 backdrop-blur-sm">
-              <table className="w-full">
-                <thead className="sticky top-0 z-20">
-                  <tr className="bg-gradient-to-r from-slate-800 via-gray-900 to-slate-800 border-b-4 border-blue-500/30">
-                    <th className="text-left py-5 px-8 font-bold text-white text-sm uppercase tracking-wider w-32 relative">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-                        Purpose
-                      </div>
-                    </th>
-                    <th className="text-center py-5 px-8 font-bold text-white text-sm uppercase tracking-wider w-24 relative">
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></span>
-                        Action
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/20">
-                  {slicename.map((element, index) => (
-                    <tr 
-                      key={name.indexOf(element)}
-                      className="group hover:bg-gradient-to-r hover:from-blue-50/80 hover:to-purple-50/80 transition-all duration-300 backdrop-blur-sm border-b border-white/10 hover:shadow-lg hover:scale-[1.01] transform"
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-slate-100 border-b border-slate-200">
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-16">
+                  Sr.No.
+                </th>
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-32">
+                  Card Number
+                </th>
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-24">
+                  Purpose
+                </th>
+                <th className="text-center py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-20">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {slicename.map((element, index) => (
+                <tr 
+                  key={name.indexOf(element)}
+                  className="hover:bg-slate-50 transition-colors duration-150 group"
+                >
+                  <td className="py-4 px-6 text-slate-600 font-medium">
+                    {(name.indexOf(element)) + 1}
+                  </td>
+                  <td className="py-4 px-6 text-slate-800 font-mono text-sm">
+                    {element.PRN}
+                  </td>
+                  <td className="py-4 px-6 text-slate-800 font-medium">
+                    {element.name}
+                  </td>
+                  <td className="py-4 px-6">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">
+                      {element.purpose}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <button
+                      onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
+                      className="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group-hover:shadow-md"
+                      title="Remove student"
                     >
-                      <td className="py-6 px-8 text-gray-900 font-bold text-base relative">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg">
-                            {(name.indexOf(element)) + 1}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-6 px-8 relative">
-                        <div className="bg-gradient-to-r from-gray-100/80 to-blue-100/80 backdrop-blur-sm px-4 py-2 rounded-xl font-mono text-sm font-bold text-gray-900 shadow-md border border-white/30 inline-block">
-                          {element.PRN}
-                        </div>
-                      </td>
-                      <td className="py-6 px-8 text-gray-900 font-bold text-base relative">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-lg">
-                            {element.name.charAt(0).toUpperCase()}
-                          </div>
-                          <span className="group-hover:text-blue-700 transition-colors">{element.name}</span>
-                        </div>
-                      </td>
-                      <td className="py-6 px-8">
-                        <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-blue-500/20 to-purple-600/20 text-blue-900 border-2 border-blue-300/50 shadow-lg backdrop-blur-sm hover:shadow-xl hover:scale-105 transition-all duration-200">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></div>
-                          {element.purpose}
-                        </span>
-                      </td>
-                      <td className="py-6 px-8 text-center">
-                        <button
-                          onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
-                          className="group relative inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-red-300/50 shadow-xl hover:shadow-2xl transform hover:-rotate-12"
-                          title="Remove student"
-                        >
-                          <svg className="w-6 h-6 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-400/0 to-red-600/0 group-hover:from-red-400/20 group-hover:to-red-600/20 transition-all duration-300"></div>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
       
-      {slicename.length > 0 && (
-        <>
-          {/* Enhanced Footer Statistics */}
-          <div className="relative z-10 bg-gradient-to-r from-slate-100/80 to-blue-100/80 backdrop-blur-xl px-8 py-6 border-t-2 border-white/30">
-            <div className="flex items-center justify-center gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-pulse"></div>
-                <p className="text-gray-800 font-bold">
-                  Showing <span className="text-blue-600 font-black text-lg">{name.length}</span> student{name.length !== 1 ? 's' : ''} currently in the library
-                </p>
-              </div>
-            </div>
+      {slicename.length > 0 && (<>
+        <div className="bg-slate-50 px-6 py-3 border-t border-slate-200">
+          <p className="text-sm text-slate-600 text-center">
+            Showing {name.length} student{name.length !== 1 ? 's' : ''} currently in the library
+          </p>
+        </div>
+
+              <div className="flex items-center justify-between bg-white px-6 py-4 border-t border-gray-200 shadow-sm">
+          {/* Previous Button */}
+          <button
+            onClick={() => {
+              seti(i - 1);
+            }}
+            disabled={i == 1}
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-700 transition-colors duration-200"
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Previous
+          </button>
+
+          {/* Page Numbers */}
+          <div className="flex items-center space-x-2">
+            <span className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg">
+              {i}
+            </span>
+            <span className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors duration-200">
+              {i + 1}
+            </span>
+            <span className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors duration-200">
+              {i + 2}
+            </span>
           </div>
 
-          {/* Modern Pagination */}
-          <div className="relative z-10 bg-gradient-to-r from-white/90 to-slate-100/90 backdrop-blur-xl px-8 py-6 border-t border-white/20">
-            <div className="flex items-center justify-between">
-              {/* Enhanced Previous Button */}
-              <button
-                onClick={() => seti(i - 1)}
-                disabled={i === 1}
-                className={`group flex items-center gap-3 px-6 py-3 rounded-2xl font-bold shadow-xl transition-all duration-300 transform ${
-                  i === 1 
-                    ? "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-600 cursor-not-allowed" 
-                    : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 hover:scale-105 hover:shadow-2xl focus:ring-4 focus:ring-blue-300/50"
-                }`}
-              >
-                <svg className={`w-5 h-5 transition-transform ${i !== 1 ? 'group-hover:-translate-x-1' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-                Previous
-              </button>
-
-              {/* Enhanced Page Numbers */}
-              <div className="flex items-center space-x-3">
-                <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white px-6 py-3 rounded-2xl font-black shadow-xl border-2 border-white/30">
-                  <span className="text-lg">{i}</span>
-                </div>
-                {i + 1 <= Math.ceil(name.length / 10) && (
-                  <div className="bg-white/80 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-2xl font-bold hover:bg-gradient-to-r hover:from-gray-100 hover:to-blue-100 cursor-pointer shadow-lg transition-all duration-200 border border-gray-200">
-                    <span>{i + 1}</span>
-                  </div>
-                )}
-                {i + 2 <= Math.ceil(name.length / 10) && (
-                  <div className="bg-white/80 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-2xl font-bold hover:bg-gradient-to-r hover:from-gray-100 hover:to-blue-100 cursor-pointer shadow-lg transition-all duration-200 border border-gray-200">
-                    <span>{i + 2}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Enhanced Next Button */}
-              <button
-                onClick={() => seti(i + 1)}
-                disabled={i >= Math.ceil(name.length / 10)}
-                className={`group flex items-center gap-3 px-6 py-3 rounded-2xl font-bold shadow-xl transition-all duration-300 transform ${
-                  i >= Math.ceil(name.length / 10)
-                    ? "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-600 cursor-not-allowed" 
-                    : "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 hover:scale-105 hover:shadow-2xl focus:ring-4 focus:ring-blue-300/50"
-                }`}
-              >
-                Next
-                <svg className={`w-5 h-5 transition-transform ${i < Math.ceil(name.length / 10) ? 'group-hover:translate-x-1' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </div>
+          {/* Next Button */}
+          <button
+            onClick={() => {
+              seti(i + 1);
+            }}
+            disabled={i >= ((Math.ceil(name.length)) / 10)}
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-900 focus:z-10 focus:ring-2 focus:ring-blue-500 focus:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-700 transition-colors duration-200"
+          >
+            Next
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
         </>
       )}
     </div>
