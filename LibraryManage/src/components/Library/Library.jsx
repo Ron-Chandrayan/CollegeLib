@@ -588,7 +588,7 @@ function Library() {
                   </svg>
                 </div>
               </div>
-              <p className="text-center text-xs text-gray-600 font-medium mb-1">Current Students</p>
+              <p className="text-center text-xs text-gray-600 font-medium mb-1">Current Members</p>
               <p className="text-center text-xl font-bold text-blue-600">{name.length}</p>
             </div>
           </div>
