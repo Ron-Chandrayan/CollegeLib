@@ -141,13 +141,13 @@ const[i,seti]=useState(1);
                   key={name.indexOf(element)}
                   className="hover:bg-slate-50 transition-colors duration-150 group"
                 >
-                  <td className="py-4 px-6 text-slate-600 font-medium">
+                  <td className="py-2 px-6 text-slate-600 font-medium">
                     {(name.indexOf(element)) + 1}
                   </td>
-                  <td className="py-4 px-6 text-slate-800 font-mono text-sm">
+                  <td className="py-2 px-6 text-slate-800 font-mono text-sm">
                     {element.PRN}
                   </td>
-                  <td className="py-4 px-6 text-slate-800 font-medium">
+                  <td className="py-2 px-6 text-slate-800 font-medium">
                     {element.name}
                   </td>
                   <td className="py-4 px-6">
