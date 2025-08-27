@@ -118,19 +118,19 @@ const[i,seti]=useState(1);
           <table className="w-full">
             <thead>
               <tr className="bg-slate-100 border-b border-slate-200">
-                <th className="text-left py-4 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-16">
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-16">
                   Sr.No.
                 </th>
-                <th className="text-left py-4 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-32">
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-32">
                   Card Number
                 </th>
-                <th className="text-left py-4 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider">
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider">
                   Name
                 </th>
-                <th className="text-left py-4 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-24">
+                <th className="text-left py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-24">
                   Purpose
                 </th>
-                <th className="text-center py-4 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-20">
+                <th className="text-center py-2 px-6 font-semibold text-slate-700 text-sm uppercase tracking-wider w-20">
                   Action
                 </th>
               </tr>
