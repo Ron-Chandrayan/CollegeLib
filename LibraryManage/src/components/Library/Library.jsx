@@ -500,19 +500,20 @@ function Library() {
              <button
             // type="submit"
             onClick={handleSubmit}
-            className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700"
+            className="px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
            >
             Enter/Out
            </button>
 
-           <div><div><p className='text-lg text-center '>List of Users in </p>
-               <p className='text-lg text-center'>SIES Graduate School of Technology</p></div>
+           <div className="text-center">
+             <h1 className="text-xl font-bold text-gray-800 mb-1">List of Users in</h1>
+             <h2 className="text-lg font-semibold text-blue-700">SIES Graduate School of Technology</h2>
            </div>
 
            <button
                     disabled={disable || loading===true}
                     onClick={handleSubmit2}
-                    className={`px-6 py-3 rounded-lg font-semibold text-white ${
+                    className={`px-6 py-3 rounded-lg font-semibold text-white transition-all duration-200 transform hover:scale-105 shadow-lg ${
                       (disable || loading===true)
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-red-600 hover:bg-red-700 cursor-pointer"
@@ -526,84 +527,98 @@ function Library() {
         </form>
       </div>
 
-    <div className='mb-8'>
-                        <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/40">
-                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                                <div className="relative flex-1">
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                        </svg>
-                                    </div>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Search students..." 
-                                        onChange={(e) => setsearch(e.target.value)} 
-                                        value={search}
-                                        className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white"
-                                    />
-                                </div>
-                                <select 
-                                    value={filter} 
-                                    onChange={(e) => setFilter(e.target.value)} 
-                                    className="px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 bg-white/80 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white min-w-32"
-                                >
-                                    <option value="name">Search by Name</option>
-                                    <option value="PRN">Search by PRN</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>  
-    
+      {/* Flash Messages Area */}
+      <div className="mb-4">
+        <div id="toast-container" className="fixed top-4 right-4 z-50"></div>
+      </div>
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Compact Search Bar */}
+      <div className='mb-6'>
+        <div className="bg-gradient-to-r from-white/90 to-blue-50/90 backdrop-blur-sm rounded-xl shadow-lg p-4 border border-white/40">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input 
+                type="text" 
+                placeholder="Search students..." 
+                onChange={(e) => setsearch(e.target.value)} 
+                value={search}
+                className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white text-sm"
+              />
+            </div>
+            <select 
+              value={filter} 
+              onChange={(e) => setFilter(e.target.value)} 
+              className="px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 bg-white/80 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white text-sm min-w-32"
+            >
+              <option value="name">Search by Name</option>
+              <option value="PRN">Search by PRN</option>
+            </select>
+          </div>
+        </div>
+      </div>  
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-12 gap-6">
         
-        {/* Current Students Card */}
-        <div className="flex-1 min-w-[200px] bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
-          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <div className="bg-blue-100 p-2 rounded-lg">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                </svg>
+        {/* Current Students Card - Smaller */}
+        <div className="col-span-2">
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50 h-fit">
+            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="bg-blue-100 p-1.5 rounded-lg">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
               </div>
+              <p className="text-center text-xs text-gray-600 font-medium mb-1">Current Students</p>
+              <p className="text-center text-xl font-bold text-blue-600">{name.length}</p>
             </div>
-            <p className="text-center text-sm text-gray-600 font-medium mb-1">Current Students</p>
-            <p className="text-center text-2xl font-bold text-blue-600">{name.length}</p>
           </div>
         </div>
 
-        {/* Search Component - Takes full width */}
-        <div className="flex-shrink-0 bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50">
-          <Searching search={search} filter={filter} name={name} />
+        {/* Main Students Section - Wider */}
+        <div className="col-span-8">
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg border border-slate-200/50">
+            <Searching search={search} filter={filter} name={name} />
+          </div>
         </div>
 
-        {/* Footfall Statistics - Stacked vertically */}
-        <div className=" flex-1 min-w-[200px] bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-2xl shadow-lg border border-slate-200/50 space-y-4">
-          {/* Total Footfall Card */}
-          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <div className="bg-emerald-100 p-2 rounded-lg">
-                <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+        {/* Footfall Statistics - Smaller and Stacked */}
+        <div className="col-span-2 space-y-4">
+          {/* Total Footfall Card - Smaller */}
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50">
+            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="bg-emerald-100 p-1.5 rounded-lg">
+                  <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
               </div>
+              <p className="text-center text-xs text-gray-600 font-medium mb-1">Total Footfall</p>
+              <p className="text-center text-lg font-bold text-emerald-600">{totalfootfall}</p>
             </div>
-            <p className="text-center text-sm text-gray-600 font-medium mb-1">Total Footfall</p>
-            <p className="text-center text-xl font-bold text-emerald-600">{totalfootfall}</p>
           </div>
 
-          {/* Today's Footfall Card */}
-          <div className="bg-white rounded-xl shadow-md p-4 border border-slate-200/50 w-full">
-            <div className="flex items-center justify-center gap-2 mb-1">
-              <div className="bg-orange-100 p-2 rounded-lg">
-                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+          {/* Today's Footfall Card - Smaller */}
+          <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50">
+            <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div className="bg-orange-100 p-1.5 rounded-lg">
+                  <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
               </div>
+              <p className="text-center text-xs text-gray-600 font-medium mb-1">Today's Footfall</p>
+              <p className="text-center text-lg font-bold text-orange-600">{todayfootfall}</p>
             </div>
-            <p className="text-center text-sm text-gray-600 font-medium mb-1">Today's Footfall</p>
-            <p className="text-center text-xl font-bold text-orange-600">{todayfootfall}</p>
           </div>
         </div>
       </div>
