@@ -556,7 +556,7 @@ function Library() {
               </div>
               <input 
                 type="text" 
-                placeholder="Search students..." 
+                placeholder="Search members..." 
                 onChange={(e) => setsearch(e.target.value)} 
                 value={search}
                 className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white text-sm"

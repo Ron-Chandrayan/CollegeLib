@@ -97,7 +97,7 @@ const[i,seti]=useState(1);
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
       <div className="p-6 border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100">
-        <h2 className="text-2xl font-bold text-slate-800">Students Currently in Library</h2>
+        <h2 className="text-2xl font-bold text-slate-800">Members Currently in Library</h2>
         <p className="text-slate-600 mt-1">Showing Page: {i}</p>
       </div>
 
@@ -109,7 +109,7 @@ const[i,seti]=useState(1);
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <p className="text-amber-800 font-semibold text-lg">No students in library</p>
+            <p className="text-amber-800 font-semibold text-lg">No members in library</p>
             <p className="text-amber-700 text-sm mt-2">The library is currently empty</p>
           </div>
         </div>
@@ -158,7 +158,7 @@ const[i,seti]=useState(1);
                   <td className="py-4 px-6 text-center">
                     <button
                       onClick={() => remove({ prnno: element.PRN, name: element.purpose })}
-                      className="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group-hover:shadow-md"
+                      className="inline-flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-sm transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group-hover:shadow-md"
                       title="Remove student"
                     >
                       {/* <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
