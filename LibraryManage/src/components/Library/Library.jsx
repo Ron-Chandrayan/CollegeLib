@@ -470,14 +470,14 @@ function Library() {
               value={formData.PRN}
               onChange={handleChange}
               required
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-500 bg-white"
             />
             <select
               name="purpose"
               value={formData.purpose}
               onChange={handleChange}
               required
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
             >
               <option value="" hidden>Select purpose</option>
               <option value="Study">Study</option>
@@ -506,8 +506,8 @@ function Library() {
            </button>
 
            <div className="text-center">
-             <h1 className="text-xl font-bold text-gray-800 mb-1">List of Users in</h1>
-             <h2 className="text-lg font-semibold text-blue-700">SIES Graduate School of Technology</h2>
+             <h1 className="text-xl font-bold text-white mb-1">List of Users in</h1>
+             <h2 className="text-lg font-semibold text-blue-500">SIES Graduate School of Technology</h2>
            </div>
 
            <button
