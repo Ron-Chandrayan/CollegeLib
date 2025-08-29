@@ -544,36 +544,6 @@ function Library() {
         <div id="toast-container" className="fixed top-4 right-4 z-50"></div>
       </div>
 
-      {/* Compact Search Bar */}
-      <div className='mb-6'>
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 text-white p-4">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="relative flex-1">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <input 
-                type="text" 
-                placeholder="Search members..." 
-                onChange={(e) => setsearch(e.target.value)} 
-                value={search}
-                className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-500 text-slate-900 bg-white/80 backdrop-blur-sm transition-all duration-200 hover:bg-white text-sm"
-              />
-            </div>
-            <select 
-              value={filter} 
-              onChange={(e) => setFilter(e.target.value)} 
-              className="px-3 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-700 bg-white/80 backdrop-blur-sm cursor-pointer transition-all duration-200 hover:bg-white text-sm min-w-32"
-            >
-              <option value="name">Search by Name</option>
-              <option value="PRN">Search by PRN</option>
-            </select>
-          </div>
-        </div>
-      </div>  
-
       {/* Main Content Grid */}
       <div className="bg-gradient-to-br from-slate-900 to-gray-500 grid grid-cols-12 gap-6">
         
@@ -581,15 +551,45 @@ function Library() {
         <div className="col-span-2 space-y-4">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-4 rounded-xl shadow-lg border border-slate-200/50 h-fit">
             <div className="bg-white rounded-lg shadow-md p-3 border border-slate-200/50">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <div className="bg-blue-100 p-1.5 rounded-lg">
-                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="bg-blue-100 p-1.5 rounded-lg">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-xs text-gray-600 font-medium">Current Members</p>
+                </div>
+                <p className="text-lg font-bold text-blue-600">{name.length}</p>
+              </div>
+              
+              {/* Small Search Input */}
+              <div className="relative mt-2">
+                <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  onChange={(e) => setsearch(e.target.value)} 
+                  value={search}
+                  className="w-full pl-6 pr-2 py-1 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-gray-700 bg-gray-50"
+                />
               </div>
-              <p className="text-center text-xs text-gray-600 font-medium mb-1">Current Members</p>
-              <p className="text-center text-xl font-bold text-blue-600">{name.length}</p>
+              
+              {/* Small Filter Dropdown */}
+              <div className="mt-1">
+                <select 
+                  value={filter} 
+                  onChange={(e) => setFilter(e.target.value)} 
+                  className="w-full px-2 py-1 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-gray-700 bg-gray-50 cursor-pointer"
+                >
+                  <option value="name">By Name</option>
+                  <option value="PRN">By PRN</option>
+                </select>
+              </div>
             </div>
           </div>
 
