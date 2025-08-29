@@ -100,6 +100,63 @@ function Library() {
 
   // Add ref for PRN input auto-focus
   const prnInputRef = useRef(null);
+  // Track previous members to generate entry/exit notifications reliably
+  const prevMembersRef = useRef({
+    map: new Map(), // PRN -> member
+    set: new Set(), // Set of PRNs
+  });
+  
+  useEffect(() => {
+    // Normalize current members to uppercase PRNs
+    const currentMap = new Map();
+    const currentSet = new Set();
+    (Array.isArray(name) ? name : []).forEach((member) => {
+      const prnUpper = (member?.PRN || '').toUpperCase();
+      currentMap.set(prnUpper, member);
+      if (prnUpper) currentSet.add(prnUpper);
+    });
+
+    const prevMap = prevMembersRef.current.map;
+    const prevSet = prevMembersRef.current.set;
+
+    // Compute entries (in current but not in previous)
+    const entries = [];
+    currentSet.forEach((prn) => {
+      if (!prevSet.has(prn)) entries.push(prn);
+    });
+
+    // Compute exits (in previous but not in current)
+    const exits = [];
+    prevSet.forEach((prn) => {
+      if (!currentSet.has(prn)) exits.push(prn);
+    });
+
+    if (entries.length > 0 || exits.length > 0) {
+      const now = new Date().toLocaleTimeString();
+      const newNotifs = [];
+
+      // Build entry notifications with names from current snapshot
+      entries.forEach((prn) => {
+        const m = currentMap.get(prn);
+        const displayName = m?.name || prn;
+        newNotifs.push({ type: 'entry', studentName: displayName, time: now });
+      });
+
+      // Build exit notifications with names from previous snapshot
+      exits.forEach((prn) => {
+        const m = prevMap.get(prn);
+        const displayName = m?.name || prn;
+        newNotifs.push({ type: 'exit', studentName: displayName, time: now });
+      });
+
+      if (newNotifs.length > 0) {
+        setNotifications((prev) => [...newNotifs, ...prev].slice(0, 10));
+      }
+    }
+
+    // Update refs to current snapshot
+    prevMembersRef.current = { map: currentMap, set: currentSet };
+  }, [name]);
 
   // Auto-focus PRN input when component mounts
   useEffect(() => {
