@@ -11,16 +11,16 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 const EntryExitNotification = ({ notifications }) => {
   return (
     <div className="flex-1 ml-4">
-      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-2 border border-yellow-200/50 shadow-md backdrop-blur-sm h-12 flex items-center justify-center">
+      <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-md backdrop-blur-sm h-12 flex items-center justify-center">
         <div className="w-full h-full flex items-center justify-center">
           {notifications.length === 0 ? (
             <div className="flex items-center justify-center">
-              <div className="w-6 h-6 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mr-2 shadow-inner">
-                <svg className="w-3 h-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center mr-2 shadow-inner">
+                <svg className="w-3 h-3 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p className="text-xs text-yellow-600 font-medium">Waiting for activity...</p>
+              <p className="text-xs text-gray-600 font-medium">Waiting for activity...</p>
             </div>
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -29,20 +29,20 @@ const EntryExitNotification = ({ notifications }) => {
                   key={index}
                   className={`w-full h-full relative overflow-hidden rounded-md px-3 py-1 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center justify-center gap-2 ${
                     notification.type === 'entry' 
-                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-200' 
-                      : 'bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200'
+                      ? 'bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200' 
+                      : 'bg-gradient-to-r from-red-50 to-pink-50 border border-red-200'
                   }`}
                 >
                   {/* Status indicator */}
                   <div className={`w-2 h-2 rounded-full shadow-sm ${
-                    notification.type === 'entry' ? 'bg-yellow-500 animate-ping' : 'bg-orange-500 animate-ping'
+                    notification.type === 'entry' ? 'bg-green-500 animate-ping' : 'bg-red-500 animate-ping'
                   }`}></div>
                   
                   {/* Icon */}
                   <div className={`w-5 h-5 rounded-full flex items-center justify-center shadow-sm ${
                     notification.type === 'entry' 
-                      ? 'bg-gradient-to-br from-yellow-400 to-amber-500' 
-                      : 'bg-gradient-to-br from-orange-400 to-red-500'
+                      ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
+                      : 'bg-gradient-to-br from-red-400 to-pink-500'
                   }`}>
                     <svg className={`w-2.5 h-2.5 text-white`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       {notification.type === 'entry' ? (
@@ -56,7 +56,7 @@ const EntryExitNotification = ({ notifications }) => {
                   {/* Content */}
                   <div className="flex-1 text-center">
                     <p className={`text-xs font-bold truncate ${
-                      notification.type === 'entry' ? 'text-yellow-800' : 'text-orange-800'
+                      notification.type === 'entry' ? 'text-green-800' : 'text-red-800'
                     }`}>
                       {notification.studentName}
                     </p>
@@ -68,8 +68,8 @@ const EntryExitNotification = ({ notifications }) => {
                   {/* Time badge */}
                   <div className={`px-1 py-0.5 rounded-full text-xs font-bold ${
                     notification.type === 'entry' 
-                      ? 'bg-yellow-200 text-yellow-800' 
-                      : 'bg-orange-200 text-orange-800'
+                      ? 'bg-green-200 text-green-800' 
+                      : 'bg-red-200 text-red-800'
                   }`}>
                     {notification.time}
                   </div>
@@ -190,17 +190,24 @@ function Library() {
         // Check if student is already in library to determine if it's entry or exit
         const isAlreadyInLibrary = name.some(existingStudent => existingStudent.PRN === formData.PRN);
         
-        // Find the student name from the name array - check both current and updated lists
+        // Find the student name - try to get from API response first, then from current array
         let studentName = formData.PRN; // fallback to PRN
         
-        // Try to find in current name array first
-        const existingStudent = name.find(student => student.PRN === formData.PRN);
-        if (existingStudent) {
-          studentName = existingStudent.name;
+        // Try to get name from API response if available
+        if (data.studentName) {
+          studentName = data.studentName;
+        } else if (isAlreadyInLibrary) {
+          // For exit, student should be in current array
+          const existingStudent = name.find(student => student.PRN === formData.PRN);
+          if (existingStudent) {
+            studentName = existingStudent.name;
+          }
         } else {
-          // If not found in current array, it might be a new entry
-          // We'll need to wait for the name array to update or use a different approach
-          // For now, we'll use the PRN and let the notification update when the name becomes available
+          // For entry, try to find in current array (in case it was updated)
+          const existingStudent = name.find(student => student.PRN === formData.PRN);
+          if (existingStudent) {
+            studentName = existingStudent.name;
+          }
         }
         
         const newNotification = {
