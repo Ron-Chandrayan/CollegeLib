@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
-function Student({ name, Students, onStudentExit }) { // Students prop kept, but unused
+function Student({ name, Students }) { // Students prop kept, but unused
 
    
 
@@ -37,16 +37,6 @@ const[i,seti]=useState(1);
       
             if (data.success===true) {
               toast.success(data.message || "Student removed!");
-              
-              // Call the callback to add exit notification
-              if (onStudentExit) {
-                const currentTime = new Date().toLocaleTimeString();
-                onStudentExit({
-                  type: 'exit',
-                  studentName: prnno,
-                  time: currentTime
-                });
-              }
             } else {
               toast.error(data.message || "Something went wrong");
             }

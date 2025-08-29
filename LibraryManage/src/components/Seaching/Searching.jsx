@@ -1,9 +1,9 @@
 import React from 'react'
 import Student from '../Student/Student'
 
-function Searching({ search, filter, name, Students, onStudentExit }) {
+function Searching({ search, filter, name, Students }) {
     if (name.length === 0 || search.trim() === "") {
-        return <Student name={name} Students={Students} onStudentExit={onStudentExit}/>;
+        return <Student name={name} Students={Students}/>;
     }
 
     let results = [];
@@ -22,7 +22,7 @@ function Searching({ search, filter, name, Students, onStudentExit }) {
         );
     }
 
-    return <Student name={results} Students={Students} onStudentExit={onStudentExit} />;
+    return <Student name={results} Students={Students} />;
 }
 
 
