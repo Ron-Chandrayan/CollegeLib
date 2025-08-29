@@ -10,7 +10,7 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 // Glorified Entry/Exit Notification Component
 const EntryExitNotification = ({ notifications }) => {
   return (
-    <div className="flex-1 ml-4">
+    <div className="w-48">
       <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-3 border border-yellow-200/50 shadow-md backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-xs font-bold text-yellow-800 flex items-center gap-2">
@@ -203,8 +203,11 @@ function Library() {
         const student = name.find(student => student.PRN === formData.PRN);
         const studentName = student ? student.name : formData.PRN;
         
+        // Check if student is already in library to determine if it's entry or exit
+        const isAlreadyInLibrary = name.some(existingStudent => existingStudent.PRN === formData.PRN);
+        
         const newNotification = {
-          type: 'entry',
+          type: isAlreadyInLibrary ? 'exit' : 'entry',
           studentName: studentName,
           time: currentTime
         };
