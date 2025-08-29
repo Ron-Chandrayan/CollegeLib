@@ -11,7 +11,7 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 const EntryExitNotification = ({ notifications }) => {
   return (
     <div className="flex-1 ml-4">
-      <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-md backdrop-blur-sm h-12 flex items-center justify-center">
+      <div className="bg-white rounded-lg p-3 border border-gray-200 shadow-md backdrop-blur-sm h-16 flex items-center justify-center">
         <div className="w-full h-full flex items-center justify-center">
           {notifications.length === 0 ? (
             <div className="flex items-center justify-center">
@@ -27,7 +27,7 @@ const EntryExitNotification = ({ notifications }) => {
               {notifications.slice(0, 1).map((notification, index) => (
                 <div 
                   key={index}
-                  className={`w-full h-full relative overflow-hidden rounded-md px-3 py-1 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center justify-center gap-2 ${
+                  className={`w-full h-full relative overflow-hidden rounded-md px-3 py-2 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center justify-center gap-2 ${
                     notification.type === 'entry' 
                       ? 'bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200' 
                       : 'bg-gradient-to-r from-red-50 to-pink-50 border border-red-200'
@@ -190,20 +190,14 @@ function Library() {
         // Check if student is already in library to determine if it's entry or exit
         const isAlreadyInLibrary = name.some(existingStudent => existingStudent.PRN === formData.PRN);
         
-        // Find the student name - try to get from API response first, then from current array
+        // Find the student name - use the same logic for both entry and exit
         let studentName = formData.PRN; // fallback to PRN
         
         // Try to get name from API response if available
         if (data.studentName) {
           studentName = data.studentName;
-        } else if (isAlreadyInLibrary) {
-          // For exit, student should be in current array
-          const existingStudent = name.find(student => student.PRN === formData.PRN);
-          if (existingStudent) {
-            studentName = existingStudent.name;
-          }
         } else {
-          // For entry, try to find in current array (in case it was updated)
+          // For both entry and exit, check current array
           const existingStudent = name.find(student => student.PRN === formData.PRN);
           if (existingStudent) {
             studentName = existingStudent.name;
@@ -422,7 +416,7 @@ function Library() {
               <EntryExitNotification notifications={notifications} />
               
               {/* Small Search Component */}
-              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-slate-200/50">
+              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-slate-200/50 h-16">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
                     <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,13 +428,13 @@ function Library() {
                     placeholder="Search..." 
                     onChange={(e) => setsearch(e.target.value)} 
                     value={search}
-                    className="w-32 pl-6 pr-2 py-1 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-gray-700 bg-transparent"
+                    className="w-32 pl-6 pr-2 py-2 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 text-gray-700 bg-transparent"
                   />
                 </div>
                 <select 
                   value={filter} 
                   onChange={(e) => setFilter(e.target.value)} 
-                  className="px-2 py-1 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-gray-700 bg-transparent cursor-pointer"
+                  className="px-2 py-2 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-gray-700 bg-transparent cursor-pointer"
                 >
                   <option value="name">Name</option>
                   <option value="PRN">PRN</option>
