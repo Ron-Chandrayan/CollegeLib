@@ -7,6 +7,71 @@ import { toast } from 'react-toastify'; // ✅ Import toast
 import 'react-toastify/dist/ReactToastify.css'; // ✅ Ensure CSS is loaded
 import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debugApiConfig } from '../../utils/apiConfig';
 
+// Entry/Exit Notification Component
+const EntryExitNotification = ({ notifications }) => {
+  return (
+    <div className="flex-1 ml-4">
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-lg p-3 border border-emerald-200/50 shadow-sm">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-semibold text-emerald-800">Recent Activity</h3>
+          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+        </div>
+        
+        {notifications.length === 0 ? (
+          <div className="text-center py-4">
+            <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p className="text-xs text-emerald-600">No recent activity</p>
+          </div>
+        ) : (
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {notifications.slice(0, 3).map((notification, index) => (
+              <div 
+                key={index}
+                className={`flex items-center gap-2 p-2 rounded-md transition-all duration-300 ${
+                  notification.type === 'entry' 
+                    ? 'bg-green-100 border border-green-200' 
+                    : 'bg-red-100 border border-red-200'
+                }`}
+              >
+                <div className={`w-2 h-2 rounded-full ${
+                  notification.type === 'entry' ? 'bg-green-500' : 'bg-red-500'
+                }`}></div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-xs font-medium truncate ${
+                    notification.type === 'entry' ? 'text-green-800' : 'text-red-800'
+                  }`}>
+                    {notification.studentName}
+                  </p>
+                  <p className="text-xs text-gray-600 truncate">
+                    {notification.type === 'entry' ? 'Entered' : 'Exited'} • {notification.time}
+                  </p>
+                </div>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  notification.type === 'entry' ? 'bg-green-200' : 'bg-red-200'
+                }`}>
+                  <svg className={`w-3 h-3 ${
+                    notification.type === 'entry' ? 'text-green-600' : 'text-red-600'
+                  }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {notification.type === 'entry' ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                    )}
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 function Library() {
  const { name,setname,totalfootfall,todayfootfall } = useOutletContext();
   const[student, setStudent]=useState([])
@@ -16,6 +81,7 @@ function Library() {
   const[disable,setdisable]=useState(true);
   const[loading,setloading]=useState(false);
   const[clock,setclock]=useState();
+  const [notifications, setNotifications] = useState([]);
   const [formData, setformData] = useState({
     PRN: '',
     purpose: 'Study'
@@ -41,6 +107,28 @@ function Library() {
    
          return () => clearInterval(interval);
   },[])
+
+  // Add some sample notifications for testing
+  useEffect(() => {
+    const sampleNotifications = [
+      {
+        type: 'entry',
+        studentName: 'John Doe',
+        time: '10:30 AM'
+      },
+      {
+        type: 'exit',
+        studentName: 'Jane Smith',
+        time: '10:25 AM'
+      },
+      {
+        type: 'entry',
+        studentName: 'Mike Johnson',
+        time: '10:20 AM'
+      }
+    ];
+    setNotifications(sampleNotifications);
+  }, []);
 
   //console.log(name);
   useEffect(() => {
@@ -95,6 +183,16 @@ function Library() {
 
       if (data.success===true) {
         toast.success(data.message || "Student inserted!");
+        
+        // Add notification for entry/exit
+        const currentTime = new Date().toLocaleTimeString();
+        const newNotification = {
+          type: 'entry',
+          studentName: formData.PRN,
+          time: currentTime
+        };
+        
+        setNotifications(prev => [newNotification, ...prev.slice(0, 9)]); // Keep last 10 notifications
       } else {
         toast.error(data.message || "Something went wrong");
       }
@@ -294,8 +392,9 @@ function Library() {
         {/* Main Students Section - Wider */}
         <div className="col-span-8">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg border border-slate-200/50">
-            {/* Small Search Component in top right corner */}
-            <div className="flex justify-end mb-4">
+            {/* Search and Notification Bar */}
+            <div className="flex items-start gap-4 mb-4">
+              {/* Small Search Component */}
               <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-slate-200/50">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
@@ -320,8 +419,18 @@ function Library() {
                   <option value="PRN">PRN</option>
                 </select>
               </div>
+              
+              {/* Entry/Exit Notification Component */}
+              <EntryExitNotification notifications={notifications} />
             </div>
-            <Searching search={search} filter={filter} name={name} />
+            <Searching 
+              search={search} 
+              filter={filter} 
+              name={name} 
+              onStudentExit={(notification) => {
+                setNotifications(prev => [notification, ...prev.slice(0, 9)]);
+              }}
+            />
           </div>
         </div>
 
