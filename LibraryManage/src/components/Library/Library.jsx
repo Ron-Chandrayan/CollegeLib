@@ -184,33 +184,7 @@ function Library() {
       if (data.success===true) {
         toast.success(data.message || "Student inserted!");
         
-        // Add notification for entry/exit
-        const currentTime = new Date().toLocaleTimeString();
-        
-        // Check if student is already in library to determine if it's entry or exit
-        const isAlreadyInLibrary = name.some(existingStudent => existingStudent.PRN === formData.PRN);
-        
-        // Find the student name - use the same logic for both entry and exit
-        let studentName = formData.PRN; // fallback to PRN
-        
-        // Try to get name from API response if available
-        if (data.studentName) {
-          studentName = data.studentName;
-        } else {
-          // For both entry and exit, check current array
-          const existingStudent = name.find(student => student.PRN === formData.PRN);
-          if (existingStudent) {
-            studentName = existingStudent.name;
-          }
-        }
-        
-        const newNotification = {
-          type: isAlreadyInLibrary ? 'exit' : 'entry',
-          studentName: studentName,
-          time: currentTime
-        };
-        
-        setNotifications(prev => [newNotification, ...prev.slice(0, 9)]); // Keep last 10 notifications
+        // Notification now handled by name-diff effect
       } else {
         toast.error(data.message || "Something went wrong");
       }
