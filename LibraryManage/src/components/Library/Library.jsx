@@ -11,8 +11,8 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 const EntryExitNotification = ({ notifications }) => {
   return (
     <div className="flex-1 ml-4">
-      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-2 border border-yellow-200/50 shadow-md backdrop-blur-sm h-12 flex items-center">
-        <div className="w-full">
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-2 border border-yellow-200/50 shadow-md backdrop-blur-sm h-12 flex items-center justify-center">
+        <div className="w-full h-full flex items-center justify-center">
           {notifications.length === 0 ? (
             <div className="flex items-center justify-center">
               <div className="w-6 h-6 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mr-2 shadow-inner">
@@ -23,11 +23,11 @@ const EntryExitNotification = ({ notifications }) => {
               <p className="text-xs text-yellow-600 font-medium">Waiting for activity...</p>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="w-full h-full flex items-center justify-center">
               {notifications.slice(0, 1).map((notification, index) => (
                 <div 
                   key={index}
-                  className={`relative overflow-hidden rounded-md px-2 py-1 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center gap-2 ${
+                  className={`w-full h-full relative overflow-hidden rounded-md px-3 py-1 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center justify-center gap-2 ${
                     notification.type === 'entry' 
                       ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-200' 
                       : 'bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200'
@@ -54,7 +54,7 @@ const EntryExitNotification = ({ notifications }) => {
                   </div>
                   
                   {/* Content */}
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 text-center">
                     <p className={`text-xs font-bold truncate ${
                       notification.type === 'entry' ? 'text-yellow-800' : 'text-orange-800'
                     }`}>
@@ -113,7 +113,7 @@ function Library() {
     if (notifications.length > 0) {
       const timer = setTimeout(() => {
         setNotifications(prev => prev.slice(1)); // Remove the oldest notification
-      }, 2000);
+      }, 3500);
       
       return () => clearTimeout(timer);
     }
@@ -187,12 +187,21 @@ function Library() {
         // Add notification for entry/exit
         const currentTime = new Date().toLocaleTimeString();
         
-        // Find the student name from the name array
-        const student = name.find(student => student.PRN === formData.PRN);
-        const studentName = student ? student.name : formData.PRN;
-        
         // Check if student is already in library to determine if it's entry or exit
         const isAlreadyInLibrary = name.some(existingStudent => existingStudent.PRN === formData.PRN);
+        
+        // Find the student name from the name array - check both current and updated lists
+        let studentName = formData.PRN; // fallback to PRN
+        
+        // Try to find in current name array first
+        const existingStudent = name.find(student => student.PRN === formData.PRN);
+        if (existingStudent) {
+          studentName = existingStudent.name;
+        } else {
+          // If not found in current array, it might be a new entry
+          // We'll need to wait for the name array to update or use a different approach
+          // For now, we'll use the PRN and let the notification update when the name becomes available
+        }
         
         const newNotification = {
           type: isAlreadyInLibrary ? 'exit' : 'entry',
