@@ -11,52 +11,52 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 const EntryExitNotification = ({ notifications }) => {
   return (
     <div className="flex-1 ml-4">
-      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-200/50 shadow-lg backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-bold text-purple-800 flex items-center gap-2">
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-3 border border-yellow-200/50 shadow-md backdrop-blur-sm">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xs font-bold text-yellow-800 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse"></div>
             Live Activity
           </h3>
         </div>
         
         {notifications.length === 0 ? (
-          <div className="text-center py-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
-              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-4">
+            <div className="w-8 h-8 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
+              <svg className="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <p className="text-sm text-purple-600 font-medium">Waiting for activity...</p>
+            <p className="text-xs text-yellow-600 font-medium">Waiting for activity...</p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-40 overflow-y-auto">
-            {notifications.slice(0, 4).map((notification, index) => (
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {notifications.slice(0, 3).map((notification, index) => (
               <div 
                 key={index}
-                className={`relative overflow-hidden rounded-lg p-3 transition-all duration-500 transform hover:scale-105 shadow-md ${
+                className={`relative overflow-hidden rounded-md p-2 transition-all duration-300 transform hover:scale-105 shadow-sm ${
                   notification.type === 'entry' 
-                    ? 'bg-gradient-to-r from-green-100 to-emerald-100 border border-green-200' 
-                    : 'bg-gradient-to-r from-red-100 to-pink-100 border border-red-200'
+                    ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-200' 
+                    : 'bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200'
                 }`}
               >
                 {/* Animated background effect */}
                 <div className={`absolute inset-0 opacity-10 ${
-                  notification.type === 'entry' ? 'bg-green-500' : 'bg-red-500'
+                  notification.type === 'entry' ? 'bg-yellow-500' : 'bg-orange-500'
                 } animate-pulse`}></div>
                 
-                <div className="relative flex items-center gap-3">
+                <div className="relative flex items-center gap-2">
                   {/* Status indicator */}
-                  <div className={`w-3 h-3 rounded-full shadow-lg ${
-                    notification.type === 'entry' ? 'bg-green-500 animate-ping' : 'bg-red-500 animate-ping'
+                  <div className={`w-2 h-2 rounded-full shadow-sm ${
+                    notification.type === 'entry' ? 'bg-yellow-500 animate-ping' : 'bg-orange-500 animate-ping'
                   }`}></div>
                   
                   {/* Icon */}
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-md ${
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center shadow-sm ${
                     notification.type === 'entry' 
-                      ? 'bg-gradient-to-br from-green-400 to-emerald-500' 
-                      : 'bg-gradient-to-br from-red-400 to-pink-500'
+                      ? 'bg-gradient-to-br from-yellow-400 to-amber-500' 
+                      : 'bg-gradient-to-br from-orange-400 to-red-500'
                   }`}>
-                    <svg className={`w-4 h-4 text-white`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-3 h-3 text-white`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       {notification.type === 'entry' ? (
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       ) : (
@@ -67,21 +67,21 @@ const EntryExitNotification = ({ notifications }) => {
                   
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-bold truncate ${
-                      notification.type === 'entry' ? 'text-green-800' : 'text-red-800'
+                    <p className={`text-xs font-bold truncate ${
+                      notification.type === 'entry' ? 'text-yellow-800' : 'text-orange-800'
                     }`}>
                       {notification.studentName}
                     </p>
                     <p className="text-xs text-gray-600 font-medium">
-                      {notification.type === 'entry' ? '🟢 ENTERED' : '🔴 EXITED'} • {notification.time}
+                      {notification.type === 'entry' ? '🌟 Welcome!' : '👋 Thank you!'}
                     </p>
                   </div>
                   
                   {/* Time badge */}
-                  <div className={`px-2 py-1 rounded-full text-xs font-bold ${
+                  <div className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${
                     notification.type === 'entry' 
-                      ? 'bg-green-200 text-green-800' 
-                      : 'bg-red-200 text-red-800'
+                      ? 'bg-yellow-200 text-yellow-800' 
+                      : 'bg-orange-200 text-orange-800'
                   }`}>
                     {notification.time}
                   </div>
@@ -119,6 +119,17 @@ function Library() {
       prnInputRef.current.focus();
     }
   }, []);
+
+  // Timeout effect for notifications
+  useEffect(() => {
+    if (notifications.length > 0) {
+      const timer = setTimeout(() => {
+        setNotifications(prev => prev.slice(1)); // Remove the oldest notification
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [notifications]);
 
   useEffect(()=>{
     const fetchtime=()=>{
@@ -187,9 +198,14 @@ function Library() {
         
         // Add notification for entry/exit
         const currentTime = new Date().toLocaleTimeString();
+        
+        // Find the student name from the name array
+        const student = name.find(student => student.PRN === formData.PRN);
+        const studentName = student ? student.name : formData.PRN;
+        
         const newNotification = {
           type: 'entry',
-          studentName: formData.PRN,
+          studentName: studentName,
           time: currentTime
         };
         
@@ -394,7 +410,10 @@ function Library() {
         <div className="col-span-8">
           <div className="bg-gradient-to-br from-slate-50 to-blue-50 p-6 rounded-xl shadow-lg border border-slate-200/50">
             {/* Search and Notification Bar */}
-            <div className="flex items-start gap-4 mb-4">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              {/* Entry/Exit Notification Component */}
+              <EntryExitNotification notifications={notifications} />
+              
               {/* Small Search Component */}
               <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg p-2 border border-slate-200/50">
                 <div className="relative">
@@ -420,9 +439,6 @@ function Library() {
                   <option value="PRN">PRN</option>
                 </select>
               </div>
-              
-              {/* Entry/Exit Notification Component */}
-              <EntryExitNotification notifications={notifications} />
             </div>
             <Searching search={search} filter={filter} name={name} />
           </div>
