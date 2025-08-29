@@ -330,8 +330,8 @@ function Library() {
   // }, []);
 
   return (
-    <> <div className="min-h-screen bg-gradient-to-br from-slate-900 to-gray-500">
-      <div className="bg-white/10 backdrop-blur-xl border border-white/20 text-white p-8 mb-8">
+    <> <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-white">
+      <div className="bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-900 p-8 mb-8 shadow-sm">
         <form className="space-y-6" >
           <div className="flex flex-col md:flex-row gap-4">
             <input
@@ -378,8 +378,8 @@ function Library() {
            </button>
 
            <div className="text-center">
-             <h1 className="text-xl font-bold text-white mb-1">List of Users in</h1>
-             <h2 className="text-lg font-semibold text-blue-500">SIES Graduate School of Technology</h2>
+             <h1 className="text-xl font-bold text-slate-800 mb-1">List of Users in</h1>
+             <h2 className="text-lg font-semibold text-blue-600">SIES Graduate School of Technology</h2>
            </div>
 
            <button
@@ -405,7 +405,7 @@ function Library() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="bg-gradient-to-br from-slate-900 to-gray-500 grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-12 gap-6">
         
         {/* Current Students Card - Smaller */}
         <div className="col-span-2 space-y-4">
