@@ -10,53 +10,41 @@ import { getApiUrl, getApiHeaders, getLibraryApiUrl, getLibraryApiHeaders, debug
 // Glorified Entry/Exit Notification Component
 const EntryExitNotification = ({ notifications }) => {
   return (
-    <div className="w-48">
-      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-3 border border-yellow-200/50 shadow-md backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-bold text-yellow-800 flex items-center gap-2">
-            <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse"></div>
-            Live Activity
-          </h3>
-        </div>
-        
-        {notifications.length === 0 ? (
-          <div className="text-center py-4">
-            <div className="w-8 h-8 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-2 shadow-inner">
-              <svg className="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+    <div className="flex-1 ml-4">
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg p-2 border border-yellow-200/50 shadow-md backdrop-blur-sm h-12 flex items-center">
+        <div className="w-full">
+          {notifications.length === 0 ? (
+            <div className="flex items-center justify-center">
+              <div className="w-6 h-6 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full flex items-center justify-center mr-2 shadow-inner">
+                <svg className="w-3 h-3 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-xs text-yellow-600 font-medium">Waiting for activity...</p>
             </div>
-            <p className="text-xs text-yellow-600 font-medium">Waiting for activity...</p>
-          </div>
-        ) : (
-          <div className="space-y-2 max-h-32 overflow-y-auto">
-            {notifications.slice(0, 3).map((notification, index) => (
-              <div 
-                key={index}
-                className={`relative overflow-hidden rounded-md p-2 transition-all duration-300 transform hover:scale-105 shadow-sm ${
-                  notification.type === 'entry' 
-                    ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-200' 
-                    : 'bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200'
-                }`}
-              >
-                {/* Animated background effect */}
-                <div className={`absolute inset-0 opacity-10 ${
-                  notification.type === 'entry' ? 'bg-yellow-500' : 'bg-orange-500'
-                } animate-pulse`}></div>
-                
-                <div className="relative flex items-center gap-2">
+          ) : (
+            <div className="flex items-center gap-2">
+              {notifications.slice(0, 1).map((notification, index) => (
+                <div 
+                  key={index}
+                  className={`relative overflow-hidden rounded-md px-2 py-1 transition-all duration-300 transform hover:scale-105 shadow-sm flex items-center gap-2 ${
+                    notification.type === 'entry' 
+                      ? 'bg-gradient-to-r from-yellow-100 to-amber-100 border border-yellow-200' 
+                      : 'bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200'
+                  }`}
+                >
                   {/* Status indicator */}
                   <div className={`w-2 h-2 rounded-full shadow-sm ${
                     notification.type === 'entry' ? 'bg-yellow-500 animate-ping' : 'bg-orange-500 animate-ping'
                   }`}></div>
                   
                   {/* Icon */}
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center shadow-sm ${
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center shadow-sm ${
                     notification.type === 'entry' 
                       ? 'bg-gradient-to-br from-yellow-400 to-amber-500' 
                       : 'bg-gradient-to-br from-orange-400 to-red-500'
                   }`}>
-                    <svg className={`w-3 h-3 text-white`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-2.5 h-2.5 text-white`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       {notification.type === 'entry' ? (
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       ) : (
@@ -78,7 +66,7 @@ const EntryExitNotification = ({ notifications }) => {
                   </div>
                   
                   {/* Time badge */}
-                  <div className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${
+                  <div className={`px-1 py-0.5 rounded-full text-xs font-bold ${
                     notification.type === 'entry' 
                       ? 'bg-yellow-200 text-yellow-800' 
                       : 'bg-orange-200 text-orange-800'
@@ -86,10 +74,10 @@ const EntryExitNotification = ({ notifications }) => {
                     {notification.time}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
