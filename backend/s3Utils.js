@@ -120,4 +120,5 @@ module.exports = {
   getSignedUrl,
   listS3Files,
   deleteFromS3
-}; 
+};
+  

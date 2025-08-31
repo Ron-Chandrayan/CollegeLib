@@ -44,4 +44,5 @@ export default function Linegraph({ data }) {
     </div>
   );
 }
+ 
 

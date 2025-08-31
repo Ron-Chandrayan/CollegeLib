@@ -126,3 +126,4 @@ router.post('/in_out', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+ 

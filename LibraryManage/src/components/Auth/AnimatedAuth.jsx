@@ -595,3 +595,4 @@ const AnimatedAuth = ({ onAuthSuccess,time,settime }) => {
 };
 
 export default AnimatedAuth;
+ 

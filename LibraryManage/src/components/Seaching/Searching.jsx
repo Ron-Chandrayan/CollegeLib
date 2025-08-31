@@ -27,3 +27,4 @@ function Searching({ search, filter, name, Students }) {
 
 
 export default Searching
+ 

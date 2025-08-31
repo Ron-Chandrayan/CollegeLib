@@ -12,3 +12,4 @@ const livefeedSchema = new mongoose.Schema({
 const LiveFeed = mongoose.model("LiveFeed", livefeedSchema, "livefeed");
 
 module.exports = LiveFeed;
+ 

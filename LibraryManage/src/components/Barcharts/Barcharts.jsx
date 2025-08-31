@@ -76,3 +76,4 @@ function Barcharts({ data }) {
 }
 
 export default Barcharts
+ 

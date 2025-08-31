@@ -13,3 +13,4 @@ const memberSchema = new mongoose.Schema({
 
 const members = mongoose.model('members', memberSchema);
 module.exports=members
+ 

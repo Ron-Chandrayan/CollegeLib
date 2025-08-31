@@ -8,3 +8,4 @@ const footfallSchema = new mongoose.Schema({
 
 const totalfootfall = mongoose.model('totalfootfall', footfallSchema);
 module.exports=totalfootfall;
+ 

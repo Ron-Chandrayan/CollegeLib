@@ -17,4 +17,5 @@ AWS.config.update({
 // Create S3 instance
 const s3 = new AWS.S3();
 
-module.exports = { s3, s3Config }; 
+module.exports = { s3, s3Config };
+  

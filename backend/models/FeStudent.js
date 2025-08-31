@@ -11,3 +11,4 @@ const feStudentSchema = new mongoose.Schema({
 const FeStudent = mongoose.model('fe_students', feStudentSchema);
 
 module.exports = FeStudent;
+ 

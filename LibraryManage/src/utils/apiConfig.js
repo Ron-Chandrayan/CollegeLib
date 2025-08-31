@@ -54,4 +54,5 @@ export const getLibraryApiHeaders = () => {
 // Debug function to help troubleshoot API issues
 export const debugApiConfig = () => {
   // Debug function kept for future troubleshooting if needed
-}; 
+};
+  

@@ -14,3 +14,4 @@ const lifetimeSchema = new mongoose.Schema({
 
 const lifetime = mongoose.model('lifetime', lifetimeSchema);
 module.exports=lifetime;
+ 

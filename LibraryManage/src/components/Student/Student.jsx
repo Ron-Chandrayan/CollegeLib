@@ -231,3 +231,4 @@ const[i,seti]=useState(1);
 }
 
 export default Student;
+ 

@@ -35,3 +35,4 @@ app.use(express.static(path.join(__dirname, '../LibraryManage/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../LibraryManage/dist/index.html'));
 });
+ 

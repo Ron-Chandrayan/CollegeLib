@@ -7,3 +7,4 @@ const footfallSchema = new mongoose.Schema({
 
 const hourlyfootfall = mongoose.model('hourlyfootfall', footfallSchema);
 module.exports=hourlyfootfall;
+ 
