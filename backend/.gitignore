@@ -7,3 +7,13 @@ migrate_passwords.js
 MIGRATION_INSTRUCTIONS.md
 update_emails.py
 .env
+mongo_migration.py
+MIGRATION_README.md
+PRN_AUTOMATION_README.md
+migration.log
+requirements_migration.txt
+requirements_automation.txt
+prn_automation.py
+prn_automation_20250901_101010.log
+quick-test.js
+grads

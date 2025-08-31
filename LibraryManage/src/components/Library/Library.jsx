@@ -379,7 +379,7 @@ function Library() {
 
            <div className="text-center">
              <h1 className="text-xl font-bold text-white mb-1">List of Users in</h1>
-             <h2 className="text-lg font-semibold text-blue-500">SIES Graduate School of Technology</h2>
+             <h2 className="text-lg font-semibold text-blue-500">SIES GST Library</h2>
            </div>
 
            <button
